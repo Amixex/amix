@@ -7,6 +7,34 @@ const root = process.cwd();
 const src = path.join(root, 'android-overrides');
 const dst = path.join(root, 'android');
 
+// --- Встраиваем библиотеку WebLLM внутрь приложения (www/vendor/web-llm.js),
+// чтобы ИИ запускался без интернета. Если не получилось, приложение возьмёт её с CDN.
+async function vendorWebLLM() {
+  try {
+    const { build } = await import('esbuild');
+    const outfile = path.join(root, 'www', 'vendor', 'web-llm.js');
+    fs.mkdirSync(path.dirname(outfile), { recursive: true });
+    // Встроенные модули Node в браузере не нужны: подставляем пустышки
+    const emptyNodeModules = {
+      name: 'empty-node-modules',
+      setup(b) {
+        b.onResolve({ filter: /^(node:.*|fs|path|crypto|perf_hooks|ws|os|worker_threads)$/ }, (a) => ({ path: a.path, namespace: 'empty' }));
+        b.onLoad({ filter: /.*/, namespace: 'empty' }, () => ({ contents: 'export default {};', loader: 'js' }));
+      },
+    };
+    await build({
+      stdin: { contents: "export * from '@mlc-ai/web-llm';", resolveDir: root, loader: 'js' },
+      bundle: true, format: 'esm', platform: 'browser', target: 'es2020', minify: true,
+      outfile, plugins: [emptyNodeModules], logLevel: 'warning',
+    });
+    const mb = (fs.statSync(outfile).size / 1048576).toFixed(1);
+    console.log(`WebLLM встроен в приложение: www/vendor/web-llm.js (${mb} МБ)`);
+  } catch (e) {
+    console.warn('НЕ удалось встроить WebLLM, приложение будет брать его с CDN:', e && e.message);
+  }
+}
+await vendorWebLLM();
+
 if (!fs.existsSync(dst)) {
   console.error('Папки android/ нет. Сначала выполните: npx cap add android');
   process.exit(1);

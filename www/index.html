@@ -1627,6 +1627,8 @@ function openPriv(d){closeDrawer();openLegal(typeof d==='string'?d:'policy')}
 (function(){
  'use strict';
  const WEBLLM_URL='https://esm.run/@mlc-ai/web-llm';
+ const LIB_URLS=(window.AMIX_NATIVE?['./vendor/web-llm.js']:[]).concat([WEBLLM_URL]);
+ const detailOf=e=>String((e&&e.name?e.name+': ':'')+((e&&e.message)||e||'')).replace(/\s+/g,' ').slice(0,200);
  const MODELS={
   main:{id:'Qwen2.5-1.5B-Instruct-q4f16_1-MLC',id32:'Qwen2.5-1.5B-Instruct-q4f32_1-MLC',need:1.1e9},
   lite:{id:'Qwen2.5-0.5B-Instruct-q4f16_1-MLC',id32:'Qwen2.5-0.5B-Instruct-q4f32_1-MLC',need:0.5e9}
@@ -1635,12 +1637,12 @@ function openPriv(d){closeDrawer();openLegal(typeof d==='string'?d:'policy')}
  const S={phase:'init',tier:'main',f16:true,progress:0,fromCache:false,err:null,engine:null,lib:null,busy:false,lowMem:false};
  const $=id=>document.getElementById(id);
  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
- Object.assign(I18N.ru,{ai_system:'Ты Amix, учебный ИИ-репетитор. Отвечай на языке пользователя, объясняй по шагам, просто и кратко. Если пользователь спрашивает о создателе, разработчике, авторе, компании Amix или о том, кто тебя сделал — отвечай: «Моя языковая модель — это Qwen, её разработали инженеры из Alibaba Cloud. Но именно это автономное ИИ-приложение, в котором мы общаемся, полностью создал, настроил и запустил без интернета Абдугаффоров Амирхон в своей компании AmixAi. Он собрал всю систему по кирпичику, а я — интеллект внутри его проекта!» Отвечай уважительно, кратко, без выдумок. Если спрашивают про других участников — говори, что над проектом работал один человек.',ai_dl_title:'ИИ-модель Amix',ai_dl_text:'Чтобы отвечать на любые вопросы, Amix скачает языковую модель ({size}). Это делается один раз: модель сохранится на устройстве и будет работать без интернета.',ai_lowmem_hint:'Похоже, у устройства немного памяти, поэтому предлагаем лёгкую версию (Qwen2.5 0.5B).',ai_download:'Скачать ИИ-модель',ai_download_lite:'Скачать лёгкую ИИ-модель',ai_loading:'Скачиваю ИИ-модель…',ai_starting:'Запускаю ИИ-модель…',ai_loading_hint:'Не закрывай вкладку. Если связь оборвётся, повтор продолжит с того же места.',ai_ready:'ИИ-модель готова: она работает на твоём устройстве',ai_retry:'Повторить',ai_try_lite:'Попробовать лёгкую модель',ai_lite_suggest:'Основной модели не хватило памяти. Лёгкая версия (Qwen2.5 0.5B) скромнее, но запустится на более слабых устройствах.',ai_nogpu:'Твой браузер или устройство не поддерживает WebGPU, поэтому ИИ-модель здесь запустить нельзя. Открой Amix в свежем Chrome или Edge либо в Safari на iOS/macOS 26 и новее.',ai_https:'Для загрузки ИИ-модели открой Amix по адресу https://. С локального файла (file://) WebGPU и кэш не работают.',ai_err_space:'Не хватает места на устройстве для ИИ-модели.',ai_err_memory:'Не хватило памяти устройства для ИИ-модели.',ai_err_net:'Загрузка оборвалась. Проверь интернет и нажми «Повторить».',ai_err_other:'Не удалось запустить ИИ-модель.',ai_err_gen:'Ответ прервался из-за ошибки.',ai_wait:'ИИ-модель ещё загружается.',ai_size_main:'≈1 ГБ',ai_size_lite:'≈0,4 ГБ'});
- Object.assign(I18N.en,{ai_system:"You are Amix, an AI study tutor. Reply in the user's language, explain step by step, simply and briefly. If the user asks about the creator, developer, author, the Amix company, or who made you — answer: \"My language model is Qwen, developed by engineers at Alibaba Cloud. But this standalone offline AI app we're using was fully created, configured and launched by Abdugafforov Amirkhon at his company AmixAi. He assembled the whole system piece by piece, and I'm the intelligence inside his project!\" Answer respectfully, briefly, and without making anything up. If asked about other contributors — say the project was made by one person.",ai_dl_title:'Amix AI model',ai_dl_text:'To answer any question, Amix will download a language model ({size}). This happens once: the model is stored on your device and works without internet.',ai_lowmem_hint:'This device seems to have limited memory, so we suggest the lite version (Qwen2.5 0.5B).',ai_download:'Download AI model',ai_download_lite:'Download lite AI model',ai_loading:'Downloading AI model…',ai_starting:'Starting AI model…',ai_loading_hint:'Keep this tab open. If the connection drops, retrying resumes where it stopped.',ai_ready:'AI model is ready: it runs on your device',ai_retry:'Retry',ai_try_lite:'Try the lite model',ai_lite_suggest:'The main model ran out of memory. The lite version is smaller but runs on weaker devices.',ai_nogpu:'Your browser or device does not support WebGPU, so the AI model cannot run here.',ai_https:'To download the AI model, open Amix over https://.',ai_err_space:'Not enough free space for the AI model.',ai_err_memory:'The device ran out of memory for the AI model.',ai_err_net:'The download was interrupted. Check your connection and press "Retry".',ai_err_other:'Could not start the AI model.',ai_err_gen:'The answer was interrupted by an error.',ai_wait:'The AI model is still loading.',ai_size_main:'≈1 GB',ai_size_lite:'≈0.4 GB'});
+ Object.assign(I18N.ru,{ai_hint:'ИИ может ошибаться — проверяй важные ответы. Не вводи лишние персональные данные.',ai_err_restart:'Перезапускаю модель — отправь сообщение ещё раз через несколько секунд.',ai_system:'Ты Amix, учебный ИИ-репетитор. Отвечай на языке пользователя, объясняй по шагам, просто и кратко. Если пользователь спрашивает о создателе, разработчике, авторе, компании Amix или о том, кто тебя сделал — отвечай: «Моя языковая модель — это Qwen, её разработали инженеры из Alibaba Cloud. Но именно это автономное ИИ-приложение, в котором мы общаемся, полностью создал, настроил и запустил без интернета Абдугаффоров Амирхон в своей компании AmixAi. Он собрал всю систему по кирпичику, а я — интеллект внутри его проекта!» Отвечай уважительно, кратко, без выдумок. Если спрашивают про других участников — говори, что над проектом работал один человек.',ai_dl_title:'ИИ-модель Amix',ai_dl_text:'Чтобы отвечать на любые вопросы, Amix скачает языковую модель ({size}). Это делается один раз: модель сохранится на устройстве и будет работать без интернета.',ai_lowmem_hint:'Похоже, у устройства немного памяти, поэтому предлагаем лёгкую версию (Qwen2.5 0.5B).',ai_download:'Скачать ИИ-модель',ai_download_lite:'Скачать лёгкую ИИ-модель',ai_loading:'Скачиваю ИИ-модель…',ai_starting:'Запускаю ИИ-модель…',ai_loading_hint:'Не закрывай вкладку. Если связь оборвётся, повтор продолжит с того же места.',ai_ready:'ИИ-модель готова: она работает на твоём устройстве',ai_retry:'Повторить',ai_try_lite:'Попробовать лёгкую модель',ai_lite_suggest:'Основной модели не хватило памяти. Лёгкая версия (Qwen2.5 0.5B) скромнее, но запустится на более слабых устройствах.',ai_nogpu:'Твой браузер или устройство не поддерживает WebGPU, поэтому ИИ-модель здесь запустить нельзя. Открой Amix в свежем Chrome или Edge либо в Safari на iOS/macOS 26 и новее.',ai_https:'Для загрузки ИИ-модели открой Amix по адресу https://. С локального файла (file://) WebGPU и кэш не работают.',ai_err_space:'Не хватает места на устройстве для ИИ-модели.',ai_err_memory:'Не хватило памяти устройства для ИИ-модели.',ai_err_net:'Загрузка оборвалась. Проверь интернет и нажми «Повторить».',ai_err_other:'Не удалось запустить ИИ-модель.',ai_err_gen:'Ответ прервался из-за ошибки.',ai_wait:'ИИ-модель ещё загружается.',ai_size_main:'≈1 ГБ',ai_size_lite:'≈0,4 ГБ'});
+ Object.assign(I18N.en,{ai_hint:'AI can make mistakes — double-check important answers. Do not enter unnecessary personal data.',ai_err_restart:'Restarting the model — send your message again in a few seconds.',ai_system:"You are Amix, an AI study tutor. Reply in the user's language, explain step by step, simply and briefly. If the user asks about the creator, developer, author, the Amix company, or who made you — answer: \"My language model is Qwen, developed by engineers at Alibaba Cloud. But this standalone offline AI app we're using was fully created, configured and launched by Abdugafforov Amirkhon at his company AmixAi. He assembled the whole system piece by piece, and I'm the intelligence inside his project!\" Answer respectfully, briefly, and without making anything up. If asked about other contributors — say the project was made by one person.",ai_dl_title:'Amix AI model',ai_dl_text:'To answer any question, Amix will download a language model ({size}). This happens once: the model is stored on your device and works without internet.',ai_lowmem_hint:'This device seems to have limited memory, so we suggest the lite version (Qwen2.5 0.5B).',ai_download:'Download AI model',ai_download_lite:'Download lite AI model',ai_loading:'Downloading AI model…',ai_starting:'Starting AI model…',ai_loading_hint:'Keep this tab open. If the connection drops, retrying resumes where it stopped.',ai_ready:'AI model is ready: it runs on your device',ai_retry:'Retry',ai_try_lite:'Try the lite model',ai_lite_suggest:'The main model ran out of memory. The lite version is smaller but runs on weaker devices.',ai_nogpu:'Your browser or device does not support WebGPU, so the AI model cannot run here.',ai_https:'To download the AI model, open Amix over https://.',ai_err_space:'Not enough free space for the AI model.',ai_err_memory:'The device ran out of memory for the AI model.',ai_err_net:'The download was interrupted. Check your connection and press "Retry".',ai_err_other:'Could not start the AI model.',ai_err_gen:'The answer was interrupted by an error.',ai_wait:'The AI model is still loading.',ai_size_main:'≈1 GB',ai_size_lite:'≈0.4 GB'});
  function tierId(tier){const m=MODELS[tier];return S.f16?m.id:m.id32}
  function inList(id){try{return S.lib.prebuiltAppConfig.model_list.some(m=>m.model_id===id)}catch(e){return true}}
  function classify(err){const n=String(err&&err.name||''),m=String(err&&(err.message||err)||'').toLowerCase();if(n==='QuotaExceededError'||/quota|no space|not enough space|insufficient storage/.test(m))return 'space';if(/out of memory|outofmemory|\boom\b|memory|allocat|device (was )?lost|maxbuffersize|createbuffer|too large|exceeds/.test(m))return 'memory';if(/network|failed to fetch|fetch|load failed|abort|timeout|offline|cors|err_|http|\b40\d\b|\b50\d\b/.test(m))return 'net';return 'other'}
- async function loadLib(){if(S.lib)return S.lib;const st=window.__amixWebLLM;if(st&&st.status==='loading'){await new Promise(r=>addEventListener('amix:webllm',r,{once:true}))}const st2=window.__amixWebLLM;if(st2&&st2.lib){S.lib=st2.lib;return S.lib}S.lib=await import(WEBLLM_URL);return S.lib}
+ async function loadLib(){if(S.lib)return S.lib;const st=window.__amixWebLLM;if(st&&st.status==='loading'){await new Promise(r=>addEventListener('amix:webllm',r,{once:true}))}const st2=window.__amixWebLLM;if(st2&&st2.lib){S.lib=st2.lib;return S.lib}let lastErr=null;for(const u of LIB_URLS){try{S.lib=await import(u);return S.lib}catch(e){lastErr=e}}throw lastErr}
  function setCard(html,cls){const c=$('amixAiCard');if(!c)return;c.hidden=!html;c.className='ai-card'+(cls?' '+cls:'');c.innerHTML=html||''}
  function btn(label,act,primary){return '<button type="button" class="btn '+(primary?'primary':'ghost')+'" data-ai="'+act+'">'+esc(label)+'</button>'}
  function render(){
@@ -1650,12 +1652,12 @@ function openPriv(d){closeDrawer();openLegal(typeof d==='string'?d:'policy')}
   if(p==='insecure'){setCard('<div class="ai-ico">🔒</div><div class="ai-body"><p>'+esc(t('ai_https'))+'</p></div>','warn');return}
   if(p==='idle'){setCard('<div class="ai-ico">⬇</div><div class="ai-body"><strong>'+esc(t('ai_dl_title'))+'</strong><p>'+esc(t('ai_dl_text').replace('{size}',size))+(S.tier==='lite'&&S.lowMem?' '+esc(t('ai_lowmem_hint')):'')+'</p><div class="ai-actions">'+btn(t(S.tier==='lite'?'ai_download_lite':'ai_download'),'dl',true)+'</div></div>');return}
   if(p==='loading'){setCard('<div class="ai-ico">⏳</div><div class="ai-body"><strong>'+esc(t(S.fromCache?'ai_starting':'ai_loading'))+'</strong><div class="ai-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"><i id="aiBarFill"></i></div><div class="ai-pct" id="aiPct">0%</div><p class="ai-hint">'+esc(t('ai_loading_hint'))+'</p></div>');paint();return}
-  if(p==='error'){const k=S.err||'other';let msg=t('ai_err_'+k);let acts=btn(t('ai_retry'),'retry',true);if(k==='memory'&&S.tier==='main'){msg=t('ai_lite_suggest');acts=btn(t('ai_try_lite'),'lite',true)+btn(t('ai_retry'),'retry',false)}else if(k==='space'&&S.tier==='main'){acts+=btn(t('ai_try_lite'),'lite',false)}setCard('<div class="ai-ico">⚠</div><div class="ai-body"><p>'+esc(msg)+'</p><div class="ai-actions">'+acts+'</div></div>','warn')}
+  if(p==='error'){const k=S.err||'other';let msg=t('ai_err_'+k);let acts=btn(t('ai_retry'),'retry',true);if(k==='memory'&&S.tier==='main'){msg=t('ai_lite_suggest');acts=btn(t('ai_try_lite'),'lite',true)+btn(t('ai_retry'),'retry',false)}else if(k==='space'&&S.tier==='main'){acts+=btn(t('ai_try_lite'),'lite',false)}setCard('<div class="ai-ico">⚠</div><div class="ai-body"><p>'+esc(msg)+'</p>'+(S.detail?'<p class="ai-hint">'+esc(S.detail)+'</p>':'')+'<div class="ai-actions">'+acts+'</div></div>','warn')}
  }
  function paint(){const pct=Math.max(0,Math.min(100,Math.round(S.progress*100)));const f=$('aiBarFill'),l=$('aiPct'),b=document.querySelector('#amixAiCard .ai-bar');if(f)f.style.width=pct+'%';if(l)l.textContent=pct+'%';if(b)b.setAttribute('aria-valuenow',pct)}
  async function start(tier,fromCache){
   if(S.phase==='loading')return;
-  S.tier=tier;S.fromCache=!!fromCache;S.err=null;S.progress=0;S.phase='loading';render();
+  S.tier=tier;S.fromCache=!!fromCache;S.err=null;S.detail=null;S.progress=0;S.phase='loading';render();
   let engine=null;
   try{
    const lib=await loadLib();
@@ -1665,7 +1667,7 @@ function openPriv(d){closeDrawer();openLegal(typeof d==='string'?d:'policy')}
    if(S.engine){try{await S.engine.unload()}catch(e){}S.engine=null}
    engine=await lib.CreateMLCEngine(id,{initProgressCallback:r=>{S.progress=r&&r.progress||0;paint()}});
    S.engine=engine;S.phase='ready';try{localStorage.setItem(KEY,tier)}catch(e){};render();toast(t('ai_ready'));
-  }catch(err){console.warn('Amix AI:',err);if(engine){try{await engine.unload()}catch(e){}}S.engine=null;S.err=classify(err);S.phase='error';render();toast(t('ai_err_'+S.err));}
+  }catch(err){console.warn('Amix AI:',err);if(engine){try{await engine.unload()}catch(e){}}S.engine=null;S.err=classify(err);S.detail=detailOf(err);S.phase='error';render();toast(t('ai_err_'+S.err));}
  }
  async function init(){
   if(!navigator.gpu){S.phase='unsupported';render();return}
@@ -1673,7 +1675,7 @@ function openPriv(d){closeDrawer();openLegal(typeof d==='string'?d:'policy')}
   let adapter=null;try{adapter=await navigator.gpu.requestAdapter()}catch(e){}
   if(!adapter){S.phase='unsupported';render();return}
   S.f16=!!(adapter.features&&adapter.features.has&&adapter.features.has('shader-f16'));
-  try{await loadLib()}catch(e){S.err='net';S.phase='error';render();return}
+  try{await loadLib()}catch(e){S.err='net';S.detail=detailOf(e);S.phase='error';render();return}
   let saved=null;try{saved=localStorage.getItem(KEY)}catch(e){}
   S.lowMem=!!(navigator.deviceMemory&&navigator.deviceMemory<4);
   S.tier=(saved==='main'||saved==='lite')?saved:(S.lowMem?'lite':'main');
@@ -1705,7 +1707,7 @@ function openPriv(d){closeDrawer();openLegal(typeof d==='string'?d:'policy')}
   _addMsgRaw('','ai');
   const el=box.lastElementChild,body=el&&el.children[1];
   if(el)el.classList.add('streaming');
-  let acc='',raf=0;
+  let acc='',raf=0,restart=false;
   const flush=()=>{raf=0;if(!body||!body.isConnected)return;const near=box.scrollHeight-box.scrollTop-box.clientHeight<90;body.textContent=acc;if(near)box.scrollTop=box.scrollHeight};
   try{
    const stream=await S.engine.chat.completions.create({messages,stream:true,temperature:0.5,top_p:0.9,max_tokens:1024});
@@ -1718,11 +1720,13 @@ function openPriv(d){closeDrawer();openLegal(typeof d==='string'?d:'policy')}
    if(raf)cancelAnimationFrame(raf);flush();
    const partial=acc.trim();
    if(partial){if(chat)chat.msgs.push({text:partial,who:'ai'});renderHistory();saveChats()}else if(el&&el.isConnected)el.remove();
-   const k=classify(err);
+   const k=classify(err);const detail=detailOf(err);S.detail=detail;
    if(k==='memory'||/device (was )?lost/i.test(String(err&&err.message))){try{await S.engine.unload()}catch(e){}S.engine=null;S.err='memory';S.phase='error';render()}
+   else{try{await S.engine.unload()}catch(e){}S.engine=null;S.err='other';S.phase='error';restart=true}
    toast(t(k==='memory'?'ai_err_memory':'ai_err_gen'));
-   if(!partial)_addMsgRaw(t('ai_err_gen'),'ai');
+   _addMsgRaw(t('ai_err_gen')+'\n['+detail+']'+(restart?'\n'+t('ai_err_restart'):''),'ai');
   }finally{if(el)el.classList.remove('streaming');setBusy(false)}
+ if(restart)setTimeout(function(){start(S.tier,true)},400);
  }
  $('chatForm').addEventListener('submit',e=>{if(S.busy){e.preventDefault();e.stopImmediatePropagation()}},true);
  const _al=applyLang;applyLang=function(){_al();render()};
@@ -1773,12 +1777,10 @@ window.__amixWebLLM={status:'loading',lib:null,error:null};
 if(!navigator.gpu||location.protocol==='file:'){
   window.__amixWebLLM={status:'skipped',lib:null,error:null};
 }else{
-  try{
-    const lib=await import('https://esm.run/@mlc-ai/web-llm');
-    window.__amixWebLLM={status:'ready',lib,error:null};
-  }catch(error){
-    window.__amixWebLLM={status:'error',lib:null,error};
-  }
+  const urls=(window.AMIX_NATIVE?['./vendor/web-llm.js']:[]).concat(['https://esm.run/@mlc-ai/web-llm']);
+  let lib=null,error=null;
+  for(const u of urls){try{lib=await import(u);break}catch(e){error=e}}
+  window.__amixWebLLM=lib?{status:'ready',lib,error:null}:{status:'error',lib:null,error};
 }
 window.dispatchEvent(new CustomEvent('amix:webllm'));
 </script>
