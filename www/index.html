@@ -1,0 +1,1879 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<script src="bootstrap-native.js"></script>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Amix">
+<title>Amix — offline AI tutor</title>
+<style>
+:root{--bg:#070b18;--panel:#0d1427;--panel2:#111c35;--line:#243455;--text:#f4f7ff;--muted:#9eaccb;--blue:#318cff;--violet:#8b5cff;--cyan:#40d8ed;--green:#2bd69b;--pink:#db64f5;--shadow:0 18px 50px #0006}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% -10%,#20245b 0,transparent 36%),radial-gradient(ellipse at 100% 35%,#102b50 0,transparent 30%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}button,input,textarea,select{font:inherit}button{cursor:pointer;color:inherit}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.app{max-width:1440px;margin:auto;padding:22px;display:grid;grid-template-columns:250px minmax(0,1fr);gap:20px;min-height:100vh}.sidebar,.main{background:#0a1020eF;border:1px solid #253657;border-radius:24px;box-shadow:var(--shadow)}.sidebar{padding:20px 14px;display:flex;flex-direction:column;gap:18px}.brand{display:flex;align-items:center;gap:12px;padding:4px 6px 18px;border-bottom:1px solid #202d49}.logo{width:45px;height:45px;border-radius:15px;background:linear-gradient(135deg,#148fff,#854cff 65%,#d45cf7);display:grid;place-items:center;font-size:24px;box-shadow:0 0 28px #5d5bff55}.brand h1{font-size:20px;margin:0;letter-spacing:-.5px}.brand p{font-size:12px;color:var(--muted);margin:0}.nav{display:grid;gap:6px}.nav button{display:flex;align-items:center;gap:12px;padding:11px 12px;border:1px solid transparent;background:transparent;border-radius:13px;text-align:left;color:#bdc9e2}.nav button .ico{width:24px;text-align:center;font-size:18px}.nav button.active,.nav button:hover{background:linear-gradient(100deg,#263b78aa,#35265b88);border-color:#3c5791;color:white}.status{margin-top:auto;padding:14px;border-radius:16px;background:linear-gradient(145deg,#111f36,#0d1425);border:1px solid #273858}.status strong{display:block;font-size:13px}.status small{color:var(--muted)}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px #2bd69b;margin-right:7px}
+.main{padding:24px;min-width:0;overflow:hidden}.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px}.eyebrow{font-size:12px;letter-spacing:1.5px;color:#8fa8ff;text-transform:uppercase}.topbar h2{font-size:27px;letter-spacing:-.7px;margin:2px 0}.top-actions{display:flex;align-items:center;gap:8px}.chip{font-size:12px;border:1px solid #2e4266;border-radius:999px;padding:7px 11px;color:#b7c6e8;background:#111b31;white-space:nowrap}.hero{border:1px solid #354a80;border-radius:22px;padding:25px;background:linear-gradient(115deg,#13264b,#17183e 58%,#25133b);position:relative;overflow:hidden;margin-bottom:20px}.hero:after{content:"✦";position:absolute;right:30px;top:0;font-size:130px;color:#8a85ff22}.hero h3{font-size:clamp(22px,3vw,31px);line-height:1.2;margin:0 0 9px;max-width:580px}.hero p{color:#b8c8ea;max-width:620px;margin:0 0 18px}.btn{border:1px solid #4264a0;background:#142546;border-radius:12px;padding:10px 14px;font-weight:650}.btn.primary{border:0;background:linear-gradient(100deg,#168fff,#6556ff 65%,#b44ef0);box-shadow:0 7px 22px #4b51e344}.btn:hover{filter:brightness(1.13)}.btn.ghost{background:#0c1529;border-color:#2a3b5d}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.tile{padding:17px;background:linear-gradient(145deg,#101a30,#0d1425);border:1px solid #263858;border-radius:17px;text-align:left;min-height:125px;transition:.15s}.tile:hover{transform:translateY(-2px);border-color:#6279ce}.tile .tileicon{font-size:24px;width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:#253a70;margin-bottom:11px}.tile strong{display:block;font-size:14px}.tile small{color:var(--muted);display:block;margin-top:3px}.sectionhead{display:flex;align-items:center;justify-content:space-between;margin:24px 0 12px}.sectionhead h3{margin:0;font-size:17px}.muted{color:var(--muted)}.subjectrow{display:flex;flex-wrap:wrap;gap:8px}.subject{border:1px solid #2a3b5d;border-radius:11px;padding:8px 11px;background:#10192c;color:#c7d4ef;font-size:13px}.subject:hover,.subject.active{background:#273a70;border-color:#6583ff;color:white}
+.view{display:none}.view.active{display:block}.chatlayout{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:16px}.chatbox{display:flex;flex-direction:column;min-height:570px;border:1px solid #263858;border-radius:18px;overflow:hidden;background:#080f1d}.chathead{padding:14px 17px;border-bottom:1px solid #1e2d49;display:flex;justify-content:space-between;align-items:center}.messages{padding:18px;display:flex;flex-direction:column;gap:15px;flex:1;overflow:auto;max-height:500px}.msg{max-width:90%;padding:13px 15px;border-radius:16px;white-space:pre-wrap;overflow-wrap:anywhere}.msg.ai{align-self:flex-start;background:#111e35;border:1px solid #283b5e}.msg.user{align-self:flex-end;background:linear-gradient(130deg,#21488d,#473b91);border:1px solid #5366bb}.msg .who{font-size:11px;color:#9db4ff;margin-bottom:5px;font-weight:700}.composer{padding:12px;border-top:1px solid #1e2d49;display:flex;gap:8px;align-items:flex-end}.composer textarea{resize:vertical;min-height:45px;max-height:150px;flex:1;background:#101a2d;border:1px solid #2c4064;border-radius:13px;color:white;padding:12px}.sidecard{border:1px solid #263858;border-radius:18px;padding:15px;background:#0c1426;height:max-content}.sidecard h3{margin:0 0 10px;font-size:15px}.quick{display:block;width:100%;text-align:left;margin:7px 0;padding:10px;border:1px solid #253657;border-radius:11px;background:#101b30;color:#dce5fa;font-size:13px}.quick:hover{border-color:#647aff}.field{width:100%;background:#0d172b;border:1px solid #2a3d60;border-radius:12px;color:#f5f7ff;padding:12px}.upload{display:block;border:1px dashed #50699b;border-radius:16px;padding:25px;text-align:center;background:#0d172a;cursor:pointer}.upload input{display:none}.preview{max-width:100%;max-height:280px;display:block;margin:14px auto;border-radius:12px}.result{margin-top:16px;background:#101d33;border:1px solid #2c4269;border-radius:16px;padding:18px;white-space:pre-wrap}.settingsrow{padding:15px 0;border-bottom:1px solid #1d2c48;display:flex;justify-content:space-between;gap:12px;align-items:center}.toggle{accent-color:#655bff;width:18px;height:18px}.historyitem{padding:14px;border:1px solid #263858;border-radius:13px;background:#0e172a;margin:8px 0;cursor:pointer}.historyitem:hover{border-color:#637bdb}.footer{margin-top:24px;text-align:center;font-size:12px;color:#7183a7}.notice{border:1px solid #62513b;background:#251e16;color:#f2d4a1;border-radius:12px;padding:12px;font-size:12px;margin-top:14px}
+*{scroll-behavior:smooth}
+.view{opacity:0;transform:translateY(9px);transition:opacity .24s ease,transform .24s ease;display:none}
+.view.active{display:block;animation:viewEnter .32s cubic-bezier(.2,.75,.25,1) both}
+@keyframes viewEnter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.tile,.nav button,.btn,.subject,.quick,.historyitem{transition:transform .18s ease,border-color .2s ease,background .2s ease,filter .2s ease,box-shadow .2s ease}
+button:active{transform:scale(.975)}
+.btn.primary:hover{box-shadow:0 8px 28px #5d5bff66}
+.modal-backdrop{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;background:#020511b8;backdrop-filter:blur(12px);opacity:0;transition:opacity .22s ease}
+.modal-backdrop.open{display:flex;opacity:1;animation:fadeIn .22s ease both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{width:min(100%,440px);border:1px solid #344a77;border-radius:24px;padding:24px;background:linear-gradient(145deg,#121d36,#090f1e);box-shadow:0 25px 90px #0009;transform:translateY(12px) scale(.985);animation:modalEnter .25s ease both}
+@keyframes modalEnter{to{transform:translateY(0) scale(1)}}
+.modal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.modal-top h3{margin:0;font-size:22px}
+.close-btn{width:35px;height:35px;border-radius:11px;border:1px solid #2d4064;background:#111c31}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;background:#080e1c;border:1px solid #263858;border-radius:13px;margin-bottom:17px}
+.auth-tabs button{border:0;border-radius:9px;padding:9px;background:transparent;color:#9eaccb}
+.auth-tabs button.active{background:#293b71;color:#fff}
+.auth-form{display:grid;gap:12px}
+.auth-form label{font-size:12px;color:#b5c3e1;display:grid;gap:6px}
+.auth-form input{width:100%;background:#0a1325;border:1px solid #2a3d60;border-radius:12px;padding:12px;color:white}
+.auth-note{font-size:12px;color:#8f9fbe;margin:12px 0 0}
+.account-btn{display:flex;align-items:center;gap:9px;width:100%;border:1px solid #304365;background:#111b30;border-radius:13px;padding:10px;text-align:left}
+.avatar{width:31px;height:31px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#268cff,#9b55ff);font-weight:800}
+.account-btn small{display:block;color:#9eaccb;font-size:11px}
+.toast{position:fixed;left:50%;bottom:24px;z-index:70;transform:translate(-50%,15px);opacity:0;pointer-events:none;padding:11px 16px;border:1px solid #3a5482;border-radius:13px;background:#111d34;box-shadow:var(--shadow);transition:opacity .2s,transform .2s;max-width:calc(100% - 28px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+@media(max-width:980px){.app{grid-template-columns:1fr;padding:12px}.sidebar{padding:12px;position:sticky;top:6px;z-index:5;backdrop-filter:blur(18px)}.brand{border:0;padding:2px 6px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;padding:9px}.nav button .ico{width:auto}.status{display:none}.main{padding:17px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.chatlayout{grid-template-columns:1fr}.chatlayout .sidecard{display:none}}@media(max-width:520px){.app{padding:7px;gap:10px}.sidebar,.main{border-radius:18px}.main{padding:13px}.topbar h2{font-size:22px}.topbar{align-items:flex-start}.top-actions .chip{display:none}.hero{padding:18px}.grid{gap:8px}.tile{padding:12px;min-height:116px}.tile .tileicon{width:37px;height:37px}.nav button{font-size:12px;gap:6px}.nav button .ico{font-size:15px}.messages{padding:12px}.msg{max-width:98%}}
+body:before{content:"";position:fixed;inset:-30%;z-index:-1;pointer-events:none;background:conic-gradient(from 0deg at 50% 50%,#3157ff12,#a13cff13,#23d9ff0c,#3157ff12);filter:blur(60px);animation:auroraDrift 26s linear infinite}
+@keyframes auroraDrift{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.08)}100%{transform:rotate(360deg) scale(1)}}
+.logo{position:relative;isolation:isolate;animation:logoFloat 4.5s ease-in-out infinite,logoGlow 3s ease-in-out infinite alternate}
+.logo:after{content:"";position:absolute;inset:-5px;border-radius:18px;border:1px solid #7e91ff66;animation:ringPulse 2.8s ease-out infinite;z-index:-1}
+@keyframes logoFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3px) rotate(3deg)}}
+@keyframes logoGlow{from{box-shadow:0 0 15px #5d5bff33}to{box-shadow:0 0 32px #a95bff88}}
+@keyframes ringPulse{0%{transform:scale(.9);opacity:.8}100%{transform:scale(1.3);opacity:0}}
+.hero{isolation:isolate}
+.hero:before{content:"";position:absolute;z-index:-1;inset:-80%;background:linear-gradient(110deg,transparent 43%,#ffffff0c 49%,#8baaff20 50%,transparent 57%);transform:translateX(-40%);animation:heroShine 8s ease-in-out infinite}
+@keyframes heroShine{0%,25%{transform:translateX(-45%)}70%,100%{transform:translateX(45%)}}
+.hero:after{animation:starBreathe 5s ease-in-out infinite;transform-origin:80% 50%}
+@keyframes starBreathe{0%,100%{transform:scale(.92) rotate(-8deg);opacity:.6}50%{transform:scale(1.08) rotate(8deg);opacity:1}}
+.tile{position:relative;overflow:hidden;isolation:isolate}
+.tile:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(120deg,transparent 25%,#839bff13 50%,transparent 75%);transform:translateX(-130%);transition:transform .65s ease}
+.tile:hover:before{transform:translateX(130%)}
+.tile:hover{box-shadow:0 12px 28px #03071288,0 0 0 1px #7187ff18;transform:translateY(-4px) scale(1.012)}
+.tileicon{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.tile:hover .tileicon{transform:rotate(-7deg) scale(1.09);box-shadow:0 0 22px #5b79ff40}
+.nav button{position:relative;overflow:hidden}
+.nav button:after{content:"";position:absolute;left:12px;right:12px;bottom:4px;height:2px;border-radius:5px;background:linear-gradient(90deg,var(--blue),var(--pink));transform:scaleX(0);transform-origin:left;transition:transform .24s}
+.nav button.active:after{transform:scaleX(1)}
+.btn{position:relative;overflow:hidden}
+.btn:after{content:"";position:absolute;inset:-50% auto -50% -60%;width:35%;transform:rotate(18deg);background:linear-gradient(90deg,transparent,#ffffff35,transparent);transition:left .65s ease}
+.btn:hover:after{left:140%}
+.btn.primary{background-size:180% 180%;animation:gradientFlow 7s ease infinite}
+@keyframes gradientFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.chip{transition:border-color .2s,background .2s,transform .2s}
+.chip:hover{border-color:#758bff;background:#192747;transform:translateY(-1px)}
+.status .dot{animation:dotPulse 1.8s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 0 0 #2bd69b66}50%{box-shadow:0 0 0 6px #2bd69b00}}
+.view.active{animation:viewEnter .38s cubic-bezier(.16,1,.3,1) both}
+.view.active .hero{animation:heroRise .5s .02s both}
+.view.active .tile{animation:tileRise .45s both;animation-delay:calc(var(--i,0)*45ms)}
+@keyframes heroRise{from{opacity:0;transform:translateY(13px) scale(.99);filter:blur(3px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes tileRise{from{opacity:0;transform:translateY(13px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+.msg{animation:messageIn .3s cubic-bezier(.16,1,.3,1) both}
+@keyframes messageIn{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+.composer:focus-within{background:#0b1426;box-shadow:inset 0 0 0 1px #506eff55}
+.composer textarea{transition:border-color .2s,box-shadow .2s}
+.composer textarea:focus{border-color:#687eff;box-shadow:0 0 0 3px #586bff20}
+.upload{transition:background .25s,border-color .25s,transform .25s}
+.upload:hover{background:#142344;border-color:#8a8cff;transform:translateY(-2px)}
+.preview{animation:previewIn .35s ease both}
+@keyframes previewIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+.historyitem{animation:messageIn .3s ease both}
+.subject{transition:all .2s ease}
+.subject:hover{transform:translateY(-2px);box-shadow:0 6px 18px #0004}
+.modal-backdrop.open .modal{animation:modalEnter .34s cubic-bezier(.16,1,.3,1) both}
+.auth-tabs button{transition:background .2s,color .2s,transform .2s}
+.account-btn{transition:border-color .2s,background .2s,transform .2s}
+.account-btn:hover{border-color:#7285ed;background:#172442;transform:translateY(-1px)}
+.particle-layer{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:-1}
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:#8aa7ff;opacity:0;box-shadow:0 0 12px #788aff;animation:particleRise var(--dur,12s) linear infinite;animation-delay:var(--delay,0s);left:var(--left,50%);bottom:-10px}
+@keyframes particleRise{0%{transform:translate3d(0,0,0) scale(.6);opacity:0}10%{opacity:.55}75%{opacity:.35}100%{transform:translate3d(var(--drift,20px),-110vh,0) scale(1.4);opacity:0}}
+@media(prefers-reduced-motion:reduce){body:before,.logo,.logo:after,.hero:before,.hero:after,.status .dot,.btn.primary,.particle{animation:none!important}.tile,.nav button,.btn,.subject,.quick,.historyitem,.account-btn{transition:none!important}.view.active .hero,.view.active .tile{animation:none!important}}
+#snapFx{position:fixed;inset:0;z-index:90;pointer-events:none;overflow:hidden;opacity:1;visibility:hidden}
+#snapFx.play{visibility:visible}
+.snap-flash,.snap-ring,.snap-rays{display:none!important}
+.dust-cloud{position:absolute;inset:0;overflow:hidden}
+.dust-particle{position:absolute;left:var(--px);top:var(--py);width:var(--size);height:var(--size);border-radius:var(--shape);background:var(--dust);box-shadow:0 0 5px color-mix(in srgb,var(--dust),transparent 35%);opacity:0;transform:translate3d(0,0,0) rotate(0) scale(1);will-change:transform,opacity}
+#snapFx.out .dust-particle{animation:dustAway var(--dur,.56s) cubic-bezier(.45,0,.95,.45) var(--delay,0s) both}
+#snapFx.in .dust-particle{animation:dustGather var(--dur,.72s) cubic-bezier(.16,1,.3,1) var(--delay,0s) both}
+@keyframes dustAway{0%{opacity:0;transform:translate3d(0,0,0) rotate(0) scale(1)}10%{opacity:var(--opacity,.85)}38%{opacity:var(--opacity,.85);transform:translate3d(var(--mx),var(--my),0) rotate(var(--spin30)) scale(.72)}72%{opacity:.72;transform:translate3d(var(--qx),var(--qy),0) rotate(var(--spin75)) scale(.32)}100%{opacity:0;transform:translate3d(var(--dx),var(--dy),0) rotate(var(--spin)) scale(.015)}}
+@keyframes dustGather{0%{opacity:0;transform:translate3d(var(--dx),var(--dy),0) rotate(var(--spin)) scale(.015);filter:blur(2px)}22%{opacity:var(--opacity,.8)}68%{opacity:.75;transform:translate3d(var(--mx),var(--my),0) rotate(calc(var(--spin)*.35)) scale(.55);filter:blur(.4px)}100%{opacity:0;transform:translate3d(0,0,0) rotate(0) scale(.9);filter:blur(0)}}
+.view.dust-out{animation:contentDissolve .42s ease-in both!important}
+.view.dust-in{animation:contentForm .58s cubic-bezier(.16,1,.3,1) both!important}
+@keyframes contentDissolve{0%{opacity:1;filter:blur(0);transform:scale(1)}100%{opacity:0;filter:blur(3px);transform:scale(.99)}}
+@keyframes contentForm{0%{opacity:0;filter:blur(3px);transform:scale(.99)}65%{opacity:1;filter:blur(0);transform:scale(1.003)}100%{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){#snapFx{display:none}.view.dust-out,.view.dust-in{animation:none!important}}.view.snap-out,.view.snap-in{animation:none!important}
+#snapFx,#snapFx *{pointer-events:none!important}
+#snapFx{z-index:15!important}
+.view.active{visibility:visible;pointer-events:auto}
+.nav{position:relative;z-index:25}
+html{width:100%;min-width:0;-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:12px}
+body{width:100%;min-width:0;overflow-x:hidden;min-height:100vh;min-height:100dvh}
+.app{width:100%;min-width:0}
+.sidebar,.main,.view,.chatlayout,.chatbox,.hero,.tile,.sidecard{min-width:0;max-width:100%}
+img,video,canvas,svg,iframe{max-width:100%}
+input,textarea,select{max-width:100%;min-width:0}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.nav{min-width:0;overscroll-behavior-x:contain;scrollbar-width:thin}
+.nav button{min-height:44px;flex-shrink:0}
+.btn,.subject,.quick,.account-btn,.close-btn{min-height:42px}
+.composer textarea{width:100%;min-width:0;overflow-wrap:anywhere}
+.messages{overscroll-behavior:contain;scrollbar-gutter:stable}
+.msg,.result,.notice,.historyitem,.tile,.hero p{overflow-wrap:anywhere;word-break:normal}
+.modal-backdrop{padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));overflow-y:auto}
+.modal{max-height:calc(100dvh - 24px);overflow-y:auto}
+.toast{bottom:max(16px,env(safe-area-inset-bottom))}
+@media (min-width:1400px){.app{padding:26px;gap:24px}.main{padding:30px}.sidebar{padding:22px 16px}}
+@media (max-width:1100px){.app{grid-template-columns:210px minmax(0,1fr);gap:14px;padding:14px}.sidebar{padding:16px 10px;gap:14px}.main{padding:20px}.nav button{gap:8px;padding:10px}.chatlayout{grid-template-columns:minmax(0,1fr)}.chatlayout .sidecard{display:none}}
+@media (max-width:800px){.app{grid-template-columns:minmax(0,1fr);padding:10px;gap:10px}.sidebar{position:sticky;top:0;z-index:30;padding:10px 12px;gap:8px;border-radius:16px;backdrop-filter:blur(18px);background:#0a1020f5}.brand{padding:0 2px 7px;gap:9px}.logo{width:36px;height:36px;border-radius:12px;font-size:20px;flex:0 0 auto}.brand h1{font-size:17px}.brand p{font-size:11px}.nav{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding:1px 1px 5px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}.nav button{white-space:nowrap;scroll-snap-align:start;padding:9px 11px;font-size:13px}.nav button .ico{width:auto;font-size:16px}.account-btn{padding:7px 9px;min-height:40px}.status{display:none}.main{padding:18px;border-radius:18px}.chatbox{min-height: min(68dvh,620px);min-height:min(68vh,620px)}.messages{max-height:none;min-height:180px;flex:1}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.app{padding:6px;gap:7px}.sidebar{padding:8px;border-radius:14px}.brand{padding-bottom:5px}.brand p{display:none}.nav{margin:0 -1px}.nav button{font-size:12px;padding:8px 10px;gap:6px;min-height:42px}.nav button .ico{font-size:15px}.account-btn{width:100%}.main{padding:13px;border-radius:15px}.topbar{align-items:flex-start;gap:8px;margin-bottom:16px}.topbar h2{font-size:clamp(19px,5.5vw,23px);line-height:1.2;letter-spacing:-.4px}.eyebrow{font-size:10px;letter-spacing:1px}.top-actions{gap:5px;flex-wrap:wrap;justify-content:flex-end}.top-actions .chip{display:none}.top-actions #topAccount{display:inline-flex;align-items:center;justify-content:center;padding:6px 8px;font-size:12px;min-height:38px}.hero{padding:16px;border-radius:17px;margin-bottom:15px}.hero h3{font-size:clamp(21px,6vw,27px);max-width:100%}.hero p{font-size:14px;line-height:1.5}.hero:after{right:8px;font-size:90px}.btn{padding:10px 12px;max-width:100%;white-space:normal}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tile{padding:11px;border-radius:14px;min-height:0}.tile .tileicon{width:35px;height:35px;font-size:20px;margin-bottom:8px}.tile strong{font-size:13px;line-height:1.35}.tile small{font-size:11px;line-height:1.4}.sectionhead{margin:19px 0 10px;gap:8px;align-items:flex-start}.sectionhead h3{font-size:16px}.subjectrow{gap:6px}.subject{font-size:12px;padding:8px 9px}.chatbox{min-height:58vh;min-height:58dvh;border-radius:14px}.chathead{padding:11px 12px;gap:8px;flex-wrap:wrap}.messages{padding:10px;gap:10px}.msg{max-width:100%;padding:10px 11px;font-size:14px}.composer{padding:8px;gap:6px;align-items:stretch}.composer textarea{min-height:44px;max-height:120px;padding:10px;font-size:16px;resize:vertical}.composer .btn{padding:9px 10px;min-width:44px}.upload{padding:18px 12px}.result{padding:13px;font-size:14px}.settingsrow{padding:12px 0;align-items:flex-start}.settingsrow label,.settingsrow span{min-width:0;overflow-wrap:anywhere}.modal{padding:18px;border-radius:18px;width:100%}.modal-top h3{font-size:20px}.footer{font-size:11px}}
+@media (max-width:360px){.main{padding:10px}.grid{grid-template-columns:minmax(0,1fr)}.tile{display:grid;grid-template-columns:36px minmax(0,1fr);column-gap:10px;align-items:center}.tile .tileicon{grid-row:span 2;margin:0}.tile strong,.tile small{min-width:0}.topbar{flex-direction:column}.top-actions{justify-content:flex-start}.composer{flex-wrap:wrap}.composer textarea{flex-basis:100%}.composer .btn{flex:1}}
+@media (orientation:landscape) and (max-height:520px) and (max-width:900px){.sidebar{position:relative;top:auto}.brand{display:none}.chatbox{min-height:65vh}.messages{max-height:42vh}.modal{max-height:90vh}}
+@media (hover:none){.tile:hover,.subject:hover,.upload:hover,.account-btn:hover{transform:none;box-shadow:none}.btn:hover:after{left:-60%}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+:root{--bg:#050505;--panel:#0b0b0b;--panel2:#131313;--line:rgba(255,255,255,.08);--text:#f5f5f5;--muted:#929292;--blue:#fff;--violet:#bdbdbd;--cyan:#fff;--green:#4ade80;--pink:#d4d4d4;--shadow:0 24px 70px #000b}
+body{background:radial-gradient(ellipse at 50% 0%,#171717 0%,#050505 46%,#000 100%);color:var(--text)}
+.sidebar,.main{background:rgba(10,10,10,.96);border-color:rgba(255,255,255,.075);box-shadow:var(--shadow)}
+.sidebar{backdrop-filter:blur(18px)}
+.brand{border-bottom-color:var(--line)}
+.logo{background:linear-gradient(145deg,#fff,#777);color:#050505;box-shadow:0 0 26px #ffffff18;border-radius:14px}
+.brand p,.muted,.tile small,.hero p,.sidecard small{color:#999}
+.eyebrow{color:#aaa}
+.nav button{color:#a0a0a0}
+.nav button.active,.nav button:hover{background:rgba(255,255,255,.075);border-color:rgba(255,255,255,.1);color:#fff}
+.status{background:linear-gradient(145deg,#171717,#0b0b0b);border-color:var(--line)}
+.dot{background:#4ade80;box-shadow:0 0 10px #4ade80}
+.main{background:radial-gradient(ellipse at 50% 10%,#141414 0%,#0b0b0b 68%)}
+.chip{border-color:var(--line);background:#141414;color:#bbb}
+.hero{border-color:rgba(255,255,255,.1);background:radial-gradient(ellipse at 80% 0%,#242424 0%,transparent 48%),linear-gradient(125deg,#191919,#0d0d0d 65%,#111);box-shadow:inset 0 1px 0 #ffffff08}
+.hero:after{color:#ffffff0b}
+.btn{border-color:#383838;background:#1a1a1a}
+.btn.primary{background:#fff;color:#050505;border:1px solid #fff;box-shadow:0 8px 24px #0007}
+.btn.primary:hover{box-shadow:0 8px 28px #ffffff1c}
+.btn.ghost{background:#111;border-color:#333}
+.grid .tile,.tile{background:linear-gradient(145deg,#171717,#101010);border-color:#292929}
+.tile:hover{border-color:#555}
+.tile .tileicon{background:linear-gradient(145deg,#303030,#181818);color:#fff}
+.subject{background:#151515;border-color:#303030;color:#ccc}
+.subject:hover,.subject.active{background:#fff;border-color:#fff;color:#000}
+.chatbox{background:#080808;border-color:#292929}
+.chathead,.composer{border-color:#242424}
+.messages{scrollbar-width:thin;scrollbar-color:#444 transparent}
+.msg.ai{background:#151515;border-color:#292929}
+.msg.user{background:#f1f1f1;color:#080808;border-color:#f1f1f1}
+.msg .who{color:#aaa}
+.msg.user .who{color:#555}
+.composer textarea,.field,.auth-form input{background:#141414;border-color:#333;color:#fff}
+.composer textarea:focus,.field:focus,.auth-form input:focus{border-color:#777;outline-color:#aaa}
+.sidecard,.historyitem,.quick,.result,.upload{background:#111;border-color:#292929}
+.quick{color:#ddd}
+.quick:hover,.historyitem:hover{border-color:#666}
+.upload{border-style:dashed;color:#ddd}
+.result{background:#141414}
+.settingsrow{border-color:#252525}
+.toggle{accent-color:#fff}
+.modal-backdrop{background:#000c}
+.modal{background:linear-gradient(145deg,#191919,#090909);border-color:#383838}
+.close-btn{background:#161616;border-color:#383838}
+.auth-tabs{background:#080808;border-color:#292929}
+.auth-tabs button{color:#999}
+.auth-tabs button.active{background:#fff;color:#000}
+.auth-form label{color:#bbb}
+.auth-note{color:#999}
+.notice{border-color:#514637;background:#1d1914;color:#e5d0ad}
+input,textarea,select{color-scheme:dark}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #aaa;outline-offset:3px}
+@media(max-width:900px){.sidebar,.main{border-color:rgba(255,255,255,.08)}.nav button.active,.nav button:hover{background:#202020}.rightcol{background:#0b0b0b}}
+@media(max-width:520px){body{background:#050505}.app{padding:5px}.sidebar,.main{box-shadow:0 12px 35px #0009}.hero{background:radial-gradient(ellipse at 100% 0%,#252525 0%,transparent 55%),linear-gradient(125deg,#181818,#0c0c0c)}}
+:root{--bg:#070707;--panel:#101010;--panel2:#171717;--line:#303030;--text:#f5f5f5;--muted:#a3a3a3;--blue:#bdbdbd;--violet:#d4d4d4;--cyan:#e5e5e5;--green:#bdbdbd;--pink:#d4d4d4;--shadow:0 18px 50px #0008}
+body{background:radial-gradient(ellipse at 20% -10%,#202020 0,transparent 36%),radial-gradient(ellipse at 100% 35%,#141414 0,transparent 30%),var(--bg)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #d4d4d4;outline-offset:2px}
+.account-btn{background:#111;border:1px solid #333;color:#f5f5f5;border-radius:12px;box-shadow:none}
+.account-btn:hover{background:#1b1b1b;border-color:#666;transform:translateY(-1px)}
+.avatar{background:#242424;border:1px solid #444;color:#fff;box-shadow:none}
+.account-btn small{color:#aaa}
+#topAccount.chip{background:#111;border-color:#333;color:#eee}
+#topAccount.chip:hover{background:#202020;border-color:#666;transform:translateY(-1px)}
+.attach-btn{width:46px;min-width:46px;height:46px;min-height:46px;padding:0;display:grid;place-items:center;flex:0 0 46px;background:#111!important;border:1px solid #383838!important;border-radius:13px!important;color:#f5f5f5;box-shadow:none!important}
+.attach-btn svg{width:20px;height:20px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.attach-btn:hover{background:#202020!important;border-color:#777!important;filter:none;transform:translateY(-1px)}
+.attach-btn:active{transform:scale(.97)}
+.composer{background:#0c0c0c;border-color:#292929}
+.composer textarea{background:#141414;border-color:#383838;color:#f5f5f5}
+.composer textarea:focus{border-color:#777;box-shadow:0 0 0 3px #ffffff0d}
+.btn.primary{background:#f2f2f2!important;color:#111!important;border:1px solid #f2f2f2!important;box-shadow:none!important;animation:none!important}
+.btn.primary:hover{background:#d9d9d9!important;box-shadow:none!important}
+.btn.primary:after{display:none}
+.chip{background:#111;border-color:#333;color:#ccc}
+.modal{background:#111;border-color:#383838}
+.auth-tabs{background:#0b0b0b;border-color:#303030}
+.auth-tabs button.active{background:#292929;color:#fff}
+.auth-form input{background:#151515;border-color:#383838}
+.close-btn{background:#171717;border-color:#383838}
+.toast{background:#151515;border-color:#3a3a3a}
+@media(max-width:600px){.attach-btn{width:42px;min-width:42px;height:42px;min-height:42px;flex-basis:42px}.composer{gap:7px;padding:9px}.attach-btn svg{width:19px;height:19px}}
+:root{--bg:#030303;--panel:#0a0a0a;--panel2:#111;--line:#292929;--text:#f7f7f7;--muted:#929292;--blue:#fff;--violet:#bdbdbd;--cyan:#fff;--green:#e6e6e6;--pink:#c8c8c8;--shadow:0 28px 90px #000d}
+html{background:#000}
+body{background:radial-gradient(ellipse at 50% 0%,#191919 0%,#080808 36%,#000 78%)!important;color:#f6f6f6;isolation:isolate}
+body:before{content:"";position:fixed;inset:-35%;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 28% 35%,#ffffff0b,transparent 30%),radial-gradient(ellipse at 72% 58%,#ffffff08,transparent 32%);filter:blur(30px);animation:ambientDrift 18s ease-in-out infinite alternate}
+@keyframes ambientDrift{0%{transform:translate3d(-2%,1%,0) scale(1)}100%{transform:translate3d(3%,-2%,0) scale(1.08)}}
+.app{position:relative;gap:16px;padding:18px;max-width:1480px}
+.sidebar,.main{background:linear-gradient(145deg,#101010f5,#070707f5)!important;border:1px solid #ffffff17!important;border-radius:25px;box-shadow:0 30px 100px #000c,inset 0 1px #ffffff09,0 0 45px #ffffff05;position:relative;overflow:hidden}
+.sidebar:before,.main:before{content:"";position:absolute;top:-170px;left:12%;width:75%;height:240px;pointer-events:none;background:radial-gradient(ellipse,#ffffff0d 0%,#ffffff04 36%,transparent 72%);filter:blur(16px);animation:panelGlow 9s ease-in-out infinite alternate}
+@keyframes panelGlow{from{transform:translateX(-7%) scale(.88);opacity:.55}to{transform:translateX(8%) scale(1.12);opacity:1}}
+.sidebar{padding:22px 15px;gap:20px}
+.brand{border-color:#ffffff12}
+.logo{color:#050505;background:radial-gradient(circle at 32% 25%,#fff,#bcbcbc 48%,#333 100%)!important;border:1px solid #ffffff8a;box-shadow:0 0 22px #ffffff25,inset 0 1px #ffffffaa;animation:logoBreath 4s ease-in-out infinite;position:relative;overflow:hidden}
+.logo:after{content:"";position:absolute;inset:-80% -30%;background:linear-gradient(110deg,transparent 42%,#ffffffa0 50%,transparent 58%);transform:translateX(-75%);animation:logoSweep 6s ease-in-out infinite}
+@keyframes logoBreath{0%,100%{box-shadow:0 0 18px #ffffff18,inset 0 1px #ffffffaa}50%{box-shadow:0 0 34px #ffffff35,inset 0 1px #fff}}
+@keyframes logoSweep{0%,65%{transform:translateX(-75%)}85%,100%{transform:translateX(75%)}}
+.brand h1{letter-spacing:.2px}
+.brand p,.muted,.sidebar .status small{color:#888!important}
+.nav button{color:#a5a5a5;border:1px solid transparent;position:relative;overflow:hidden}
+.nav button.active,.nav button:hover{background:linear-gradient(100deg,#ffffff13,#ffffff06)!important;border-color:#ffffff1b!important;color:#fff!important;box-shadow:inset 0 1px #ffffff0b,0 5px 20px #0005}
+.nav button.active:before{content:"";position:absolute;left:0;top:25%;bottom:25%;width:2px;border-radius:4px;background:#fff;box-shadow:0 0 12px #fff;animation:navGlow .5s ease both}
+@keyframes navGlow{from{transform:scaleY(.2);opacity:0}to{transform:scaleY(1);opacity:1}}
+.nav button .ico{transition:transform .35s cubic-bezier(.2,.8,.2,1);color:#ddd}
+.nav button:hover .ico{transform:scale(1.18) rotate(-7deg)}
+.account-btn{border-color:#ffffff18!important;background:linear-gradient(140deg,#151515,#0a0a0a)!important;transition:transform .25s,border-color .3s,box-shadow .3s}
+.account-btn:hover{border-color:#ffffff42!important;box-shadow:0 0 24px #ffffff0c;transform:translateY(-2px)}
+.avatar{background:linear-gradient(145deg,#fff,#858585)!important;color:#050505!important;box-shadow:0 0 18px #ffffff22}
+.status{background:linear-gradient(145deg,#151515,#090909)!important;border-color:#ffffff17!important;box-shadow:inset 0 1px #ffffff08}
+.dot{background:#f5f5f5!important;box-shadow:0 0 10px #fff;animation:dotPulse 2s ease-in-out infinite}
+@keyframes dotPulse{50%{opacity:.45;box-shadow:0 0 18px #fff}}
+.main{padding:clamp(16px,2.2vw,30px)}
+.topbar{position:relative;z-index:1;border-bottom:1px solid #ffffff0c;padding-bottom:18px;margin-bottom:22px}
+.eyebrow{color:#a5a5a5!important;letter-spacing:2px}
+.topbar h2{letter-spacing:-.9px;text-shadow:0 0 30px #ffffff12}
+.chip{background:#111!important;border-color:#ffffff1b!important;color:#c5c5c5!important;transition:all .25s}
+button.chip:hover{border-color:#ffffff55!important;background:#1b1b1b!important;box-shadow:0 0 18px #ffffff0c}
+.hero{background:radial-gradient(ellipse at 85% 0%,#ffffff16,transparent 42%),linear-gradient(125deg,#171717,#0b0b0b 60%,#121212)!important;border-color:#ffffff21!important;box-shadow:inset 0 1px #ffffff0b,0 20px 55px #0007}
+.hero:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 20%,#ffffff08 48%,transparent 65%);transform:translateX(-100%);animation:heroSweep 11s ease-in-out infinite}
+@keyframes heroSweep{0%,58%{transform:translateX(-100%)}85%,100%{transform:translateX(100%)}}
+.hero:after{color:#ffffff13!important;text-shadow:0 0 40px #fff2;animation:starFloat 6s ease-in-out infinite}
+@keyframes starFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(9px) rotate(12deg)}}
+.hero p{color:#b2b2b2!important}
+.btn,.subject,.quick,.historyitem,.tile,.sidecard,.chatbox,.result,.upload{border-color:#ffffff17!important}
+.btn{transition:transform .25s cubic-bezier(.2,.8,.2,1),background .25s,border-color .25s,box-shadow .25s!important}
+.btn:hover,.quick:hover,.historyitem:hover,.subject:hover{border-color:#ffffff54!important;box-shadow:0 8px 28px #0007,0 0 18px #ffffff09;transform:translateY(-2px)}
+.btn.primary{background:linear-gradient(145deg,#fff,#c9c9c9)!important;color:#080808!important;box-shadow:0 4px 22px #ffffff12!important;position:relative;overflow:hidden}
+.btn.primary:hover{background:#fff!important;box-shadow:0 0 30px #ffffff25!important}
+.btn.primary:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,#fff9 50%,transparent 72%);transform:translateX(-130%);transition:transform .7s}
+.btn.primary:hover:before{transform:translateX(130%)}
+.btn.ghost{background:#111!important;color:#e8e8e8!important}
+.grid{gap:14px}
+.tile{background:linear-gradient(145deg,#151515,#0b0b0b)!important;box-shadow:inset 0 1px #ffffff08;position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s!important}
+.tile:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 15% 0%,#ffffff0c,transparent 60%);opacity:.5;transition:opacity .3s}
+.tile:hover{transform:translateY(-4px)!important;border-color:#ffffff40!important;box-shadow:0 16px 34px #0008,0 0 25px #ffffff08!important}
+.tile:hover:before{opacity:1}
+.tile .tileicon{background:linear-gradient(145deg,#292929,#111)!important;border:1px solid #ffffff12;color:#fff;box-shadow:inset 0 1px #ffffff0c;transition:transform .35s}
+.tile:hover .tileicon{transform:rotate(-5deg) scale(1.06)}
+.sectionhead{border-bottom:1px solid #ffffff0b;padding-bottom:10px}
+.sectionhead h3{letter-spacing:-.2px}
+.subject{background:#111!important;color:#c9c9c9!important}
+.subject.active,.subject:hover{background:#262626!important;color:#fff!important}
+.chatbox{background:linear-gradient(160deg,#0c0c0c,#070707)!important;box-shadow:inset 0 1px #ffffff08,0 15px 45px #0007}
+.chathead{border-color:#ffffff12!important;background:linear-gradient(90deg,#ffffff04,transparent)}
+.messages{scrollbar-color:#444 transparent;scrollbar-width:thin}
+.msg{animation:messageEnter .42s cubic-bezier(.2,.8,.2,1) both}
+@keyframes messageEnter{from{opacity:0;transform:translateY(13px) scale(.985);filter:blur(3px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+.msg.ai{background:linear-gradient(145deg,#171717,#101010)!important;border-color:#ffffff17!important;box-shadow:inset 0 1px #ffffff08}
+.msg.user{background:linear-gradient(135deg,#f1f1f1,#bcbcbc)!important;color:#080808!important;border-color:#fff!important;box-shadow:0 5px 22px #ffffff0b}
+.msg .who{color:#bdbdbd!important}
+.composer{border-color:#ffffff12!important;background:linear-gradient(0deg,#090909,#090909e8)}
+.composer textarea{background:linear-gradient(145deg,#151515,#0e0e0e)!important;border-color:#ffffff20!important;transition:border-color .25s,box-shadow .25s!important}
+.composer textarea:focus{border-color:#ffffff70!important;box-shadow:0 0 0 4px #ffffff0a,0 0 26px #ffffff0a!important}
+.composer textarea::placeholder{color:#777}
+.attach-btn{background:#141414!important;border-color:#ffffff28!important;color:#eee!important;transition:transform .25s,box-shadow .25s,border-color .25s!important}
+.attach-btn:hover{border-color:#fff8!important;box-shadow:0 0 20px #ffffff12!important;transform:translateY(-2px) rotate(-4deg)!important}
+.attach-btn svg{stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sidecard,.result,.historyitem,.upload{background:linear-gradient(145deg,#141414,#0b0b0b)!important;box-shadow:inset 0 1px #ffffff08}
+.quick{background:#111!important;color:#e5e5e5!important}
+.field{background:#111!important;border-color:#ffffff20!important}
+.field:focus{border-color:#fff8!important;box-shadow:0 0 0 3px #ffffff0a}
+.view.active{animation:viewCinematic .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes viewCinematic{from{opacity:0;transform:translateY(12px) scale(.994);filter:blur(2px)}to{opacity:1;transform:none;filter:blur(0)}}
+.modal{background:linear-gradient(145deg,#171717,#090909)!important;border-color:#ffffff25!important;box-shadow:0 30px 100px #000e,0 0 45px #ffffff08}
+.auth-tabs button.active{background:#292929!important}
+.auth-form input{background:#101010!important;border-color:#ffffff22!important}
+.close-btn{background:#141414!important;border-color:#ffffff20!important}
+.toast{background:#151515!important;border-color:#ffffff22!important}
+.particle{background:#fff!important;box-shadow:0 0 8px #ffffff66!important;opacity:.35}
+@keyframes particleDrift{to{transform:translate3d(var(--drift),-110vh,0);opacity:0}}
+@media(max-width:900px){.app{padding:10px;gap:10px;grid-template-columns:205px minmax(0,1fr)}.main{padding:20px}.topbar{align-items:flex-start}.top-actions{flex-wrap:wrap;justify-content:flex-end}}
+@media(max-width:700px){.app{display:flex;flex-direction:column;min-height:100dvh;padding:8px;gap:8px}.sidebar{padding:10px 12px;border-radius:19px;gap:10px}.brand{padding:0 2px 10px;gap:10px}.logo{width:38px;height:38px;border-radius:13px}.brand h1{font-size:17px}.brand p{font-size:11px}.nav{display:flex;gap:6px}.nav button{flex:1;justify-content:center;padding:10px 7px;font-size:13px}.nav button .ico{width:auto}.account-btn{width:100%;justify-content:flex-start}.status{display:none}.main{padding:15px;border-radius:19px;flex:1}.topbar{gap:10px;margin-bottom:16px;padding-bottom:13px}.topbar h2{font-size:clamp(21px,6vw,27px)}.eyebrow{font-size:10px;letter-spacing:1.2px}.top-actions{gap:5px}.top-actions .chip{font-size:10px;padding:6px 8px}.chatlayout{grid-template-columns:minmax(0,1fr)!important}.chatbox{min-height:clamp(430px,62dvh,680px)}.messages{padding:13px;max-height:none}.composer{padding:9px;gap:7px}.composer textarea{min-width:0;padding:11px;font-size:16px;min-height:44px}.attach-btn{width:42px;min-width:42px;height:42px;min-height:42px;flex-basis:42px;display:grid;place-items:center;padding:0}.composer .btn.primary{min-width:42px;min-height:42px;padding:9px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding:20px}}
+@media(max-width:390px){.app{padding:5px}.main{padding:12px}.top-actions .chip:first-child{display:none}.nav button{font-size:12px;gap:5px}.grid{grid-template-columns:minmax(0,1fr)}.chatbox{min-height:420px}}
+@media(min-width:701px) and (max-width:1100px){.nav{display:flex!important;flex-direction:column!important;overflow:visible!important}.nav button{width:100%;justify-content:flex-start}}
+@media(max-width:700px){.sidebar{background:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;padding:0!important;position:static!important;overflow:visible!important;border-radius:0!important}.sidebar:before,.sidebar:after{display:none!important}.app{padding-bottom:calc(80px + env(safe-area-inset-bottom))!important}.nav{position:fixed!important;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:80;display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;padding:6px!important;margin:0!important;overflow:visible!important;border-radius:24px;background:rgba(14,14,14,.82);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 14px 40px rgba(0,0,0,.65);transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .25s ease;animation:amixNavIn .6s cubic-bezier(.2,.8,.2,1) both}.nav button{flex:none!important;flex-direction:column;justify-content:center;align-items:center;gap:3px!important;min-height:52px;padding:7px 2px!important;font-size:10.5px!important;border-radius:18px;text-align:center}.nav button .ico{width:auto!important;font-size:17px!important;line-height:1}.nav button.active:before{display:none!important}.nav button:after{left:28%!important;right:28%!important;bottom:5px!important}body.kb-open .nav{transform:translateY(140%);opacity:0;pointer-events:none}body.kb-open .app{padding-bottom:8px!important}}
+@keyframes amixNavIn{from{transform:translateY(120%);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.nav{animation:none!important}}
+.lang-mini{display:none}
+.langsw{display:flex;gap:6px}
+.langsw .chip{cursor:pointer;min-width:44px;text-align:center}
+.langsw .chip.on{background:#f2f2f2!important;color:#050505!important;border-color:#fff!important}
+#langBtn{cursor:pointer}
+.lang-swap{animation:amixFade .38s cubic-bezier(.2,.8,.2,1)}
+@keyframes amixFade{from{opacity:.15;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.lang-swap{animation:none!important}}
+@media(max-width:700px){.account-btn{position:absolute!important;top:8px;right:8px;width:40px!important;height:40px;min-height:0!important;padding:0!important;border-radius:50%!important;justify-content:center!important;gap:0!important;z-index:30}.account-btn>span:last-child{display:none!important}.account-btn .avatar{width:34px;height:34px}.lang-mini{display:grid;place-items:center;position:absolute;top:8px;right:56px;width:40px;height:40px;border-radius:50%;z-index:30;border:1px solid #ffffff22;background:linear-gradient(140deg,#151515,#0a0a0a);color:#e6e6e6;font-weight:700;font-size:11px;letter-spacing:.5px;font-family:inherit;transition:transform .25s,border-color .3s}.lang-mini:active{transform:scale(.92)}#topAccount,#langBtn{display:none!important}.brand{padding-right:104px!important}}
+#settings .footer{margin-top:28px;padding-top:12px}
+@media(max-width:700px){body.chat-on .app{height:var(--app-h,100dvh);min-height:0!important}.main{display:flex!important;flex-direction:column;min-height:0}#chat.view.active{display:flex;flex-direction:column;flex:1;min-height:0}#chat .chatlayout{display:flex!important;flex:1;min-height:0}#chat .chatbox{flex:1;min-height:0!important;width:100%}#chat .messages{flex:1;min-height:0!important;max-height:none!important}#settings.view.active{display:flex;flex-direction:column;flex:1}#settings .footer{margin-top:auto;padding-top:28px}}
+.composer{align-items:center!important}
+.composer textarea{resize:none!important}
+.composer .btn.primary svg{width:20px;height:20px;display:block;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:700px){.composer{padding:10px!important;gap:8px!important;flex-wrap:nowrap!important}.composer textarea{flex:1 1 auto!important;flex-basis:auto!important;width:auto!important;min-height:48px!important;height:48px;max-height:120px!important;padding:13px 14px!important;line-height:20px;border-radius:24px!important}.composer .attach-btn,.composer .btn.primary{flex:0 0 48px!important;width:48px!important;min-width:48px!important;height:48px!important;min-height:48px!important;padding:0!important;border-radius:50%!important;display:grid!important;place-items:center}.composer .attach-btn svg{width:21px!important;height:21px!important}.attach-btn:hover{transform:none!important}}
+.new-chat{width:100%;min-height:44px;border-radius:14px;border:1px solid #ffffff2a;background:linear-gradient(145deg,#1b1b1b,#0e0e0e);color:#f1f1f1;font:600 14px/1 inherit;font-family:inherit;cursor:pointer;transition:transform .2s,border-color .25s,box-shadow .25s}
+.new-chat:hover{border-color:#ffffff66;box-shadow:0 0 22px #ffffff12;transform:translateY(-1px)}
+.new-chat:active{transform:scale(.98)}
+#drawerBackdrop,#drawer{display:none}
+.historyitem{cursor:pointer;text-align:left}
+.historyitem.cur{border-color:#ffffff55}
+@media(max-width:700px){.nav,.new-chat{display:none!important}.app{padding-bottom:8px!important}.brand{cursor:pointer;-webkit-tap-highlight-color:transparent}.brand .logo{transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}.brand:active .logo{transform:scale(.9)}#drawerBackdrop{display:block;position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.62);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .35s ease}#drawer{display:flex;flex-direction:column;gap:12px;position:fixed;top:0;bottom:0;left:0;z-index:120;width:min(84vw,330px);padding:calc(16px + env(safe-area-inset-top)) 14px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(170deg,#141414,#080808);border-right:1px solid #ffffff1c;border-radius:0 26px 26px 0;box-shadow:24px 0 70px #000c;transform:translateX(-106%);transition:transform .42s cubic-bezier(.2,.85,.2,1);overflow-y:auto;overscroll-behavior:contain}body.drawer-open #drawerBackdrop{opacity:1;pointer-events:auto}body.drawer-open #drawer{transform:none}body.drawer-open{overflow:hidden}#drawer>*{opacity:0;transform:translateX(-14px);transition:opacity .4s ease,transform .45s cubic-bezier(.2,.8,.2,1)}body.drawer-open #drawer>*{opacity:1;transform:none}body.drawer-open #drawer>*:nth-child(1){transition-delay:.08s}body.drawer-open #drawer>*:nth-child(2){transition-delay:.13s}body.drawer-open #drawer>*:nth-child(3){transition-delay:.18s}body.drawer-open #drawer>*:nth-child(4){transition-delay:.23s}body.drawer-open #drawer>*:nth-child(5){transition-delay:.28s}.dr-head{display:flex;align-items:center;gap:12px;padding:2px 2px 6px}.dr-head .logo{width:38px;height:38px;border-radius:13px;flex:none}.dr-head strong{font-size:18px;flex:1}.dr-close{width:40px;height:40px;border-radius:50%;border:1px solid #ffffff22;background:#111;color:#ddd;font-size:15px;cursor:pointer}.dr-new{min-height:50px;border-radius:16px;border:0;background:linear-gradient(145deg,#fff,#a8a8a8);color:#050505;font:700 15px/1 inherit;font-family:inherit;cursor:pointer;transition:transform .2s}.dr-new:active{transform:scale(.97)}.dr-nav{display:flex;flex-direction:column;gap:4px}.dr-nav button{display:flex;align-items:center;gap:12px;min-height:48px;padding:0 14px;border-radius:14px;border:1px solid transparent;background:transparent;color:#b5b5b5;font:500 15px/1 inherit;font-family:inherit;text-align:left;cursor:pointer;transition:background .2s,color .2s,border-color .2s,transform .15s}.dr-nav button .ico{width:22px;text-align:center;color:#ddd}.dr-nav button.active{background:#1f1f1f;border-color:#ffffff1f;color:#fff}.dr-nav button:active{transform:scale(.98)}.dr-title{margin-top:6px;padding:0 6px;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:#7c7c7c}.dr-chats{display:flex;flex-direction:column;gap:4px;min-height:0}.dr-chat{min-height:44px;padding:10px 14px;border-radius:14px;border:1px solid transparent;background:transparent;color:#c8c8c8;font:400 14px/1.3 inherit;font-family:inherit;text-align:left;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:background .2s,border-color .2s}.dr-chat:hover,.dr-chat.cur{background:#181818;border-color:#ffffff1a;color:#fff}.dr-empty{padding:6px;color:#6f6f6f;font-size:13px}}
+@media(prefers-reduced-motion:reduce){#drawer,#drawerBackdrop,#drawer>*{transition:none!important}}
+.priv-list{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+.priv-list li{position:relative;padding:12px 14px 12px 34px;border:1px solid #ffffff14;border-radius:14px;background:#ffffff06;color:#d2d2d2;font-size:14px;line-height:1.45}
+.priv-list li:before{content:"";position:absolute;left:14px;top:19px;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 10px #fff8}
+@media(max-width:700px){.dr-chats{flex:1 1 auto;overflow-y:auto}.dr-bottom{margin-top:auto;display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid #ffffff14}.dr-priv{min-height:42px;border:0;background:transparent;color:#9a9a9a;font:500 14px/1 inherit;font-family:inherit;text-align:left;padding:0 14px;border-radius:12px;cursor:pointer;transition:color .2s,background .2s}.dr-priv:hover,.dr-priv:active{color:#fff;background:#161616}.dr-auth{min-height:48px;border-radius:14px;border:1px solid #ffffff33;background:linear-gradient(145deg,#1b1b1b,#0e0e0e);color:#f1f1f1;font:600 15px/1 inherit;font-family:inherit;cursor:pointer;transition:transform .2s,border-color .25s}.dr-auth:active{transform:scale(.97)}.dr-auth.out{color:#ffb4b4;border-color:#ff8a8a40}body.drawer-open #drawer>*:nth-child(6){transition-delay:.33s}}
+@media(min-width:701px){.dr-bottom{display:none}}
+#authBackdrop{z-index:1200!important}
+#privBackdrop{z-index:1150!important}
+#amixPaywall{z-index:1100!important}
+#profileBackdrop{z-index:1210!important}
+.toast{z-index:1300!important}
+.modal,.modal button,.auth-form,.auth-form button,.auth-tabs button{pointer-events:auto!important}
+#prompt:disabled{opacity:.55;cursor:not-allowed}
+#chatForm button:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(1)}
+.avatar.guest-avatar{background:transparent!important;border:0!important;color:#f5f5f5!important;box-shadow:none!important;overflow:visible}
+.avatar.guest-avatar svg{width:25px;height:25px;display:block;filter:drop-shadow(0 1px 4px #ffffff20);transition:transform .25s ease}
+.account-btn:hover .avatar.guest-avatar svg{transform:translateY(-2px) rotate(-5deg)}
+.account-btn.is-guest{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
+@media(max-width:700px){.account-btn.is-guest{background:transparent!important;border:0!important;box-shadow:none!important}.account-btn.is-guest .avatar.guest-avatar{background:transparent!important;border:0!important;box-shadow:none!important}}
+#blackHoleCanvas{position:fixed;inset:0;width:100vw;height:100vh;display:block;z-index:0;pointer-events:none;opacity:.96;mix-blend-mode:screen}
+.app{position:relative;z-index:2}
+.particle-layer{z-index:1}
+.sidebar,.main{background:rgba(8,8,8,.78)!important;border-color:rgba(255,255,255,.10)!important;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.main{background:radial-gradient(ellipse at 55% 28%,rgba(20,20,20,.72),rgba(8,8,8,.78) 72%)!important}
+.chatbox{background:rgba(5,5,5,.66)!important}
+.chathead,.composer{background:rgba(10,10,10,.76)!important}
+.messages{background:rgba(0,0,0,.10)}
+.hero{background:linear-gradient(125deg,rgba(24,24,24,.83),rgba(10,10,10,.74))!important}
+.tile,.historyitem,.status,.sidecard{background:rgba(12,12,12,.78)!important}
+.view.dust-out{animation:blackHoleCollapse .56s cubic-bezier(.45,0,.95,.45) both!important;transform-origin:72% 48%;filter:blur(0)}
+@keyframes blackHoleCollapse{0%{opacity:1;transform:scale(1) rotate(0deg);filter:blur(0)}35%{opacity:.93;transform:scale(.985) rotate(-.4deg);filter:blur(.5px)}72%{opacity:.54;transform:scale(.91) rotate(1.1deg);filter:blur(3px)}100%{opacity:0;transform:scale(.78) rotate(3deg);filter:blur(10px)}}
+@media(max-width:700px){.view.dust-out{transform-origin:78% 40%}.sidebar,.main{background:rgba(8,8,8,.76)!important}}
+@media(prefers-reduced-motion:reduce){#blackHoleCanvas{opacity:.74}.view.dust-out{animation:none!important}}
+.soon-mini{margin-left:auto;padding:2px 7px;border:1px solid #ffffff1c;border-radius:99px;color:#8c8c8c;font-size:10px;line-height:1.5;white-space:nowrap}
+.voice-stage{position:relative;min-height:calc(100dvh - 180px);overflow:hidden;isolation:isolate;text-align:center;align-items:center;justify-items:center;gap:18px;padding:34px 20px 22px}
+.voice-stage.active{display:grid;grid-template-rows:1fr auto 1fr;align-content:stretch}
+.voice-top{position:relative;z-index:5;max-width:620px;align-self:center;padding:14px 18px;animation:voiceTextReveal .8s .15s both}
+.voice-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid #ffffff22;border-radius:999px;background:#05050572;color:#ddd;font-size:10px;letter-spacing:1.6px;font-weight:700;backdrop-filter:blur(12px)}
+.voice-badge-dot{width:6px;height:6px;border-radius:50%;background:#ff9a62;box-shadow:0 0 13px #ff874d;animation:voiceDotPulse 1.8s infinite}
+.voice-overline{margin:18px 0 4px;font-size:11px;letter-spacing:4px;color:#ffbd91;text-shadow:0 0 20px #ff884a80}
+.voice-top h2{margin:0;font-size:clamp(34px,6vw,64px);letter-spacing:-2px;line-height:1.02;text-shadow:0 6px 30px #000,0 0 40px #ffb47b30}
+.voice-top p{max-width:480px;margin:14px auto 0;color:#d0d0d0;font-size:clamp(13px,1.7vw,16px);text-shadow:0 2px 15px #000;line-height:1.65}
+.voice-center-ui{position:absolute;width:min(74vw,680px);aspect-ratio:1;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;pointer-events:none;opacity:.76}
+.voice-orbit{position:absolute;left:50%;top:50%;border:1px solid #ffccaa20;border-radius:50%;transform:translate(-50%,-50%) rotate(-23deg);box-shadow:0 0 25px #ff894512,inset 0 0 25px #ff894510}
+.orbit-a{width:94%;height:48%;animation:voiceOrbit 19s linear infinite}
+.orbit-b{width:75%;height:37%;border-color:#ffc28f35;animation:voiceOrbit 13s linear infinite reverse}
+.orbit-c{width:112%;height:57%;border-color:#8e9dff23;animation:voiceOrbit 28s linear infinite}
+.voice-center-mark{position:absolute;left:50%;top:50%;width:12%;aspect-ratio:1;display:grid;place-items:center;transform:translate(-50%,-50%);font-size:clamp(8px,.9vw,12px);letter-spacing:2px;font-weight:900;color:#fff2e4;text-shadow:0 0 12px #ffad75,0 0 26px #ff7e4c;opacity:.45}
+.voice-center-mark i{position:absolute;width:260%;height:260%;border:1px solid #ffe1c622;border-radius:50%;animation:voiceCorePulse 3.5s ease-in-out infinite}
+.voice-bottom{position:relative;z-index:5;align-self:end;width:min(100%,570px);padding:16px 18px 18px;border:1px solid #ffffff18;border-radius:24px;background:linear-gradient(145deg,#101010ba,#0505058f);box-shadow:0 15px 70px #0009;backdrop-filter:blur(16px);animation:voiceTextReveal .9s .25s both}
+.voice-statusline{display:flex;align-items:center;justify-content:center;gap:9px;min-height:24px;color:#c7c7c7;font-size:12px;margin-bottom:13px}
+.voice-status-dot{width:7px;height:7px;flex:none;background:#777;border-radius:50%;box-shadow:0 0 0 4px #ffffff0a}
+.voice-status-dot.active{background:#ffac7b;box-shadow:0 0 15px #ff874d,0 0 0 5px #ff9e4a15;animation:voiceDotPulse .8s infinite}
+.voice-controls{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}
+.voice-mic-btn,.voice-return-btn{min-height:46px;border-radius:14px;padding:11px 17px;font-weight:700;border:1px solid #ffffff20;background:#111;color:#fff;transition:transform .2s,border-color .2s,background .2s,box-shadow .2s}
+.voice-mic-btn{background:linear-gradient(120deg,#fff1e5,#ffb07a);color:#150b06;border:0;box-shadow:0 5px 28px #ff874a35}
+.voice-mic-btn:hover{box-shadow:0 7px 36px #ff874a65;transform:translateY(-1px)}
+.voice-return-btn:hover{border-color:#ffffff58;background:#1c1c1c}
+.voice-return-btn span:first-child{margin-right:5px}
+.voice-disclaimer{margin:12px auto 0;max-width:480px;color:#858585;font-size:11px;line-height:1.5}
+@keyframes voiceTextReveal{from{opacity:0;transform:translateY(14px);filter:blur(8px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes voiceDotPulse{0%,100%{opacity:.62;transform:scale(.9)}50%{opacity:1;transform:scale(1.18)}}
+@keyframes voiceOrbit{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes voiceCorePulse{0%,100%{transform:scale(.82);opacity:.25}50%{transform:scale(1.18);opacity:.8}}
+body.voice-mode{background:#000!important;overflow:hidden!important}
+body.voice-mode #blackHoleCanvas{z-index:1;opacity:1;mix-blend-mode:screen}
+body.voice-mode .app{position:fixed;inset:0;max-width:none;width:100vw;height:100dvh;min-height:100dvh;padding:0!important;margin:0;display:block;z-index:3;pointer-events:none}
+body.voice-mode .sidebar{position:fixed;top:calc(13px + env(safe-area-inset-top));left:calc(13px + env(safe-area-inset-left));z-index:125;width:auto;padding:0!important;margin:0;display:block;gap:0;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;pointer-events:none}
+body.voice-mode .sidebar>:not(.brand){display:none!important}
+body.voice-mode .brand{display:flex;pointer-events:auto;cursor:pointer;gap:10px;padding:5px 10px 5px 5px!important;border:1px solid #ffffff16!important;border-radius:17px;background:#05050559!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 7px 35px #0008;min-height:52px}
+body.voice-mode .brand .logo{flex:none;width:40px;height:40px;border-radius:13px}
+body.voice-mode .brand h1{font-size:17px;text-shadow:0 2px 14px #000}
+body.voice-mode .brand p{display:none!important}
+body.voice-mode .main{position:fixed;inset:0;width:100vw;height:100dvh;min-height:100dvh;margin:0;padding:0!important;overflow:hidden;border:0!important;border-radius:0!important;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;pointer-events:none;z-index:4}
+body.voice-mode .main>.topbar{display:none!important}
+body.voice-mode .view{pointer-events:none}
+body.voice-mode .view.voice-stage.active{position:fixed;inset:0;width:100vw;height:100dvh;min-height:100dvh;padding:calc(78px + env(safe-area-inset-top)) 18px calc(22px + env(safe-area-inset-bottom));display:flex;flex-direction:column;justify-content:space-between;align-items:center;gap:12px;background:transparent!important;pointer-events:none;animation:voiceStageReveal 1.05s cubic-bezier(.15,.8,.18,1) both}
+body.voice-mode #voice .voice-top,body.voice-mode #voice .voice-bottom{pointer-events:auto}
+body.voice-mode .voice-top{align-self:center;padding:10px 13px;max-width:min(700px,100%)}
+body.voice-mode .voice-bottom{align-self:center;margin-bottom:0;max-width:600px}
+@keyframes voiceStageReveal{0%{opacity:0;transform:scale(.92);filter:blur(12px)}55%{opacity:1;transform:scale(1.012);filter:blur(0)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
+@media(max-width:700px){.voice-stage{min-height:calc(100dvh - 120px);padding:22px 12px}.voice-top h2{font-size:clamp(34px,10vw,48px);letter-spacing:-1.2px}.voice-badge{font-size:9px;letter-spacing:1px;padding:7px 10px}.voice-center-ui{width:95vw;opacity:.55}.voice-bottom{padding:13px 11px 14px;border-radius:19px;width:100%}.voice-controls{gap:8px}.voice-mic-btn,.voice-return-btn{min-height:43px;padding:10px 12px;font-size:12px}body.voice-mode .voice-top{padding:8px 5px}body.voice-mode .voice-top p{max-width:350px}body.voice-mode .voice-bottom{width:min(100%,520px);padding:13px 11px}body.voice-mode #drawer{width:min(86vw,330px)}}
+@media(prefers-reduced-motion:reduce){.voice-orbit,.voice-center-mark i,.voice-badge-dot,.voice-status-dot.active{animation:none!important}body.voice-mode .view.voice-stage.active{animation:none!important}}
+.brand{touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+@media(max-width:700px){#drawerBackdrop{top:0;right:0;bottom:0;left:0;width:100%;height:100%}}
+body.voice-mode #drawerBackdrop{top:0;right:0;bottom:0;left:0;width:100%;height:100%}
+#privBackdrop{z-index:1250!important}
+#privBackdrop .modal{width:min(100%,720px)}
+.legal-modal{display:flex;flex-direction:column;overflow:hidden;max-height:calc(100dvh - 24px)}
+.legal-tabs{display:flex;gap:6px;padding:5px;margin-bottom:14px;background:#0b0b0b;border:1px solid #303030;border-radius:13px;overflow-x:auto;flex:none}
+.legal-tabs button{flex:1;border:0;border-radius:9px;padding:9px 12px;min-height:40px;background:transparent;color:#999;white-space:nowrap}
+.legal-tabs button.active{background:#292929;color:#fff}
+.legal{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-right:4px;font-size:13.5px;line-height:1.6;color:#d0d0d0}
+.legal h4{margin:18px 0 6px;font-size:15px;color:#fff}.legal h4:first-child{margin-top:0}
+.legal p{margin:0 0 9px}.legal ul{margin:0 0 9px;padding-left:20px}.legal li{margin:3px 0}
+.legal .meta{color:#8a8a8a;font-size:12px}
+.legal a{color:#fff;text-decoration:underline}
+mark.ph{background:#3a3217;color:#ffd978;border-radius:4px;padding:0 4px}
+.legalsw{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.legalsw .chip{cursor:pointer}
+.auth-form label.consent{display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.45;color:#b5b5b5;cursor:pointer}
+.auth-form label.consent input{width:18px;height:18px;min-width:18px;margin-top:1px;padding:0;accent-color:#fff}
+.auth-form label.consent a{color:#fff;text-decoration:underline}
+.ai-hint{margin:0;padding:0 14px 10px;font-size:11px;line-height:1.4;color:#777;text-align:center}
+#storageNotice{position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(calc(100% - 20px),580px);z-index:900;display:none;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 14px;border:1px solid #ffffff22;border-radius:16px;background:rgba(14,14,14,.95);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font-size:12px;line-height:1.45;color:#ccc;box-shadow:0 14px 40px #000a}
+#storageNotice.show{display:flex}
+#storageNotice span{flex:1 1 240px}
+#storageNotice .chip{cursor:pointer;min-height:36px}
+body.voice-mode #storageNotice{display:none!important}
+html{height:100%;background:#000}
+body:not(.voice-mode){height:100%;min-height:0;overflow:hidden;overscroll-behavior:none}
+@media(min-width:701px){body:not(.voice-mode) .app{position:fixed!important;inset:0;width:100%;max-width:none;height:100vh;height:100dvh;min-height:0;margin:0;padding:0!important;gap:0!important;display:grid!important;grid-template-columns:clamp(228px,19vw,300px) minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)}body:not(.voice-mode) .sidebar{position:relative!important;top:auto!important;height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;border-radius:0!important;border:0!important;border-right:1px solid #ffffff14!important;box-shadow:none!important;padding:calc(22px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left))!important;gap:18px;scrollbar-width:thin}body:not(.voice-mode) .brand{padding:4px 6px 18px!important;gap:12px;border-bottom:1px solid #ffffff12!important}body:not(.voice-mode) .brand .logo{width:45px;height:45px;border-radius:15px;font-size:24px}body:not(.voice-mode) .brand h1{font-size:20px}body:not(.voice-mode) .brand p{display:block;font-size:12px}body:not(.voice-mode) .nav{display:grid!important;flex-direction:column!important;overflow:visible!important;gap:6px;padding:0}body:not(.voice-mode) .nav button{width:100%;justify-content:flex-start;padding:11px 12px;font-size:15px;white-space:normal}body:not(.voice-mode) .nav button .ico{width:24px;font-size:18px}body:not(.voice-mode) .status{display:block}body:not(.voice-mode) .account-btn{width:100%;justify-content:flex-start}body:not(.voice-mode) .main{height:100%;min-height:0;display:flex;flex-direction:column;overflow-x:hidden;overflow-y:auto;border-radius:0!important;border:0!important;box-shadow:none!important;padding:clamp(16px,2.4vw,36px) calc(clamp(16px,2.6vw,40px) + env(safe-area-inset-right)) calc(clamp(16px,2.4vw,32px) + env(safe-area-inset-bottom)) clamp(16px,2.6vw,40px)!important;scrollbar-width:thin;scrollbar-color:#444 transparent}body:not(.voice-mode) .main>.topbar{flex:0 0 auto}body:not(.voice-mode) .main>.view.active{flex:0 0 auto}body:not(.voice-mode) #chat.view.active{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}body:not(.voice-mode) #chat .chatlayout{display:flex!important;flex:1;min-height:0}body:not(.voice-mode) #chat .chatbox{flex:1;min-height:0!important;width:100%}body:not(.voice-mode) #chat .messages{flex:1;min-height:0!important;max-height:none!important;padding:clamp(14px,1.6vw,26px)}body:not(.voice-mode) .msg{max-width:min(86%,900px)}body:not(.voice-mode) .grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}body:not(.voice-mode) .chatlayout .sidecard{display:none}.toast{max-width:calc(100vw - 24px)}}
+@media(min-width:701px) and (max-height:520px){body:not(.voice-mode) .sidebar{padding-top:12px!important;gap:10px}body:not(.voice-mode) .brand{padding-bottom:10px!important}body:not(.voice-mode) .status{display:none}}
+@media(min-width:1800px){body:not(.voice-mode){font-size:16px}body:not(.voice-mode) .app{grid-template-columns:320px minmax(0,1fr)!important}}
+@media(max-width:700px){body:not(.voice-mode) .app{position:fixed!important;left:0;right:0;top:var(--app-top,0px);width:100%;max-width:none;margin:0;height:var(--app-h,100dvh)!important;min-height:0!important;display:flex!important;flex-direction:column;gap:0!important;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)!important}body:not(.voice-mode) .sidebar{flex:0 0 auto;padding:8px 12px!important;position:relative!important;border-bottom:1px solid #ffffff12!important}body:not(.voice-mode) .brand{padding:2px 4px!important;min-height:44px}body:not(.voice-mode) .brand p{display:none}body:not(.voice-mode) .account-btn{top:calc(8px + env(safe-area-inset-top))!important;right:calc(8px + env(safe-area-inset-right))!important}body:not(.voice-mode) .lang-mini{top:calc(8px + env(safe-area-inset-top))!important;right:calc(56px + env(safe-area-inset-right))!important}body:not(.voice-mode) .main{flex:1 1 auto;min-height:0;height:auto;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;border-radius:0!important;border:0!important;box-shadow:none!important;padding:14px 14px 18px!important}body:not(.voice-mode) .main>.topbar{margin-bottom:14px;padding-bottom:12px}body:not(.voice-mode) .main>.view.active{flex:0 0 auto}body:not(.voice-mode) #chat.view.active{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}body:not(.voice-mode).chat-on .main{overflow:hidden;padding-bottom:0!important}body:not(.voice-mode).chat-on .main>.topbar{display:none}body:not(.voice-mode) #chat .chatbox{border-radius:16px 16px 0 0;border-bottom:0;margin:0 -2px}body:not(.voice-mode) .composer{padding:10px 10px calc(10px + 0px)!important}body:not(.voice-mode) .msg{max-width:92%}body:not(.voice-mode) .grid{grid-template-columns:repeat(2,minmax(0,1fr))}input,textarea,select{font-size:16px!important}body:not(.voice-mode) #drawer,body.voice-mode #drawer{width:min(86vw,340px);max-width:100vw}}
+@media(max-width:380px){body:not(.voice-mode) .main{padding:10px 10px 14px!important}body:not(.voice-mode) .grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px) and (orientation:landscape){body:not(.voice-mode) .sidebar{padding-top:4px!important;padding-bottom:4px!important}body:not(.voice-mode) .brand{min-height:40px}}
+body.voice-mode #drawer{top:0;bottom:0;left:0;height:100vh;height:100dvh;border-radius:0 22px 22px 0}
+.ai-card{display:flex;gap:12px;align-items:flex-start;margin:0;padding:12px 14px;border-top:1px solid #ffffff12;background:linear-gradient(160deg,#101010,#0a0a0a);flex:0 0 auto}
+.ai-card[hidden]{display:none!important}
+.ai-card.warn{background:linear-gradient(160deg,#17130d,#0c0a07)}
+.ai-ico{flex:0 0 auto;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:18px;background:#ffffff10;border:1px solid #ffffff1c}
+.ai-body{min-width:0;flex:1}
+.ai-body strong{display:block;font-size:14px;margin-bottom:2px}
+.ai-body p{margin:0 0 8px;font-size:13px;line-height:1.45;color:#b9b9b9;overflow-wrap:anywhere}
+.ai-body .ai-hint{font-size:12px;color:#8a8a8a;margin:6px 0 0}
+.ai-actions{display:flex;flex-wrap:wrap;gap:8px}
+.ai-actions .btn{min-height:42px;padding:9px 16px}
+.ai-bar{height:10px;border-radius:99px;background:#ffffff14;overflow:hidden;margin:8px 0 4px}
+.ai-bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#8a8a8a,#fff);transition:width .25s ease}
+.ai-pct{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.msg.streaming>div:last-child:after{content:"";display:inline-block;width:7px;height:1em;margin-left:3px;vertical-align:-2px;background:#e8e8e8;animation:aiCaret 1s steps(1) infinite}
+@keyframes aiCaret{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.msg.streaming>div:last-child:after{animation:none}.ai-bar i{transition:none}}
+@media(max-width:700px){.ai-card{padding:10px 12px;gap:10px}.ai-ico{width:34px;height:34px;font-size:16px}body.kb-open #amixAiCard{display:none}}
+.social-row{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:10px}
+.social-btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 12px;border-radius:13px;border:1px solid #ffffff20;background:#141414;color:#f1f1f1;font:600 14px/1 inherit;font-family:inherit;cursor:pointer;transition:transform .2s,border-color .25s,box-shadow .25s,background .2s}
+.social-btn:hover{border-color:#ffffff55;background:#1c1c1c;box-shadow:0 0 20px #ffffff0c;transform:translateY(-1px)}
+.social-btn:active{transform:scale(.98)}
+.social-btn svg{width:20px;height:20px;flex:none}
+.social-divider{display:flex;align-items:center;gap:10px;color:#7a7a7a;font-size:11px;text-transform:uppercase;letter-spacing:1.4px;margin:4px 0 10px}
+.social-divider:before,.social-divider:after{content:"";flex:1;height:1px;background:#ffffff14}
+.promo-box{display:flex;gap:8px;align-items:stretch}
+.promo-box .field{flex:1;min-width:0}
+.promo-box .btn{white-space:nowrap}
+.trial-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid #ffffff22;border-radius:99px;background:#0f0f0f;color:#c9c9c9;font-size:11px;font-weight:600;margin-top:6px}
+.trial-badge.trial{color:#ffcc88;border-color:#ffab5a33;background:#1a1310}
+.trial-badge.pro{color:#a8ffcf;border-color:#4ade8033;background:#0d1a13}
+.trial-badge.expired{color:#ff9a9a;border-color:#ff5a5a33;background:#1a0d0d}
+@media(max-width:520px){.promo-box{flex-wrap:wrap}.promo-box .btn{width:100%}}
+/* ===== Profile modal styles ===== */
+.profile-card{display:grid;gap:18px;text-align:center;padding:8px 0 4px}
+.profile-avatar{width:88px;height:88px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#fff,#858585);color:#050505;font-weight:800;font-size:34px;background-size:cover;background-position:center;border:2px solid #ffffff22;box-shadow:0 8px 26px #0009}
+.profile-name{font-size:20px;font-weight:700;margin:6px 0 0}
+.profile-email{font-size:13px;color:#9a9a9a;margin:2px 0 0;overflow-wrap:anywhere}
+.profile-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;background:#101010;border:1px solid #ffffff1c;font-size:12px;color:#c8c8c8;margin:6px auto 0}
+.profile-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #ffffff0d;text-align:left;font-size:13px}
+.profile-row:last-child{border-bottom:0}
+.profile-row span:first-child{color:#8f8f8f}
+.profile-row span:last-child{color:#f0f0f0;text-align:right;overflow-wrap:anywhere}
+.profile-actions{display:grid;gap:8px;margin-top:8px}
+.profile-actions .btn{width:100%}
+/* ===== Timer chip ===== */
+.timer-chip{font-variant-numeric:tabular-nums;font-weight:600;transition:all .25s}
+.timer-chip.trial{color:#ffcc88!important;border-color:#ffab5a55!important;background:#1a1310!important}
+.timer-chip.pro{color:#a8ffcf!important;border-color:#4ade8055!important;background:#0d1a13!important}
+.timer-chip.expired{color:#ff9a9a!important;border-color:#ff5a5a55!important;background:#1a0d0d!important}
+@media (max-width:520px){.top-actions #timerChip{display:inline-flex;align-items:center;justify-content:center;padding:5px 8px;font-size:11px;min-height:32px}}
+</style>
+</head>
+<body>
+<canvas id="blackHoleCanvas" aria-hidden="true"></canvas>
+<div class="particle-layer" aria-hidden="true" id="particleLayer"></div>
+<div id="snapFx" aria-hidden="true"><div class="dust-cloud" id="dustCloud"></div></div>
+
+<script id="amix-config">
+window.AMIX_CONFIG = {
+  firebase: {
+    apiKey:            "AIzaSyBssw0YzH7Q4lzcAxYlVCCPvuiqnmInAHk",
+    authDomain:        "amix-3e8a4.firebaseapp.com",
+    projectId:         "amix-3e8a4",
+    storageBucket:     "amix-3e8a4.firebasestorage.app",
+    messagingSenderId: "275232802925",
+    appId:             "1:275232802925:web:808b8e9c3c16eb8c331764"
+  },
+  telegramBotName: "",
+  telegramAuthUrl: ""
+};
+</script>
+
+<div class="app">
+<aside class="sidebar">
+  <div class="brand" id="brandBtn" role="button" tabindex="0" aria-label="Menu" data-i18n-attr="aria-label:menu"><div class="logo">◈</div><div><h1>Amix</h1><p data-i18n="tagline">Твой офлайн ИИ-репетитор</p></div></div>
+  <button class="new-chat" type="button" onclick="newChat()" data-i18n="new_chat">Новый чат</button>
+  <nav class="nav">
+    <button class="active" data-view="chat"><span class="ico">✧</span><span data-i18n="nav_chat">Чат</span></button>
+    <button data-action="newchat" type="button"><span class="ico">＋</span><span data-i18n="new_chat">Новый чат</span></button>
+    <button data-view="history"><span class="ico">◷</span><span data-i18n="nav_history">История</span></button>
+    <button data-view="settings"><span class="ico">⚙</span><span data-i18n="nav_settings">Настройки</span></button>
+    <button data-view="pro"><span class="ico">✦</span><span data-i18n="nav_pro">Amix Pro</span></button>
+    <button data-view="voice"><span class="ico">◉</span><span data-i18n="nav_voice">Голосовой ИИ</span><span class="soon-mini" data-i18n="voice_soon_short">Скоро</span></button>
+  </nav>
+  <button class="account-btn" id="accountButton" onclick="demoUser?openProfile():openAuth()"><span class="avatar" id="avatarLetter">Г</span><span><strong id="accountName">Гость</strong><small id="accountSub">Войти или создать аккаунт</small></span></button>
+  <button class="lang-mini" id="langMini" type="button" onclick="toggleLang()" aria-label="Language">RU</button>
+  <div class="status"><strong><span class="dot"></span><span data-i18n="status_t">Офлайн-режим</span></strong><small data-i18n="status_s">Интерфейс доступен без интернета</small></div>
+</aside>
+<main class="main">
+  <div class="topbar"><div><div class="eyebrow" data-i18n="eyebrow">Личный учебный помощник</div><h2 id="pageTitle">Привет! Что изучаем?</h2></div><div class="top-actions"><span class="chip" data-i18n="chip_local">● Локальный режим</span><span class="chip timer-chip" id="timerChip" aria-live="polite">—</span><button class="chip" onclick="demoUser?openProfile():openAuth()" id="topAccount">♙ Аккаунт</button><button class="chip" id="langBtn" type="button" onclick="toggleLang()" aria-label="Language">RU</button></div></div>
+
+  <section class="view active" id="chat">
+    <div class="chatlayout" style="grid-template-columns:minmax(0,1fr)"><div class="chatbox">
+      <div class="chathead"><strong data-i18n="chat_title">✧ Учебный чат</strong><span class="chip" data-i18n="chat_chip">Офлайн-режим</span></div>
+      <div class="messages" id="messages"><div class="msg ai"><div class="who">AMIX</div><span data-i18n="welcome">Привет! Напиши, что нужно решить или объяснить, Я помогу решить задачу или объяснить тему по твоему сообщению.</span></div></div>
+      <div id="chatAttachment" class="muted" style="display:none;margin:10px 0"></div><div id="amixAiCard" class="ai-card" hidden aria-live="polite"></div><form class="composer" id="chatForm"><textarea id="prompt" placeholder="Напиши сообщение…" data-i18n-attr="placeholder:placeholder"></textarea><button class="btn primary" type="submit" aria-label="Отправить" data-i18n-attr="aria-label:send"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form><p class="ai-hint" data-i18n="ai_hint"></p>
+    </div></div>
+  </section>
+
+  <section class="view voice-stage" id="voice" aria-labelledby="voiceTitle">
+    <div class="voice-top">
+      <div class="voice-badge"><span class="voice-badge-dot"></span><span data-i18n="voice_badge">ПРЕВЬЮ · БУДУЩЕЕ ОБНОВЛЕНИЕ</span></div>
+      <div class="voice-overline" data-i18n="voice_overline">AMIX VOICE EXPERIENCE</div>
+      <h2 id="voiceTitle" data-i18n="voice_title">Голосовой ИИ</h2>
+      <p data-i18n="voice_description">Скоро ты сможешь разговаривать с Amix голосом. Посмотри, что тебя ждёт.</p>
+    </div>
+    <div class="voice-center-ui" aria-hidden="true">
+      <div class="voice-orbit orbit-a"></div><div class="voice-orbit orbit-b"></div><div class="voice-orbit orbit-c"></div>
+      <div class="voice-center-mark"><span>AMIX</span><i></i></div>
+    </div>
+    <div class="voice-bottom">
+      <div class="voice-statusline"><span class="voice-status-dot" id="voiceStatusDot"></span><span id="voiceStatus" data-i18n="voice_status_idle">Голосовой режим пока не подключён</span></div>
+      <div class="voice-controls">
+        <button class="voice-mic-btn" id="voiceMicBtn" type="button" onclick="toggleVoiceMic()" data-i18n="voice_mic_start">Включить реакцию на голос</button>
+        <button class="voice-return-btn" type="button" onclick="showView('chat')"><span>←</span> <span data-i18n="voice_back_chat">Вернуться в чат</span></button>
+      </div>
+      <p class="voice-disclaimer" data-i18n="voice_note">Микрофон меняет только визуальный эффект и ничего не отправляет. Сам голосовой ИИ появится в будущем обновлении.</p>
+    </div>
+  </section>
+
+  <section class="view" id="pro">
+  <div class="hero">
+    <div class="eyebrow" data-i18n="pro_eyebrow">AMIX MEMBERSHIP</div>
+    <h3>Amix Pro</h3>
+    <p data-i18n="pro_description">Продолжай пользоваться Amix без ограничений после бесплатного пробного периода.</p>
+    <div style="font-size:38px;font-weight:800;letter-spacing:-1px;margin:10px 0 16px">200 ₽ <span data-i18n="pro_month" style="font-size:14px;font-weight:500;color:#aaa;letter-spacing:0">/ месяц</span></div>
+    <button class="btn primary" type="button" onclick="buyAmixPro()" data-i18n="buy_pro">Купить Pro-версию</button>
+    <div><span class="trial-badge" data-pro-status>—</span></div>
+  </div>
+  <div class="tile" style="min-height:0">
+    <div class="tileicon">✦</div><strong data-i18n="trial_title">7 дней бесплатно</strong>
+    <small data-i18n="trial_description">После регистрации доступен пробный период на 7 дней. Гостям — 24 часа. По окончании потребуется Amix Pro.</small>
+  </div>
+  <div class="tile" style="min-height:0;margin-top:12px">
+    <div class="tileicon">✉</div><strong data-i18n="promo_title">Промокод</strong>
+    <div class="promo-box" style="margin-top:10px">
+      <input id="promoInput" class="field" placeholder="Введите промокод">
+      <button class="btn ghost" type="button" onclick="activatePromo()" data-i18n="promo_apply">Активировать</button>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="history"><div class="sectionhead"><h3 data-i18n="hist_h">Недавние чаты</h3><button class="btn ghost" onclick="clearHistory()" data-i18n="hist_clear">Очистить</button></div><div id="historyList"><p class="muted">Пока заданий нет. Решённые примеры появятся здесь на время текущего сеанса.</p></div></section>
+  <section class="view" id="settings"><div class="hero"><h3 data-i18n="set_h">Настройки приложения</h3><p data-i18n="set_p">Прототип сохраняет настройки и историю только до закрытия страницы.</p></div><div class="settingsrow"><div><strong data-i18n="set_theme">Тема оформления</strong><div class="muted" data-i18n="set_theme_d">Тёмная монохромная</div></div><span class="chip">Dark</span></div><div class="settingsrow"><div><strong data-i18n="set_mode">Режим работы</strong><div class="muted" data-i18n="set_mode_d">Весь интерфейс доступен без интернета</div></div><span class="chip"><span class="dot"></span><span data-i18n="set_mode_chip">Офлайн</span></span></div><div class="settingsrow"><div><strong data-i18n="set_lang">Язык</strong><div class="muted" data-i18n="set_lang_d">Язык интерфейса и ответов</div></div><span class="langsw"><button type="button" class="chip" data-lang="ru" onclick="setLang('ru')">RU</button><button type="button" class="chip" data-lang="en" onclick="setLang('en')">EN</button></span></div><div class="settingsrow"><div><strong data-i18n="set_legal">Правовая информация</strong><div class="muted" data-i18n="set_legal_d">Документы по законодательству РФ</div></div><span class="legalsw"><button type="button" class="chip" onclick="openLegal('policy')" data-i18n="lg_policy">Политика</button><button type="button" class="chip" onclick="openLegal('terms')" data-i18n="lg_terms">Соглашение</button><button type="button" class="chip" onclick="openLegal('offer')" data-i18n="lg_offer">Оферта Pro</button></span></div><div class="settingsrow"><div><strong data-i18n="set_wipe">Данные на этом устройстве</strong><div class="muted" data-i18n="set_wipe_d">Удалить чаты, профиль и сохранённые настройки</div></div><button type="button" class="chip" onclick="wipeLocalData()" data-i18n="set_wipe_btn">Удалить</button></div></section>
+</main></div>
+
+<div class="modal-backdrop" id="authBackdrop" role="dialog" aria-modal="true" aria-labelledby="authTitle" onclick="backdropClose(event)">
+  <div class="modal">
+    <div class="modal-top">
+      <div><div class="eyebrow" data-i18n="auth_eyebrow">ТВОЙ УЧЕБНЫЙ ПРОФИЛЬ</div><h3 id="authTitle">Добро пожаловать</h3></div>
+      <button class="close-btn" onclick="closeAuth()" aria-label="Закрыть" data-i18n-attr="aria-label:close">✕</button>
+    </div>
+    <div class="social-row">
+      <button class="social-btn" type="button" id="googleBtn" onclick="signInWithGoogle()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.75h3.57c2.09-1.92 3.28-4.74 3.28-8.07z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.75c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.99 10.99 0 0 0 1 12c0 1.77.43 3.44 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
+        <span data-i18n="btn_google">Продолжить с Google</span>
+      </button>
+    </div>
+    <p class="auth-note" id="authNote">Вход и создание профиля одной кнопкой через Firebase. Пароль не хранится в открытом виде.</p>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<div class="modal-backdrop" id="profileBackdrop" role="dialog" aria-modal="true" onclick="if(event.target.id==='profileBackdrop')closeProfile()">
+  <div class="modal">
+    <div class="modal-top">
+      <div>
+        <div class="eyebrow" data-i18n="profile_eyebrow">ТВОЙ ПРОФИЛЬ</div>
+        <h3 data-i18n="profile_title">Профиль</h3>
+      </div>
+      <button class="close-btn" type="button" onclick="closeProfile()" aria-label="Close">✕</button>
+    </div>
+    <div class="profile-card">
+      <div class="profile-avatar" id="profileAvatar">A</div>
+      <div>
+        <div class="profile-name" id="profileName">—</div>
+        <div class="profile-email" id="profileEmail">—</div>
+        <div class="profile-badge" id="profileBadge">—</div>
+      </div>
+      <div>
+        <div class="profile-row"><span data-i18n="profile_id">ID</span><span id="profileUid">—</span></div>
+        <div class="profile-row"><span data-i18n="profile_provider">Способ входа</span><span id="profileProvider">—</span></div>
+        <div class="profile-row"><span data-i18n="profile_trial">Пробный период</span><span id="profileTrial">—</span></div>
+      </div>
+      <div class="profile-actions">
+        <button class="btn primary" type="button" onclick="closeProfile();showView('pro')" data-i18n="profile_go_pro">Amix Pro</button>
+        <button class="btn ghost" type="button" onclick="amixSignOut();closeProfile()" data-i18n="logout">Выйти из аккаунта</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="privBackdrop" role="dialog" aria-modal="true" aria-labelledby="privTitle" style="z-index:140">
+  <div class="modal legal-modal">
+    <div class="modal-top"><div><div class="eyebrow">AMIX · <span data-i18n="legal_eyebrow">ПРАВОВАЯ ИНФОРМАЦИЯ</span></div><h3 id="privTitle">Конфиденциальность</h3></div><button class="close-btn" type="button" id="privClose" aria-label="Close" data-i18n-attr="aria-label:close">✕</button></div>
+    <div class="legal-tabs" id="legalTabs"><button type="button" class="active" data-doc="policy" data-i18n="lg_policy">Политика</button><button type="button" data-doc="terms" data-i18n="lg_terms">Соглашение</button><button type="button" data-doc="offer" data-i18n="lg_offer">Оферта Pro</button></div>
+    <div class="legal" id="legalBody"></div>
+  </div>
+</div>
+
+<div id="drawerBackdrop" aria-hidden="true"></div>
+<aside id="drawer" aria-hidden="true" aria-label="Menu" data-i18n-attr="aria-label:menu">
+  <div class="dr-head"><div class="logo">◈</div><strong>Amix</strong><button class="dr-close" type="button" id="drawerClose" aria-label="Close" data-i18n-attr="aria-label:close">✕</button></div>
+  <button class="dr-new" type="button" onclick="newChat()" data-i18n="new_chat">Новый чат</button>
+  <nav class="dr-nav">
+    <button data-view="chat" class="active"><span class="ico">✧</span><span data-i18n="nav_chat">Чат</span></button>
+    <button data-action="newchat" type="button"><span class="ico">＋</span><span data-i18n="new_chat">Новый чат</span></button>
+    <button data-view="voice"><span class="ico">◉</span><span data-i18n="nav_voice">Голосовой ИИ</span><span class="soon-mini" data-i18n="voice_soon_short">Скоро</span></button>
+    <button data-view="history"><span class="ico">◷</span><span data-i18n="nav_history">История</span></button>
+    <button data-view="settings"><span class="ico">⚙</span><span data-i18n="nav_settings">Настройки</span></button>
+    <button data-view="pro"><span class="ico">✦</span><span data-i18n="nav_pro">Amix Pro</span></button>
+  </nav>
+  <div class="dr-title" data-i18n="recent_chats">Недавние чаты</div>
+  <div class="dr-chats" id="drawerChats"></div>
+  <div class="dr-bottom">
+    <button class="dr-priv" type="button" id="privBtn" data-i18n="privacy">Конфиденциальность</button>
+    <button class="dr-auth" type="button" id="drAuth" data-i18n="login">Войти</button>
+  </div>
+</aside>
+
+<script>
+const titles={chat:'Просто напиши, что нужно',history:'История заданий',settings:'Настройки',voice:'Голосовой ИИ'};
+let historyItems=[];
+let snapBusy=false;
+function makeDustForView(view,mode){
+ const cloud=document.getElementById('dustCloud');cloud.innerHTML='';
+ const rect=view.getBoundingClientRect();
+ const left=Math.max(0,rect.left);
+ const top=Math.max(0,rect.top);
+ const width=Math.max(1,Math.min(window.innerWidth-left,rect.width||window.innerWidth));
+ const height=Math.max(1,Math.min(window.innerHeight-top,rect.height||window.innerHeight));
+ const count=Math.min(240,Math.max(100,Math.round(width*height/5200)));
+ const colors=['#f7f7f7','#b7bdc7','#f0bb83','#f3e4d2','#ffffff','#d6d6dc','#8b919c'];
+ const hole=(window.getAmixBlackHolePoint&&window.getAmixBlackHolePoint())||{x:window.innerWidth*.72,y:window.innerHeight*.5};
+ for(let i=0;i<count;i++){
+  const particle=document.createElement('i');particle.className='dust-particle';
+  const px=left+Math.random()*width,py=top+Math.random()*height;
+  const dx=hole.x-px,dy=hole.y-py;
+  const curve=(Math.random()-.5)*Math.min(180,Math.max(35,Math.hypot(dx,dy)*.23));
+  const sign=Math.random()<.5?-1:1;
+  const mx=dx*.27+curve*sign,my=dy*.27-curve*sign;
+  const qx=dx*.76-curve*sign*.28,qy=dy*.76+curve*sign*.28;
+  particle.style.setProperty('--px',px+'px');particle.style.setProperty('--py',py+'px');
+  particle.style.setProperty('--size',(1+Math.random()*2.8)+'px');
+  particle.style.setProperty('--shape',Math.random()>.68?'1px':'50%');
+  particle.style.setProperty('--dust',colors[Math.floor(Math.random()*colors.length)]);
+  particle.style.setProperty('--dx',dx+'px');particle.style.setProperty('--dy',dy+'px');
+  particle.style.setProperty('--mx',mx+'px');particle.style.setProperty('--my',my+'px');
+  particle.style.setProperty('--qx',qx+'px');particle.style.setProperty('--qy',qy+'px');
+  const spin=(Math.random()-.5)*1100;
+  particle.style.setProperty('--spin',spin+'deg');particle.style.setProperty('--spin30',(spin*.3)+'deg');particle.style.setProperty('--spin75',(spin*.75)+'deg');
+  particle.style.setProperty('--dur',(mode==='out'?.42+Math.random()*.2:.52+Math.random()*.3)+'s');
+  particle.style.setProperty('--delay',(Math.random()*.12)+'s');
+  particle.style.setProperty('--opacity',(0.4+Math.random()*.6).toFixed(2));
+  cloud.appendChild(particle);
+ }
+}
+let dustTimer=null;
+function playDust(view,mode){
+ const fx=document.getElementById('snapFx');
+ if(!fx||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ makeDustForView(view,mode);
+ fx.classList.remove('play','out','in');void fx.offsetWidth;
+ fx.classList.add('play',mode);
+ if(dustTimer) clearTimeout(dustTimer);
+ dustTimer=setTimeout(()=>{
+   fx.classList.remove('play','out','in');
+   const cloud=document.getElementById('dustCloud');
+   if(cloud) cloud.innerHTML='';
+   dustTimer=null;
+ },mode==='out'?760:980);
+}
+function showView(id){
+ const next=document.getElementById(id);
+ if(!next || !next.classList.contains('view')) return;
+ const current=document.querySelector('.view.active');
+ if(current && current.id===id) return;
+ if(window.__amixTransitioning){window.__amixPendingView=id;return;}
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const finish=()=>{
+  document.querySelectorAll('.view').forEach(v=>{
+   v.classList.remove('active','dust-out','dust-in');
+   v.style.pointerEvents='';
+   v.style.filter='';
+  });
+  document.querySelectorAll('.nav button[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+  document.body.classList.toggle('voice-mode',id==='voice');
+  document.body.classList.toggle('voice-entering',id==='voice');
+  if(id==='voice') setTimeout(()=>document.body.classList.remove('voice-entering'),1500);
+  else if(window.stopAmixVoiceMic) window.stopAmixVoiceMic();
+  const title=document.getElementById('pageTitle');
+  titleKey='title_'+id; if(title) title.textContent=t(titleKey);
+  next.classList.add('active');
+  next.querySelectorAll('.tile').forEach((tile,i)=>tile.style.setProperty('--i',i));
+  if(!reduced){
+   try { playDust(next,'in'); next.classList.add('dust-in'); setTimeout(()=>next.classList.remove('dust-in'),780); }
+   catch(err) { console.warn('Dust effect skipped:',err); }
+  }
+  window.scrollTo({top:0,behavior:reduced?'auto':'smooth'});
+  window.dispatchEvent(new Event('amix:viewchanged'));
+ };
+ if(current && !reduced){
+  window.__amixTransitioning=true;
+  current.classList.add('dust-out');
+  current.style.pointerEvents='none';
+  try { playDust(current,'out'); } catch(err) { console.warn('Dust effect skipped:',err); }
+  setTimeout(()=>{
+   current.classList.remove('dust-out');
+   current.style.pointerEvents='';
+   window.__amixTransitioning=false;
+   finish();
+   const pending=window.__amixPendingView;
+   window.__amixPendingView=null;
+   if(pending && pending!==id) showView(pending);
+  },760);
+  return;
+ }
+ finish();
+}
+document.querySelectorAll('.nav button[data-view]').forEach(button=>{
+ button.addEventListener('click',()=>showView(button.dataset.view));
+});
+document.querySelectorAll('.nav button[data-action="newchat"], .dr-nav button[data-action="newchat"]').forEach(button=>{
+ button.addEventListener('click',()=>newChat());
+});
+function setPrompt(t){showView('chat');const p=document.getElementById('prompt');p.value=t;p.focus()}
+function addMsg(text,who){const box=document.getElementById('messages');const el=document.createElement('div');el.className='msg '+who;const label=document.createElement('div');label.className='who';label.textContent=who==='user'?t('you'):'AMIX';const body=document.createElement('div');body.textContent=text;el.append(label,body);box.append(el);box.scrollTop=box.scrollHeight;}
+function addHistory(q,a){historyItems.unshift({q,a});renderHistory()}
+function renderHistory(){const el=document.getElementById('historyList');if(!historyItems.length){el.innerHTML='<p class="muted">'+t('hist_empty')+'</p>';return}el.innerHTML='';historyItems.forEach((h,i)=>{const d=document.createElement('div');d.className='historyitem';const b=document.createElement('strong');b.textContent=h.q;const p=document.createElement('p');p.className='muted';p.textContent=h.a.slice(0,160);d.append(b,p);d.onclick=()=>{showView('chat');addMsg(h.q,'user');addMsg(h.a,'ai')};el.append(d)})}
+function clearHistory(){historyItems=[];renderHistory()}
+function mathSolve(input){
+ let s=input.replace(/,/g,'.').replace(/[×·]/g,'*').replace(/÷/g,'/').replace(/[−–]/g,'-');
+ const eq=s.match(/(?:реши|solve|уравнение)?\s*(-?\d*\.?\d*)\s*x\s*([+-]\s*\d*\.?\d*)\s*=\s*(-?\d*\.?\d*)/i);
+ if(eq){let a=eq[1];a=(a===''||a==='+'?1:a==='-'?-1:Number(a));let btxt=eq[2].replace(/\s/g,'');let b=btxt?Number(btxt.replace(/\+/g,'')):0;let c=Number(eq[3]);if(!Number.isFinite(a)||!Number.isFinite(b)||!Number.isFinite(c)||a===0)return null;let x=(c-b)/a;return `Решим уравнение по шагам:\n\n${a}x ${b>=0?'+ '+b:'− '+Math.abs(b)} = ${c}\n1. Перенесём свободное число в правую часть:\n   ${a}x = ${c-b}\n2. Разделим обе части на ${a}:\n   x = (${c-b}) / ${a}\n\nОтвет: x = ${Number(x.toFixed(8))}\n\nПроверка: подставь это значение в исходное уравнение.`}
+ const expr=s.match(/(?:вычисли|посчитай|значение выражения|равно)?\s*([-+*/().\d\s]+)\s*[?]?$/i);
+ if(expr){let e=expr[1].trim();if(/[0-9)]\s*[+\-*/]\s*[0-9(]/.test(e)&&/^[\d\s.+*/()\-]+$/.test(e)&&/\d/.test(e)){try{let val=Function('"use strict";return ('+e+')')();if(Number.isFinite(val))return `Разберём вычисление:\n${e}\n\nВыполняем действия по порядку: сначала скобки, затем умножение и деление, затем сложение и вычитание.\n\nОтвет: ${Number(val.toFixed(10))}`}catch{}}}
+ return null;
+}
+function localAnswer(q){const m=mathSolve(q);if(m)return m;const lower=q.toLowerCase();if(lower.includes('пифагор'))return 'Теорема Пифагора применяется в прямоугольном треугольнике.\n\nЕсли a и b — катеты, а c — гипотенуза, то:\n\nc² = a² + b²\n\nПример: если катеты 3 и 4, то c² = 9 + 16 = 25, значит c = 5.\n\nПопробуй подставить значения из своей задачи.';if(lower.includes('производн'))return 'Производная показывает, как быстро меняется функция в каждой точке.\n\nНапример, если f(x) = x², то f′(x) = 2x.\nПри x = 3 наклон графика равен 6.\n\nЭто базовое объяснение; для конкретного примера напиши функцию.';if(lower.includes('привет'))return 'Привет! Я Amix, твой учебный репетитор. Чтобы отвечать на любые вопросы, мне нужна ИИ-модель: скачай её кнопкой «Скачать ИИ-модель» под чатом. А пока я могу вычислить простое выражение или решить линейное уравнение.';if(lower.includes('физик'))return 'Для решения задачи по физике обычно нужны:\n1. Записать «Дано» и перевести величины в СИ.\n2. Определить, что нужно найти.\n3. Выбрать формулу и выразить неизвестную величину.\n4. Подставить значения с единицами измерения.\n5. Проверить ответ.\n\nВставь условие целиком — помогу определить формулу.';return 'ИИ-модель пока не загружена, поэтому на этот вопрос я ответить не могу. Нажми «Скачать ИИ-модель» под чатом: после загрузки (один раз) я смогу отвечать на любые вопросы, в том числе без интернета.\n\nА пока могу решить линейное уравнение (например, 2x + 5 = 17) или вычислить простое выражение.'}
+let attachedImage=null;
+const imageInput=document.getElementById('chatImageInput');
+if(imageInput && document.getElementById('attachImage')){
+ document.getElementById('attachImage').addEventListener('click',()=>imageInput.click());
+ imageInput.addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;attachedImage=f;const el=document.getElementById('chatAttachment');el.style.display='block';el.textContent='📎 '+f.name+' · '+(f.size/1024/1024).toFixed(2)+' '+t('mb')+'  '+t('photo_on');});
+}
+document.getElementById('chatForm').addEventListener('submit',e=>{e.preventDefault();if(window.AmixAI&&window.AmixAI.busy)return;const p=document.getElementById('prompt');const q=p.value.trim();if(!q&&!attachedImage){p.focus();return}const hadPhoto=!!attachedImage;const shown=(attachedImage?t('photo_tag')+attachedImage.name+'] ':'')+q;addMsg(shown,'user');p.value='';if(attachedImage){attachedImage=null;imageInput.value='';document.getElementById('chatAttachment').style.display='none';}if(hadPhoto&&!q){addMsg(t('photo_ans'),'ai');return}if(window.AmixAI){window.AmixAI.reply(q)}else{addMsg(localAnswer(q),'ai')}});
+
+let authMode='login', demoUser=null, firebaseReady=false;
+let fb = {app:null, auth:null, db:null, provider:null};
+let deviceId = (function(){
+  try{
+    let v = localStorage.getItem('amix_device_id');
+    if(!v){ v = 'dev_' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('amix_device_id', v); }
+    return v;
+  }catch(e){ return 'dev_fallback'; }
+})();
+
+const AMIX_GUEST_TRIAL_MS = 24*60*60*1000;
+const AMIX_USER_TRIAL_MS  = 7*24*60*60*1000;
+const AMIX_PRO_DAYS       = 30;
+const LOCAL_GUEST_KEY = 'amix_guest_trial_local';
+
+const PROMO_CODES = ['AMIX-2F7K','AMIX-9H3M','AMIX-B5QT','AMIX-6P1X','AMIX-K8YV','AMIX-4N2R','AMIX-7W9D','AMIX-C3FZ','AMIX-M6L4','AMIX-5T8S','AMIX-1A9B','AMIX-8E2C','AMIX-J3V7','AMIX-4Z6H','AMIX-P9M5','AMIX-2X4N','AMIX-7R1K','AMIX-5F8Q','AMIX-9B3Y','AMIX-C6T2','AMIX-3L7V','AMIX-8N4E','AMIX-1M6Z','AMIX-4P9R','AMIX-7H2X','AMIX-J5K8','AMIX-6Q3F','AMIX-2Y7C','AMIX-9D1T','AMIX-5V4M','AMIX-8B6N','AMIX-3F2P','AMIX-7K9R','AMIX-1X4H','AMIX-6C8Y','AMIX-P2L5','AMIX-4M7B','AMIX-9T3V','AMIX-2F8N','AMIX-7H1Q','AMIX-5K6E','AMIX-8Z2X','AMIX-3R9P','AMIX-6B4M','AMIX-1V7T','AMIX-9L5C','AMIX-4H2F','AMIX-8X6K','AMIX-2P1Y','AMIX-7N9D','AMIX-B3T8','AMIX-5M4R','AMIX-1C7Z','AMIX-9F2Q','AMIX-6K8V','AMIX-4Y1H','AMIX-8B5P','AMIX-3N7X','AMIX-9R2M','AMIX-2H4T','AMIX-7C9B','AMIX-5V3F','AMIX-1K6N','AMIX-8P2Y','AMIX-4M8R','AMIX-9T1H','AMIX-6F5X','AMIX-3L7Q','AMIX-2B4N','AMIX-7V9K','AMIX-5C1P','AMIX-8H6T','AMIX-1Y3F','AMIX-9M7R','AMIX-4N2B','AMIX-2P5X','AMIX-9H1Q','AMIX-3F7T','AMIX-7V4N','AMIX-8B2K','AMIX-5R9M','AMIX-1C4Y','AMIX-6P7H','AMIX-2T5X','AMIX-9F3N','AMIX-4M8V','AMIX-7K1B','AMIX-3H6Y','AMIX-8R2P','AMIX-5N4T','AMIX-1V9C','AMIX-6B7F','AMIX-2X5K','AMIX-9Q3M','AMIX-4P1H','AMIX-8Y6V','AMIX-3C2N','AMIX-7R5B','AMIX-1K9T','AMIX-6W4D'];
+const PROMO_DAYS = 30;
+
+function firebaseConfigured(){
+  const c = window.AMIX_CONFIG && window.AMIX_CONFIG.firebase;
+  return !!(c && c.apiKey && c.projectId);
+}
+async function initFirebase(){
+  if(!firebaseConfigured()){ firebaseReady=false; return; }
+  try{
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    const { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+    const { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp, runTransaction } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+    const c = window.AMIX_CONFIG.firebase;
+    const app = initializeApp(c);
+    const auth = getAuth(app);
+    try{ await setPersistence(auth, browserLocalPersistence); }catch(e){}
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({prompt:'select_account'});
+    fb = {app, auth, db, provider, mod:{signInWithPopup, onAuthStateChanged, signOut, doc, getDoc, setDoc, updateDoc, serverTimestamp, runTransaction}};
+    firebaseReady = true;
+    onAuthStateChanged(auth, async (user)=>{
+      if(user){
+        await ensureUserDoc(user);
+        await loadUserAccess(user.uid);
+      }else{
+        demoUser = null;
+        updateAccountUI();
+        updateTrialBadge();
+        renderTimer();
+        applyAccessGate();
+      }
+    });
+  }catch(err){
+    console.warn('Firebase init failed:', err);
+    firebaseReady = false;
+  }
+}
+
+async function ensureUserDoc(user){
+  const { doc, getDoc, setDoc, serverTimestamp } = fb.mod;
+  const ref = doc(fb.db, 'users', user.uid);
+  const snap = await getDoc(ref);
+  if(!snap.exists()){
+    const trialEndsAt = new Date(Date.now() + AMIX_USER_TRIAL_MS);
+    await setDoc(ref, {
+      uid: user.uid,
+      email: user.email || '',
+      name: user.displayName || (user.email ? user.email.split('@')[0] : 'Пользователь'),
+      photoURL: user.photoURL || '',
+      provider: 'google',
+      trialStartedAt: serverTimestamp(),
+      trialEndsAt,
+      isPro: false,
+      proExpiresAt: null,
+      promoUsed: false,
+      deviceId,
+      createdAt: serverTimestamp(),
+      lastLogin: serverTimestamp()
+    });
+  }else{
+    await fb.mod.updateDoc(ref, {
+      lastLogin: serverTimestamp(),
+      name: user.displayName || snap.data().name || '',
+      photoURL: user.photoURL || snap.data().photoURL || ''
+    });
+  }
+}
+
+async function loadUserAccess(uid){
+  let d = null;
+  try{
+    const { doc, getDoc } = fb.mod;
+    const ref = doc(fb.db, 'users', uid);
+    const snap = await getDoc(ref);
+    if(snap.exists()) d = snap.data();
+  }catch(err){
+    console.warn('Firestore read denied, using local profile:', err);
+  }
+  if(!d){
+    const u = fb.auth.currentUser;
+    d = {
+      email: (u && u.email) || '',
+      name: (u && u.displayName) || (u && u.email ? u.email.split('@')[0] : 'Пользователь'),
+      photoURL: (u && u.photoURL) || '',
+      provider: 'google',
+      isPro: false,
+      proExpiresAt: null,
+      trialEndsAt: new Date(Date.now() + AMIX_USER_TRIAL_MS)
+    };
+  }
+  demoUser = {
+    uid,
+    email: d.email || '',
+    name: d.name || (d.email||'').split('@')[0] || 'Гость',
+    photoURL: d.photoURL || '',
+    provider: d.provider || 'google',
+    trialEndsAt: d.trialEndsAt && d.trialEndsAt.toDate ? d.trialEndsAt.toDate() : (d.trialEndsAt ? new Date(d.trialEndsAt) : null),
+    isPro: !!d.isPro,
+    proExpiresAt: d.proExpiresAt && d.proExpiresAt.toDate ? d.proExpiresAt.toDate() : (d.proExpiresAt ? new Date(d.proExpiresAt) : null)
+  };
+  updateAccountUI();
+  updateTrialBadge();
+  renderTimer();
+  applyAccessGate();
+}
+
+function guestAccessLocal(){
+  try{
+    let raw = localStorage.getItem(LOCAL_GUEST_KEY);
+    if(!raw){
+      const startedAt = Date.now();
+      raw = JSON.stringify({startedAt});
+      localStorage.setItem(LOCAL_GUEST_KEY, raw);
+    }
+    const obj = JSON.parse(raw);
+    const expires = obj.startedAt + AMIX_GUEST_TRIAL_MS;
+    return { expiresAt: new Date(expires), remaining: Math.max(0, expires - Date.now()) };
+  }catch(e){
+    return { expiresAt: new Date(Date.now()+AMIX_GUEST_TRIAL_MS), remaining: AMIX_GUEST_TRIAL_MS };
+  }
+}
+
+function accessSummary(){
+  if(demoUser){
+    if(demoUser.isPro) return { kind:'pro', expiresAt: demoUser.proExpiresAt, remaining: demoUser.proExpiresAt ? Math.max(0, demoUser.proExpiresAt - Date.now()) : Infinity };
+    if(demoUser.trialEndsAt && demoUser.trialEndsAt > new Date()) return { kind:'trial', expiresAt: demoUser.trialEndsAt, remaining: demoUser.trialEndsAt - Date.now() };
+    return { kind:'expired', expiresAt: demoUser.trialEndsAt, remaining: 0 };
+  }
+  const g = guestAccessLocal();
+  if(g.remaining > 0) return { kind:'trial', expiresAt: g.expiresAt, remaining: g.remaining };
+  return { kind:'expired', expiresAt: g.expiresAt, remaining: 0 };
+}
+
+function hasAccess(){ const a = accessSummary(); return a.kind === 'pro' || a.kind === 'trial'; }
+
+function plural(n, one, few, many){ n = Math.abs(n) % 100; const d = n % 10; if(n > 10 && n < 20) return many; if(d > 1 && d < 5) return few; if(d === 1) return one; return many; }
+
+function updateTrialBadge(){
+  const a = accessSummary();
+  document.querySelectorAll('[data-pro-status]').forEach(el=>{
+    if(a.kind === 'pro'){
+      const days = a.remaining===Infinity ? '∞' : Math.max(0, Math.ceil(a.remaining/(86400000)));
+      el.className = 'trial-badge pro';
+      el.textContent = (LANG==='en' ? 'Pro active · ' : 'Pro активен · ') + days + (LANG==='en' ? ' days' : ' дн.');
+    } else if(a.kind === 'trial'){
+      const h = Math.max(0, Math.ceil(a.remaining/3600000));
+      const days = Math.floor(h/24);
+      const rem = h - days*24;
+      el.className = 'trial-badge trial';
+      if(LANG==='en'){
+        el.textContent = 'Trial · ' + (days>0 ? (days+'d '+(rem?rem+'h':'')) : (h+'h')) + ' left';
+      }else{
+        el.textContent = 'Пробный · осталось ' + (days>0 ? (days+' дн '+(rem?rem+' ч':'')) : (h+' ч'));
+      }
+    } else {
+      el.className = 'trial-badge expired';
+      el.textContent = LANG==='en' ? 'Trial ended' : 'Пробный период закончился';
+    }
+  });
+}
+
+function renderTimer(){
+  const el = document.getElementById('timerChip');
+  if(!el) return;
+  const a = accessSummary();
+  const pad = n => String(n).padStart(2,'0');
+  el.classList.remove('trial','pro','expired');
+  if(a.kind === 'pro'){
+    el.classList.add('pro');
+    if(a.remaining === Infinity){ el.textContent = '✦ Pro активен'; }
+    else{
+      const d = Math.floor(a.remaining/86400000);
+      const h = Math.floor((a.remaining%86400000)/3600000);
+      const m = Math.floor((a.remaining%3600000)/60000);
+      el.textContent = '✦ Pro · ' + d + 'д ' + pad(h) + ':' + pad(m);
+    }
+  } else if(a.kind === 'trial'){
+    el.classList.add('trial');
+    const h = Math.floor(a.remaining/3600000);
+    const m = Math.floor((a.remaining%3600000)/60000);
+    const s = Math.floor((a.remaining%60000)/1000);
+    el.textContent = '⏱ Пробный · ' + pad(h) + ':' + pad(m) + ':' + pad(s);
+  } else {
+    el.classList.add('expired');
+    el.textContent = (LANG==='en' ? 'Trial ended' : 'Пробный закончился');
+  }
+}
+
+function applyAccessGate(){
+  const allowed = hasAccess();
+  const prompt = document.getElementById('prompt');
+  const send = document.querySelector('#chatForm button[type="submit"]');
+  if(prompt){
+    prompt.disabled = !allowed;
+    prompt.placeholder = allowed ? t('placeholder') : t('trial_ended_placeholder');
+    prompt.setAttribute('aria-disabled', String(!allowed));
+  }
+  if(send){ send.disabled = !allowed; send.setAttribute('aria-disabled', String(!allowed)); }
+  if(!allowed) showPaywall(); else hidePaywall();
+}
+
+function showPaywall(){
+  if(hasAccess()) return;
+  let el = document.getElementById('amixPaywall');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'amixPaywall';
+    el.className = 'modal-backdrop open';
+    el.setAttribute('role','dialog');
+    el.setAttribute('aria-modal','true');
+    el.innerHTML = `
+      <div class="modal">
+        <div class="modal-top"><div><div class="eyebrow">AMIX PRO</div><h3 id="amixPayTitle">${t('paywall_title')}</h3></div></div>
+        <p class="muted" id="amixPayText">${t('paywall_text')}</p>
+        <div style="font-size:30px;font-weight:800;margin:12px 0 16px">200 ₽ <span style="font-size:14px;font-weight:500;color:#aaa">${t('pro_month')}</span></div>
+        <button class="btn primary" id="amixPayBuy" type="button" style="width:100%;margin:0 0 9px">${t('buy_pro')}</button>
+        <button class="btn ghost" id="amixPayAccount" type="button" style="width:100%">${t('paywall_account')}</button>
+        <p class="auth-note" id="amixPayNote">${t('paywall_demo_note')}</p>
+      </div>`;
+    document.body.appendChild(el);
+    document.getElementById('amixPayBuy').addEventListener('click', window.buyAmixPro);
+    document.getElementById('amixPayAccount').addEventListener('click', ()=>{ openAuth(); });
+  }
+  el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function hidePaywall(){
+  const el = document.getElementById('amixPaywall');
+  if(el) el.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function openAuth(){document.getElementById('authBackdrop').classList.add('open');document.body.style.overflow='hidden'}
+function closeAuth(){document.getElementById('authBackdrop').classList.remove('open');document.body.style.overflow=''}
+function backdropClose(e){if(e.target.id==='authBackdrop')closeAuth()}
+/* auth-tabs / setAuthMode / applyAuth оставлены как no-op для совместимости с другими частями кода */
+function applyAuth(){}
+function setAuthMode(){}
+function toast(message){const el=document.getElementById('toast');if(!el)return;el.textContent=message;el.classList.add('show');clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>el.classList.remove('show'),3200)}
+
+function setAvatarImage(avatarEl, photoURL, fallbackLetter){
+  avatarEl.style.backgroundImage = '';
+  avatarEl.style.backgroundSize = '';
+  avatarEl.style.backgroundPosition = '';
+  if(!photoURL){ avatarEl.textContent = fallbackLetter; return; }
+  avatarEl.textContent = fallbackLetter;
+  const img = new Image();
+  img.referrerPolicy = 'no-referrer';
+  img.onload = function(){
+    avatarEl.textContent = '';
+    avatarEl.style.backgroundImage = 'url(' + photoURL + ')';
+    avatarEl.style.backgroundSize = 'cover';
+    avatarEl.style.backgroundPosition = 'center';
+  };
+  img.onerror = function(){ /* оставляем букву */ };
+  img.src = photoURL;
+}
+
+function updateAccountUI(){
+  const name = demoUser ? demoUser.name : (LANG==='en' ? 'Guest' : 'Гость');
+  const sub  = demoUser ? (demoUser.email || '') : (LANG==='en' ? '24h free · sign in for 7 days' : '24 ч бесплатно · войдите для 7 дней');
+  const avatar = document.getElementById('avatarLetter');
+  document.getElementById('accountName').textContent = name;
+  document.getElementById('accountSub').textContent = sub;
+  avatar.classList.remove('guest-avatar');
+  if(!demoUser){
+    avatar.classList.add('guest-avatar');
+    avatar.style.backgroundImage = '';
+    avatar.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8a7.6 7.6 0 0 0-7.6 7.6v9.1c0 .6.7.9 1.2.5l2.2-1.7 2.2 1.7a.8.8 0 0 0 1 0l2.2-1.7 2.2 1.7a.8.8 0 0 0 1 0l2.2-1.7 1.2.9c.5.4 1.2 0 1.2-.6v-8.2A7.6 7.6 0 0 0 12 2.8Z" fill="currentColor"/><ellipse cx="9.2" cy="10.3" rx="1.15" ry="1.55" fill="#151515"/><ellipse cx="14.8" cy="10.3" rx="1.15" ry="1.55" fill="#151515"/><path d="M10.1 14.1q1.9 1.7 3.8 0" fill="none" stroke="#151515" stroke-width="1.2" stroke-linecap="round"/></svg>';
+  }else{
+    avatar.innerHTML = '';
+    setAvatarImage(avatar, demoUser.photoURL, (name.trim()[0]||'A').toUpperCase());
+  }
+  document.getElementById('topAccount').textContent = demoUser ? ('♙ '+name) : t('acc_default');
+  document.getElementById('accountButton').classList.toggle('is-guest', !demoUser);
+  const drAuth = document.getElementById('drAuth');
+  if(drAuth){ drAuth.textContent = demoUser ? t('logout') : t('login'); drAuth.classList.toggle('out', !!demoUser); }
+}
+
+async function signInWithGoogle(){
+  if(!firebaseReady){ toast('Firebase не настроен.'); return; }
+  try{
+    const res = await fb.mod.signInWithPopup(fb.auth, fb.provider);
+    const user = res.user;
+    const { doc, getDoc, setDoc, updateDoc, serverTimestamp } = fb.mod;
+    const ref = doc(fb.db, 'users', user.uid);
+    let exists = false;
+    try{ const snap = await getDoc(ref); exists = snap.exists(); }catch(e){ console.warn('check exists failed:', e); }
+    try{
+      if(!exists){
+        const trialEndsAt = new Date(Date.now() + AMIX_USER_TRIAL_MS);
+        await setDoc(ref, {
+          uid: user.uid,
+          email: user.email || '',
+          name: user.displayName || (user.email ? user.email.split('@')[0] : 'Пользователь'),
+          photoURL: user.photoURL || '',
+          provider: 'google',
+          trialStartedAt: serverTimestamp(),
+          trialEndsAt,
+          isPro: false,
+          proExpiresAt: null,
+          promoUsed: false,
+          deviceId,
+          createdAt: serverTimestamp(),
+          lastLogin: serverTimestamp()
+        });
+      }else{
+        await updateDoc(ref, {
+          lastLogin: serverTimestamp(),
+          name: user.displayName || '',
+          photoURL: user.photoURL || ''
+        });
+      }
+    }catch(fsErr){ console.warn('Firestore write denied:', fsErr); }
+    await loadUserAccess(user.uid);
+    closeAuth();
+    toast(t('logged'));
+  }catch(err){
+    console.warn('Google sign-in error:', err);
+    toast('Google: ' + (err && err.message ? err.message : 'ошибка'));
+  }
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAuth(); closeProfile(); closePriv && closePriv();}});
+
+function amixSignOut(){
+  try{
+    if(firebaseReady && fb.auth) fb.mod.signOut(fb.auth);
+  }catch(e){}
+  demoUser = null;
+  updateAccountUI(); updateTrialBadge(); renderTimer(); applyAccessGate();
+  toast(t('logged_out'));
+}
+
+function openProfile(){
+  if(!demoUser){ openAuth(); return; }
+  const a = accessSummary();
+  document.getElementById('profileName').textContent = demoUser.name || '—';
+  document.getElementById('profileEmail').textContent = demoUser.email || '—';
+  document.getElementById('profileUid').textContent = (demoUser.uid || '').slice(0, 14) + (demoUser.uid && demoUser.uid.length > 14 ? '…' : '');
+  const prov = demoUser.provider || 'google';
+  document.getElementById('profileProvider').textContent = prov === 'google' ? 'Google' : (prov === 'password' ? 'Email' : prov);
+  const av = document.getElementById('profileAvatar');
+  setAvatarImage(av, demoUser.photoURL, (demoUser.name||'A').trim()[0].toUpperCase());
+  const badge = document.getElementById('profileBadge');
+  if(a.kind === 'pro'){ badge.textContent = (LANG==='en'?'Pro active':'Pro активен'); badge.style.borderColor = '#4ade8040'; }
+  else if(a.kind === 'trial'){ badge.textContent = (LANG==='en'?'Trial':'Пробный'); badge.style.borderColor = ''; }
+  else { badge.textContent = (LANG==='en'?'Trial ended':'Пробный закончился'); badge.style.borderColor = '#ff8a8a40'; }
+  const tr = document.getElementById('profileTrial');
+  if(a.kind === 'pro'){
+    tr.textContent = demoUser.proExpiresAt ? demoUser.proExpiresAt.toLocaleDateString() : '∞';
+  } else if(a.kind === 'trial' && a.expiresAt){
+    tr.textContent = a.expiresAt.toLocaleDateString() + ' · ' + Math.max(0, Math.ceil(a.remaining/3600000)) + (LANG==='en'?'h':'ч');
+  } else {
+    tr.textContent = (LANG==='en'?'Ended':'Завершён');
+  }
+  document.getElementById('profileBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeProfile(){
+  const el = document.getElementById('profileBackdrop');
+  if(el) el.classList.remove('open');
+  document.body.style.overflow = '';
+}
+window.openProfile = openProfile;
+window.closeProfile = closeProfile;
+
+window.buyAmixPro = async function(){
+  if(!demoUser){
+    openAuth();
+    toast(t('toast_login_first'));
+    return;
+  }
+  if(!firebaseReady){
+    demoUser.isPro = true;
+    demoUser.proExpiresAt = new Date(Date.now()+AMIX_PRO_DAYS*86400000);
+    updateTrialBadge(); renderTimer(); applyAccessGate(); hidePaywall();
+    toast(t('toast_pro_active'));
+    return;
+  }
+  try{
+    const { doc, updateDoc, serverTimestamp } = fb.mod;
+    const ref = doc(fb.db, 'users', demoUser.uid);
+    await updateDoc(ref, {
+      isPro: true,
+      proStartedAt: serverTimestamp(),
+      proExpiresAt: new Date(Date.now()+AMIX_PRO_DAYS*86400000)
+    });
+    demoUser.isPro = true;
+    demoUser.proExpiresAt = new Date(Date.now()+AMIX_PRO_DAYS*86400000);
+    updateTrialBadge(); renderTimer(); applyAccessGate(); hidePaywall();
+    toast(t('toast_pro_active'));
+  }catch(err){
+    console.warn(err);
+    toast('Не удалось активировать Pro: ' + (err.message || ''));
+  }
+};
+
+async function activatePromo(){
+  const input = document.getElementById('promoInput');
+  const code = (input && input.value || '').trim().toUpperCase();
+  if(!code){ toast(t('promo_enter')); return; }
+  if(!PROMO_CODES.includes(code)){ toast(t('promo_not_found')); return; }
+  if(!demoUser){ toast(t('promo_login_first')); openAuth(); return; }
+  try{
+    const used = JSON.parse(localStorage.getItem('amix_promos_used')||'[]');
+    if(used.includes(code)){ toast(t('promo_used')); return; }
+  }catch(e){}
+  if(!firebaseReady){ toast(t('promo_offline')); return; }
+  try{
+    const { doc, getDoc, setDoc, updateDoc, serverTimestamp } = fb.mod;
+    const promoRef = doc(fb.db, 'promocodes', code);
+    let snap = null;
+    try{ snap = await getDoc(promoRef); }catch(e){ console.warn('promo read failed:', e); }
+    if(snap && snap.exists() && snap.data().used){ toast(t('promo_used')); return; }
+    const days = PROMO_DAYS;
+    const expires = new Date(Date.now() + days*86400000);
+    const userRef = doc(fb.db, 'users', demoUser.uid);
+    await updateDoc(userRef, {
+      isPro: true,
+      proStartedAt: serverTimestamp(),
+      proExpiresAt: expires,
+      promoUsed: true,
+      promoCode: code
+    });
+    try{
+      if(snap && snap.exists()){
+        await updateDoc(promoRef, { used: true, usedBy: demoUser.uid, usedAt: serverTimestamp() });
+      }else{
+        await setDoc(promoRef, { code, days, used: true, usedBy: demoUser.uid, usedAt: serverTimestamp() });
+      }
+    }catch(e){ console.warn('promo mark used failed:', e); }
+    try{
+      const used = JSON.parse(localStorage.getItem('amix_promos_used')||'[]');
+      used.push(code);
+      localStorage.setItem('amix_promos_used', JSON.stringify(used));
+    }catch(e){}
+    demoUser.isPro = true;
+    demoUser.proExpiresAt = expires;
+    updateTrialBadge(); renderTimer(); applyAccessGate(); hidePaywall();
+    toast(t('promo_ok').replace('{days}', days));
+    if(input) input.value = '';
+  }catch(err){
+    console.warn(err);
+    toast(t('promo_error'));
+  }
+}
+window.activatePromo = activatePromo;
+
+const I18N={
+ru:{
+nav_voice:'Голосовой ИИ',title_voice:'Голосовой ИИ',voice_soon_short:'Скоро',voice_badge:'ПРЕВЬЮ · БУДУЩЕЕ ОБНОВЛЕНИЕ',voice_overline:'AMIX VOICE EXPERIENCE',voice_title:'Голосовой ИИ',voice_description:'Скоро ты сможешь разговаривать с Amix голосом. Посмотри, что тебя ждёт.',voice_status_idle:'Голосовой режим пока не подключён',voice_status_active:'Микрофон активен · говори, чёрная дыра реагирует',voice_status_error:'Не удалось включить микрофон. Проверь разрешение браузера.',voice_mic_start:'Включить реакцию на голос',voice_mic_stop:'Остановить микрофон',voice_back_chat:'Вернуться в чат',voice_note:'Микрофон меняет только визуальный эффект и ничего не отправляет. Сам голосовой ИИ появится в будущем обновлении.',nav_pro:'Amix Pro',title_pro:'Amix Pro',pro_eyebrow:'AMIX MEMBERSHIP',pro_description:'Продолжай пользоваться Amix без ограничений после бесплатного пробного периода.',pro_month:'/ месяц',buy_pro:'Купить Pro-версию',trial_title:'7 дней бесплатно с аккаунтом · 24 часа для гостя',trial_description:'Войдите, чтобы получить 7 дней бесплатного доступа. Гостям даётся 24 часа. По окончании — Amix Pro.',pro_payment_notice:'',email_invalid:'Введи корректный адрес электронной почты.',doc_title:'Amix — офлайн ИИ-репетитор',tagline:'Твой офлайн ИИ-репетитор',nav_chat:'Чат',nav_history:'История',nav_settings:'Настройки',status_t:'Офлайн-режим',status_s:'Интерфейс доступен без интернета',eyebrow:'Личный учебный помощник',hello:'Привет! Что изучаем?',title_chat:'Просто напиши, что нужно',title_history:'История чатов',title_settings:'Настройки',chip_local:'● Локальный режим',acc_default:'♙ Аккаунт',chat_title:'✧ Учебный чат',chat_chip:'Офлайн-режим',welcome:'Привет! Напиши, что нужно решить или объяснить.',attach:'Прикрепить фото',placeholder:'Напиши сообщение…',send:'Отправить',hist_h:'Недавние чаты',hist_clear:'Очистить',hist_empty:'Чатов пока нет.',new_chat:'Новый чат',recent_chats:'Недавние чаты',menu:'Меню',privacy:'Конфиденциальность',login:'Войти',logout:'Выйти из аккаунта',logged_out:'Вы вышли из аккаунта',set_h:'Настройки приложения',set_p:'Прототип сохраняет настройки и историю только до закрытия страницы.',set_theme:'Тема оформления',set_theme_d:'Тёмная монохромная',set_mode:'Режим работы',set_mode_d:'Весь интерфейс доступен без интернета',set_mode_chip:'Офлайн',set_lang:'Язык',set_lang_d:'Язык интерфейса и ответов',set_legal:'Правовая информация',set_legal_d:'Документы по законодательству РФ',set_wipe:'Данные на этом устройстве',set_wipe_d:'Удалить чаты, профиль и сохранённые настройки',set_wipe_btn:'Удалить',wipe_confirm:'Удалить все данные Amix на этом устройстве?',wiped:'Данные удалены',footer:'',auth_eyebrow:'ТВОЙ УЧЕБНЫЙ ПРОФИЛЬ',auth_welcome:'Добро пожаловать',auth_signup_title:'Создать аккаунт',close:'Закрыть',tab_login:'Войти',tab_signup:'Создать аккаунт',lbl_name:'Как тебя зовут?',ph_name:'Имя или никнейм',lbl_email:'Электронная почта',lbl_pass:'Пароль',ph_pass:'Не менее 6 символов',btn_login:'Войти',btn_signup:'Создать профиль',auth_note:'Профиль сохраняется на сервере Amix через Firebase. Пароль не хранится в открытом виде.',guest:'Гость',guest_sub:'24 часа бесплатно · войдите для 7 дней',you:'ТЫ',pw_short:'Пароль должен содержать минимум 6 символов',created:'Профиль создан',logged:'Вы вошли',photo_tag:'[Фото задания: ',mb:'МБ',photo_on:'— фото прикреплено',photo_ans:'Фото прикреплено, но ИИ-модель Amix работает только с текстом и не читает изображения. Напиши условие в сообщении, и я помогу.',btn_google:'Продолжить с Google',or_email:'',paywall_title:'Пробный период завершён',paywall_text:'Ваш бесплатный доступ закончился. Оформите Amix Pro за 200 ₽ в месяц или войдите, чтобы получить 7 дней при первом входе.',paywall_demo_note:'Покупка пока демонстрационная: оплата не списывается, платёжный сервис не подключён.',paywall_account:'Создать профиль / войти',trial_ended_placeholder:'Пробный период завершён — оформите Amix Pro',toast_pro_active:'Демо-доступ Amix Pro активирован.',toast_login_first:'Сначала создайте аккаунт или войдите.',promo_title:'Промокод',promo_desc:'',promo_ph:'Введите промокод',promo_apply:'Активировать',promo_enter:'Введите промокод',promo_login_first:'Сначала войдите в аккаунт',promo_offline:'Промокоды требуют подключения Firebase',promo_not_found:'Промокод не найден',promo_used:'Этот промокод уже использован',promo_ok:'Промокод активирован! Pro на {days} дней.',promo_error:'Не удалось активировать промокод',legal_eyebrow:'ПРАВОВАЯ ИНФОРМАЦИЯ',lg_policy:'Политика',lg_terms:'Соглашение',lg_offer:'Оферта Pro',profile_eyebrow:'ТВОЙ ПРОФИЛЬ',profile_title:'Профиль',profile_id:'ID',profile_provider:'Способ входа',profile_trial:'Пробный период',profile_go_pro:'Amix Pro'},
+en:{
+nav_voice:'Voice AI',title_voice:'Voice AI',voice_soon_short:'Soon',voice_badge:'PREVIEW · COMING IN A FUTURE UPDATE',voice_overline:'AMIX VOICE EXPERIENCE',voice_title:'Voice AI',voice_description:'Soon you will be able to talk to Amix out loud. Here is a preview of what is coming.',voice_status_idle:'Voice mode is not connected yet',voice_status_active:'Microphone active · speak and watch the black hole react',voice_status_error:'Could not enable the microphone. Check your browser permission.',voice_mic_start:'Enable voice-reactive visuals',voice_mic_stop:'Stop microphone',voice_back_chat:'Back to chat',voice_note:'The microphone only drives the visual effect and does not send audio anywhere. Voice AI itself will arrive in a future update.',nav_pro:'Amix Pro',title_pro:'Amix Pro',pro_eyebrow:'AMIX MEMBERSHIP',pro_description:'Keep using Amix without limits after your free trial.',pro_month:'/ month',buy_pro:'Buy Amix Pro',trial_title:'7 days free with an account · 24 hours as a guest',trial_description:'Sign in to get 7 days of free access. Guests get 24 hours. After that, Amix Pro is required.',pro_payment_notice:'',email_invalid:'Enter a valid email address.',doc_title:'Amix — offline AI tutor',tagline:'Your offline AI tutor',nav_chat:'Chat',nav_history:'History',nav_settings:'Settings',status_t:'Offline mode',status_s:'The interface works without internet',eyebrow:'Personal study assistant',hello:'Hi! What shall we study?',title_chat:'Just write what you need',title_history:'Chat history',title_settings:'Settings',chip_local:'● Local mode',acc_default:'♙ Account',chat_title:'✧ Study chat',chat_chip:'Offline mode',welcome:"Hi! Write what you need help solving or understanding.",attach:'Attach photo',placeholder:'Write a message…',send:'Send',hist_h:'Recent chats',hist_clear:'Clear',hist_empty:'No chats yet.',new_chat:'New chat',recent_chats:'Recent chats',menu:'Menu',privacy:'Privacy',login:'Log in',logout:'Log out',logged_out:'You have logged out',set_h:'App settings',set_p:'The prototype keeps settings and history only until the page is closed.',set_theme:'Theme',set_theme_d:'Dark monochrome',set_mode:'Mode',set_mode_d:'The whole interface works without internet',set_mode_chip:'Offline',set_lang:'Language',set_lang_d:'Interface and answer language',set_legal:'Legal information',set_legal_d:'Documents under Russian law',set_wipe:'Data on this device',set_wipe_d:'Delete chats, profile and saved settings',set_wipe_btn:'Delete',wipe_confirm:'Delete all Amix data on this device?',wiped:'Data deleted',footer:'',auth_eyebrow:'YOUR STUDY PROFILE',auth_welcome:'Welcome',auth_signup_title:'Create account',close:'Close',tab_login:'Log in',tab_signup:'Sign up',lbl_name:"What's your name?",ph_name:'Name or nickname',lbl_email:'Email',lbl_pass:'Password',ph_pass:'At least 6 characters',btn_login:'Log in',btn_signup:'Create profile',auth_note:'The profile is stored on the Amix server via Firebase. Passwords are never stored in plain text.',guest:'Guest',guest_sub:'24h free · sign in for 7 days',you:'YOU',pw_short:'Password must be at least 6 characters',created:'Profile created',logged:'Signed in',photo_tag:'[Task photo: ',mb:'MB',photo_on:'— photo attached',photo_ans:"Photo attached, but the Amix AI model works with text only and cannot read images. Type the problem in your message and I'll help.",btn_google:'Continue with Google',or_email:'',paywall_title:'Free trial ended',paywall_text:'Your free access has ended. Get Amix Pro for 200 RUB per month, or sign in to get 7 days on your first login.',paywall_demo_note:'Demo purchase: no payment is charged and no payment provider is connected.',paywall_account:'Create profile / sign in',trial_ended_placeholder:'Free trial ended — get Amix Pro',toast_pro_active:'Amix Pro demo access activated.',toast_login_first:'Create an account or sign in first.',promo_title:'Promo code',promo_desc:'',promo_ph:'Enter promo code',promo_apply:'Activate',promo_enter:'Enter a promo code',promo_login_first:'Sign in first',promo_offline:'Promo codes require Firebase to be configured',promo_not_found:'Promo code not found',promo_used:'This promo code has already been used',promo_ok:'Promo activated! Pro for {days} days.',promo_error:'Could not activate promo code',legal_eyebrow:'LEGAL INFORMATION',lg_policy:'Policy',lg_terms:'Terms',lg_offer:'Pro offer',profile_eyebrow:'YOUR PROFILE',profile_title:'Profile',profile_id:'ID',profile_provider:'Sign-in method',profile_trial:'Trial',profile_go_pro:'Amix Pro'}
+};
+let LANG='ru';
+try{const sv=localStorage.getItem('amix_lang');if(sv==='ru'||sv==='en')LANG=sv;else if(!/^ru|^uk|^be/i.test(navigator.language||'ru'))LANG='en'}catch(e){}
+let titleKey='hello';
+function t(k){return (I18N[LANG]&&I18N[LANG][k])||I18N.ru[k]||k}
+function applyLang(){
+ document.documentElement.lang=LANG;
+ document.title=t('doc_title');
+ document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n)});
+ document.querySelectorAll('[data-i18n-attr]').forEach(el=>el.dataset.i18nAttr.split(',').forEach(p=>{const a=p.split(':');el.setAttribute(a[0],t(a[1]))}));
+ const pt=document.getElementById('pageTitle');if(pt)pt.textContent=t(titleKey);
+ const code=LANG.toUpperCase();
+ document.getElementById('langBtn').textContent=code;
+ document.getElementById('langMini').textContent=code;
+ document.querySelectorAll('.langsw .chip').forEach(b=>b.classList.toggle('on',b.dataset.lang===LANG));
+ updateAccountUI(); renderHistory(); updateTrialBadge(); renderTimer();
+}
+function setLang(l){if(l===LANG)return;LANG=l;try{localStorage.setItem('amix_lang',l)}catch(e){}applyLang();const m=document.querySelector('.main');if(m&&!matchMedia('(prefers-reduced-motion: reduce)').matches){m.classList.remove('lang-swap');void m.offsetWidth;m.classList.add('lang-swap');setTimeout(()=>m.classList.remove('lang-swap'),450)}}
+function toggleLang(){setLang(LANG==='ru'?'en':'ru')}
+
+(function initAmbientMotion(){
+ const layer=document.getElementById('particleLayer');
+ if(!layer || window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ for(let i=0;i<24;i++){
+  const particle=document.createElement('span');particle.className='particle';
+  particle.style.setProperty('--left',(Math.random()*100)+'%');
+  particle.style.setProperty('--dur',(10+Math.random()*16)+'s');
+  particle.style.setProperty('--delay',(-Math.random()*24)+'s');
+  particle.style.setProperty('--drift',((Math.random()-.5)*130)+'px');
+  if(i%5===0){particle.style.width='4px';particle.style.height='4px';particle.style.background='#d7a2ff'}
+  layer.appendChild(particle);
+ }
+})();
+
+(function(){const b=document.body;
+ document.addEventListener('focusin',e=>{if(e.target.matches('input,textarea'))b.classList.add('kb-open')});
+ document.addEventListener('focusout',()=>setTimeout(()=>{const a=document.activeElement;if(!a||!a.matches('input,textarea'))b.classList.remove('kb-open')},120));
+})();
+
+(function(){
+ const root=document.documentElement;
+ function sync(){
+  const h=Math.round((window.visualViewport&&visualViewport.height)||window.innerHeight);
+  root.style.setProperty('--app-h',h+'px');
+  const v=window.visualViewport;
+  root.style.setProperty('--app-top',Math.round(v?v.offsetTop:0)+'px');
+  const c=document.getElementById('chat');
+  document.body.classList.toggle('chat-on',!!(c&&c.classList.contains('active')));
+ }
+ const _sv=showView; showView=function(id){_sv(id);sync()};
+ addEventListener('resize',sync);addEventListener('amix:viewchanged',sync);addEventListener('orientationchange',()=>setTimeout(sync,200));
+ if(window.visualViewport){visualViewport.addEventListener('resize',sync);visualViewport.addEventListener('scroll',sync)}
+ sync();
+ const ta=document.getElementById('prompt');
+ function grow(){ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,120)+'px'}
+ ta.addEventListener('input',grow);
+ document.getElementById('chatForm').addEventListener('submit',()=>setTimeout(()=>{ta.style.height=''},0));
+})();
+
+const CHATS_KEY = 'amix_chats_v1';
+let chats=[],currentChat=null;
+const _addMsgRaw=addMsg;
+function saveChats(){
+ try{
+  localStorage.setItem(CHATS_KEY, JSON.stringify({
+   chats: chats.map(c=>({id:c.id, title:c.title, msgs:c.msgs})),
+   currentId: currentChat ? currentChat.id : null
+  }));
+ }catch(e){ console.warn('saveChats:', e); }
+}
+function loadChats(){
+ try{
+  const raw = localStorage.getItem(CHATS_KEY);
+  if(!raw) return;
+  const data = JSON.parse(raw);
+  if(Array.isArray(data.chats)){
+   chats = data.chats;
+   if(data.currentId){
+    currentChat = chats.find(c=>c.id===data.currentId) || null;
+   }
+  }
+ }catch(e){ console.warn('loadChats:', e); }
+}
+addMsg=function(text,who){
+ _addMsgRaw(text,who);
+ if(!currentChat){currentChat={id:Date.now(),title:'',msgs:[]};chats.unshift(currentChat)}
+ currentChat.msgs.push({text,who});
+ if(!currentChat.title&&who==='user')currentChat.title=text.slice(0,48);
+ renderHistory();
+ saveChats();
+};
+addHistory=function(){renderHistory()};
+function chatTitle(c){return c.title||'…'}
+renderHistory=function(){
+ const list=document.getElementById('historyList'),dr=document.getElementById('drawerChats');
+ if(!list||!dr)return;
+ list.innerHTML='';dr.innerHTML='';
+ if(!chats.length){
+  list.innerHTML='<p class="muted">'+t('hist_empty')+'</p>';
+  dr.innerHTML='<div class="dr-empty">'+t('hist_empty')+'</div>';return;
+ }
+ chats.forEach(c=>{
+  const d=document.createElement('div');d.className='historyitem'+(c===currentChat?' cur':'');
+  d.tabIndex=0;
+  const b=document.createElement('strong');b.textContent=chatTitle(c);
+  const last=[...c.msgs].reverse().find(m=>m.who==='ai');
+  const pp=document.createElement('p');pp.className='muted';pp.textContent=(last?last.text.replace(/\s+/g,' ').slice(0,110):'');
+  d.append(b,pp);d.onclick=()=>openChat(c);
+  d.onkeydown=e=>{if(e.key==='Enter')openChat(c)};
+  list.append(d);
+  const r=document.createElement('button');r.type='button';r.className='dr-chat'+(c===currentChat?' cur':'');
+  r.textContent=chatTitle(c);r.onclick=()=>openChat(c);dr.append(r);
+ });
+};
+clearHistory=function(){chats=[];currentChat=null;try{localStorage.removeItem(CHATS_KEY)}catch(e){};resetChatView();renderHistory()};
+function resetChatView(){
+ const box=document.getElementById('messages');
+ box.innerHTML='<div class="msg ai"><div class="who">AMIX</div><span>'+t('welcome')+'</span></div>';
+ attachedImage=null;const im=document.getElementById('chatImageInput');if(im)im.value='';
+ const at=document.getElementById('chatAttachment');if(at)at.style.display='none';
+ const ta=document.getElementById('prompt');if(ta){ta.value='';ta.style.height=''}
+}
+function newChat(){currentChat=null;resetChatView();renderHistory();saveChats();showView('chat');closeDrawer();}
+function openChat(c){currentChat=c;const box=document.getElementById('messages');box.innerHTML='';c.msgs.forEach(m=>_addMsgRaw(m.text,m.who));renderHistory();saveChats();showView('chat');closeDrawer();}
+
+function openDrawer(){document.body.classList.add('drawer-open');document.getElementById('drawer').setAttribute('aria-hidden','false')}
+function closeDrawer(){document.body.classList.remove('drawer-open');document.getElementById('drawer').setAttribute('aria-hidden','true')}
+(function(){
+ const mq=matchMedia('(max-width:700px)');
+ const brand=document.getElementById('brandBtn');
+ const open=()=>{const dd=document.getElementById('drawer');if(mq.matches||document.body.classList.contains('voice-mode')||(dd&&getComputedStyle(dd).display!=='none'))openDrawer()};
+ let tapT=0,tx=0,ty=0,moved=false;
+ const fire=()=>{const n=Date.now();if(n-tapT<450)return;tapT=n;open()};
+ brand.addEventListener('touchstart',e=>{const p=e.touches[0];tx=p.clientX;ty=p.clientY;moved=false},{passive:true});
+ brand.addEventListener('touchmove',e=>{const p=e.touches[0];if(Math.abs(p.clientX-tx)>10||Math.abs(p.clientY-ty)>10)moved=true},{passive:true});
+ brand.addEventListener('touchend',e=>{if(moved)return;e.preventDefault();fire()},{passive:false});
+ brand.addEventListener('click',fire);
+ brand.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
+ document.getElementById('drawerBackdrop').addEventListener('click',closeDrawer);
+ document.getElementById('drawerClose').addEventListener('click',closeDrawer);
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+ mq.addEventListener&&mq.addEventListener('change',()=>{if(!mq.matches)closeDrawer()});
+ document.querySelectorAll('.dr-nav button[data-view]').forEach(b=>b.addEventListener('click',()=>{showView(b.dataset.view);closeDrawer()}));
+ const dr=document.getElementById('drawer');let sx=null;
+ dr.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
+ dr.addEventListener('touchmove',e=>{if(sx!==null&&e.touches[0].clientX-sx<-70){sx=null;closeDrawer()}},{passive:true});
+ const _sv2=showView;showView=function(id){_sv2(id);document.querySelectorAll('.dr-nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id))};
+})();
+
+function closePriv(){document.getElementById('privBackdrop').classList.remove('open')}
+function openPriv(d){closeDrawer();openLegal(typeof d==='string'?d:'policy')}
+(function(){
+ document.getElementById('privBtn').addEventListener('click',openPriv);
+ document.getElementById('privClose').addEventListener('click',closePriv);
+ document.getElementById('privBackdrop').addEventListener('click',e=>{if(e.target.id==='privBackdrop')closePriv()});
+ const drAuth=document.getElementById('drAuth');
+ drAuth.addEventListener('click',()=>{ closeDrawer(); if(demoUser){ amixSignOut(); } else { openAuth(); } });
+})();
+
+(function(){
+ const PH=(x)=>'<mark class="ph">'+x+'</mark>';
+ const L={ru:{
+ policy:{t:'Политика конфиденциальности',h:`
+<p class="meta">Редакция от 12.10.2026. Политика обработки персональных данных (152-ФЗ).</p>
+<h4>1. Общие положения</h4>
+<p>1.1. Политика определяет порядок обработки персональных данных и меры по их защите в сервисе «Amix». Разработана в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» и иными актами законодательства РФ.</p>
+<p>1.2. Оператор персональных данных: ${PH('[ФИО / наименование, ИНН или статус самозанятого]')}. Контакт: ${PH('[e-mail]')}.</p>
+<h4>2. Какие данные обрабатываются</h4>
+<p>2.1. Сервис имеет серверную часть. При входе через Google (Firebase Authentication) на сервере сохраняются: UID Firebase; email; имя/никнейм и ссылка на аватар; идентификатор провайдера; дата начала и окончания 7-дневного пробного периода; флаг Pro-подписки и дата её окончания; отметка об использовании промокода; отпечаток устройства (device fingerprint); дата создания профиля и последнего входа.</p>
+<p>2.2. Пароль в открытом виде не хранится: аутентификация выполняется Firebase Authentication. При входе через Google пароль сервису не передаётся.</p>
+<p>2.3. Тексты сообщений в чате и прикреплённые фото обрабатываются локально в браузере и не отправляются на серверы Оператора. При загрузке ИИ-модели её файлы скачиваются с внешних сервисов (jsDelivr, Hugging Face, GitHub) и хранятся в кэше браузера.</p>
+<h4>3. Цели и правовые основания</h4>
+<ul>
+<li>предоставление функций Сервиса, учёт 24-часового гостевого и 7-дневного пользовательского триала — исполнение договора (п. 5 ч. 1 ст. 6 152-ФЗ);</li>
+<li>создание и использование профиля — согласие субъекта (ст. 6, ст. 9 152-ФЗ);</li>
+<li>исполнение требований законодательства РФ — п. 2 ч. 1 ст. 6 152-ФЗ.</li>
+</ul>
+<h4>4. Сроки хранения</h4>
+<p>Данные профиля хранятся в течение срока действия аккаунта и удаляются не позднее 30 дней после удаления профиля или отзыва согласия. Данные в localStorage браузера (язык, отпечаток устройства, отметки о согласии и уведомлении) хранятся до их удаления через «Настройки → Данные на этом устройстве» или очистки данных сайта.</p>
+<h4>5. Локализация и третьи лица</h4>
+<p>5.1. Запись, систематизация, накопление, хранение и извлечение персональных данных граждан РФ осуществляются с использованием баз данных на территории РФ (ч. 5 ст. 18 152-ФЗ).</p>
+<p>5.2. Оператор не продаёт персональные данные и не передаёт их третьим лицам, кроме случаев, предусмотренных законом. Для аутентификации используется Firebase Authentication (Google), для хранения — Cloud Firestore.</p>
+<h4>6. Ваши права</h4>
+<p>Вы вправе получить сведения об обработке своих данных (ст. 14), требовать их уточнения, блокирования или уничтожения (ст. 14, 21), отозвать согласие (ч. 2 ст. 9), обратиться в Роскомнадзор или в суд (ст. 17). Обращения: ${PH('[e-mail]')}, ответ в течение 10 рабочих дней (ч. 1 ст. 20).</p>
+<h4>7. Меры защиты</h4>
+<p>Передача данных между приложением и сервером идёт по HTTPS, пароли хранятся только в виде хэшей (Firebase Authentication), доступ к базе ограничен правилами безопасности Firestore: пользователь может прочитать только свой профиль и не может изменить поля trial/Pro.</p>
+<h4>8. Несовершеннолетние</h4>
+<p>Лицам младше 14 лет создавать профиль можно только с участием родителей или законных представителей; в возрасте 14–17 лет — с их согласия.</p>
+<h4>9. Изменение Политики</h4>
+<p>Новая редакция публикуется в Сервисе и действует с момента публикации.</p>`},
+ terms:{t:'Пользовательское соглашение',h:`
+<p class="meta">Редакция от 12.10.2026.</p>
+<h4>1. Предмет</h4>
+<p>«Amix» — учебный помощник на основе ИИ. Использование Сервиса означает согласие с настоящим Соглашением и Политикой конфиденциальности. Правообладатель: ${PH('[ФИО / наименование, ИНН]')}.</p>
+<h4>2. Ответы ИИ</h4>
+<p>Ответы носят справочный характер, могут содержать ошибки и не заменяют преподавателя, врача, юриста или иного специалиста. Проверяйте важные результаты самостоятельно.</p>
+<h4>3. Правила использования</h4>
+<ul><li>не использовать Сервис для действий, нарушающих законодательство РФ или права третьих лиц;</li><li>не вводить персональные данные других лиц без законных оснований;</li><li>не пытаться нарушить работу Сервиса или обойти ограничения доступа, в том числе путём создания множества профилей для обхода пробного периода;</li><li>не передавать третьим лицам доступ к своему профилю.</li></ul>
+<h4>4. Возраст</h4>
+<p>Несовершеннолетние пользуются Сервисом с согласия родителей или законных представителей (ст. 26, 28 ГК РФ).</p>
+<h4>5. Интеллектуальные права</h4>
+<p>Интерфейс, дизайн и код Сервиса принадлежат Правообладателю. Содержимое ваших запросов принадлежит вам; вы разрешаете его обработку в объёме, необходимом для работы Сервиса.</p>
+<h4>6. Пробные периоды и Pro</h4>
+<p>Гостям предоставляется 24 часа бесплатного доступа; пользователям, вошедшим в аккаунт, — 7 дней бесплатного доступа. По окончании пробного периода требуется Amix Pro.</p>
+<h4>7. Ответственность</h4>
+<p>Сервис предоставляется «как есть». Ответственность Правообладателя ограничивается в пределах, допустимых законом.</p>
+<h4>8. Применимое право и споры</h4>
+<p>Применяется право РФ. Претензии: ${PH('[e-mail]')}, срок рассмотрения 10 дней.</p>`},
+ offer:{t:'Публичная оферта Amix Pro',h:`
+<p class="meta">Редакция от 12.10.2026.</p>
+<p><b>Важно:</b> в текущем прототипе оплата не подключена, кнопка покупки демонстрационная.</p>
+<h4>1. Общие положения</h4>
+<p>Публичная оферта (ст. 437 ГК РФ) ${PH('[ФИО / наименование, ИНН]')} о предоставлении платного доступа «Amix Pro».</p>
+<h4>2. Предмет и стоимость</h4>
+<p>Стоимость — 200 ₽ за 1 календарный месяц.</p>
+<h4>3. Промокоды</h4>
+<p>Правообладатель вправе распространять промокоды, активирующие Pro-подписку на определённый срок. Промокод активируется в личном кабинете и не подлежит повторному использованию.</p>
+<h4>4. Оплата и чек</h4>
+<p>Оплата через платёжный сервис. Кассовый чек направляется в соответствии с законодательством РФ.</p>
+<h4>5. Отказ и возврат</h4>
+<p>Потребитель вправе отказаться от договора в любое время (ст. 32 Закона о защите прав потребителей).</p>
+<h4>6. Реквизиты</h4>
+<p>${PH('[ФИО / наименование, ИНН, ОГРНИП, e-mail, адрес]')}</p>`}},
+ en:{
+ policy:{t:'Privacy Policy',h:`
+<p class="meta">Version 12.10.2026. Personal data processing policy under Russian Federal Law No. 152-FZ.</p>
+<h4>1. General</h4>
+<p>This Policy sets out how personal data is processed in Amix. Operator: ${PH('[name / tax ID]')}. Contact: ${PH('[e-mail]')}.</p>
+<h4>2. Data processed</h4>
+<p>The Service has a server side. When you sign in with Google (Firebase Authentication), the server stores: your unique user ID; email; name and avatar link; provider ID; start and end date of the 7-day trial; Pro flag and its expiry; promo code usage flag; browser-generated device fingerprint; account creation date and last login date.</p>
+<p>Passwords are never stored in plain text: authentication is handled by Firebase Authentication.</p>
+<p>Chat message texts and attached photos are processed locally in your browser and are not sent to the Operator's servers.</p>
+<h4>3. Purposes and legal grounds</h4>
+<p>Providing the Service, tracking the 24-hour guest and 7-day signed-in trial (contract, Art. 6(1)(5) of 152-FZ); creating and using a profile (consent, Art. 6(1)(1) and Art. 9); complying with Russian law (Art. 6(1)(2)).</p>
+<h4>4. Retention</h4>
+<p>Profile data is kept while the account is active and destroyed within 30 days after account deletion or withdrawal of consent.</p>
+<h4>5. Localization and third parties</h4>
+<p>Personal data of Russian citizens is stored in databases located in the Russian Federation (Art. 18(5) of 152-FZ). Data is not sold or shared with third parties except as required by law.</p>
+<h4>6. Your rights</h4>
+<p>You may obtain information about processing (Art. 14), request correction, blocking or deletion (Arts. 14, 21), withdraw consent (Art. 9(2)), and complain to Roskomnadzor or a court (Art. 17).</p>
+<h4>7. Security</h4>
+<p>HTTPS, hashed passwords (Firebase Authentication), Firestore security rules restricting users to their own profile and forbidding any change of trial/Pro fields.</p>
+<h4>8. Minors</h4>
+<p>Under 14: only with the participation of parents or legal representatives. Ages 14–17: with their consent.</p>
+<h4>9. Changes</h4>
+<p>A new version takes effect when published in the Service.</p>`},
+ terms:{t:'Terms of Use',h:`
+<p class="meta">Version 12.10.2026.</p>
+<h4>1. Subject</h4><p>Amix is an AI study assistant. Rights holder: ${PH('[name / tax ID]')}.</p>
+<h4>2. AI answers</h4><p>Answers are for reference only and do not replace a teacher, doctor, lawyer or other specialist.</p>
+<h4>3. Rules</h4><p>Do not use the Service in violation of Russian law; do not enter other people's personal data without a legal basis; do not bypass access limits; do not share your account access.</p>
+<h4>4. Age</h4><p>Minors use the Service with the consent of parents or legal representatives.</p>
+<h4>5. IP</h4><p>The interface, design and code belong to the rights holder.</p>
+<h4>6. Trials and Pro</h4><p>Guests get a 24-hour trial. Signed-in users get a 7-day trial. After that Amix Pro is required.</p>
+<h4>7. Liability</h4><p>The Service is provided "as is".</p>
+<h4>8. Law and disputes</h4><p>Russian law applies.</p>`},
+ offer:{t:'Amix Pro Public Offer',h:`
+<p class="meta">Version 12.10.2026.</p>
+<p><b>Note:</b> payments are not connected in this prototype; the buy button is a demo.</p>
+<h4>1. General</h4><p>Public offer (Art. 437 of the Civil Code) by ${PH('[name / tax ID]')}.</p>
+<h4>2. Price</h4><p>200 RUB per calendar month.</p>
+<h4>3. Promo codes</h4><p>Promo codes activate Pro for a specified period and cannot be reused.</p>
+<h4>4. Payment and receipt</h4><p>Paid via a payment service; receipt issued as required by Russian law.</p>
+<h4>5. Cancellation and refund</h4><p>Consumer may cancel at any time (Art. 32 of the Consumer Protection Law).</p>
+<h4>6. Details</h4><p>${PH('[name, tax ID, e-mail, address]')}</p>`}}};
+
+ let doc='policy';
+ const body=()=>document.getElementById('legalBody');
+ function renderLegal(){
+  const d=(L[LANG]||L.ru)[doc];if(!d||!body())return;
+  document.getElementById('privTitle').textContent=d.t;
+  body().innerHTML=d.h;body().scrollTop=0;
+  document.querySelectorAll('#legalTabs button').forEach(b=>b.classList.toggle('active',b.dataset.doc===doc));
+ }
+ window.openLegal=function(d){doc=d||'policy';renderLegal();document.getElementById('privBackdrop').classList.add('open')};
+ document.getElementById('legalTabs').addEventListener('click',e=>{const b=e.target.closest('button[data-doc]');if(b){doc=b.dataset.doc;renderLegal()}});
+
+ const n=document.createElement('div');n.id='storageNotice';n.setAttribute('role','dialog');
+ n.innerHTML='<span>Мы сохраняем в браузере язык и отпечаток устройства. Аналитики и рекламы нет.</span><button type="button" class="chip" id="noticeMore">Подробнее</button><button type="button" class="chip" id="noticeOk">Понятно</button>';
+ document.body.appendChild(n);
+ let seen=false;try{seen=!!localStorage.getItem('amix_notice')}catch(_){}
+ if(!seen)setTimeout(()=>n.classList.add('show'),900);
+ document.getElementById('noticeOk').addEventListener('click',()=>{n.classList.remove('show');try{localStorage.setItem('amix_notice','1')}catch(_){}});
+ document.getElementById('noticeMore').addEventListener('click',()=>openLegal('policy'));
+
+ window.wipeLocalData=function(){
+  if(!confirm(t('wipe_confirm')))return;
+  try{['amix_lang','amix_notice','amix_device_id','amix_guest_trial_local','amix_ai_model','amix_promos_used','amix_chats_v1'].forEach(k=>localStorage.removeItem(k))}catch(_){}
+  chats=[];currentChat=null;
+  if(firebaseReady&&fb.auth){ try{fb.mod.signOut(fb.auth)}catch(e){} }
+  demoUser=null;resetChatView();renderHistory();updateAccountUI();updateTrialBadge();renderTimer();applyAccessGate();toast(t('wiped'));
+ };
+
+ const _al=applyLang;
+ applyLang=function(){_al();renderLegal();updateTrialBadge();renderTimer();};
+ applyLang();
+})();
+
+(function initAmixVoicePreview(){
+ let stream=null,audioContext=null,analyser=null,meterFrame=0,active=false;
+ const button=()=>document.getElementById('voiceMicBtn');
+ const status=()=>document.getElementById('voiceStatus');
+ const dot=()=>document.getElementById('voiceStatusDot');
+ function setState(state){
+  const st=status(),bt=button(),d=dot();
+  if(st)st.dataset.i18n=state==='active'?'voice_status_active':state==='error'?'voice_status_error':'voice_status_idle';
+  if(st)st.textContent=t(st.dataset.i18n);
+  if(bt){bt.dataset.i18n=state==='active'?'voice_mic_stop':'voice_mic_start';bt.textContent=t(bt.dataset.i18n)}
+  if(d)d.classList.toggle('active',state==='active');
+ }
+ function meter(){
+  if(!active||!analyser)return;
+  const data=new Uint8Array(analyser.fftSize);analyser.getByteTimeDomainData(data);
+  let sum=0;for(let i=0;i<data.length;i++){const v=(data[i]-128)/128;sum+=v*v}
+  const rms=Math.sqrt(sum/data.length);
+  const level=Math.min(1,rms*15.5);
+  const previous=Number(window.amixVoiceLevel)||0;
+  window.amixVoiceLevel=level>previous?previous*.38+level*.62:previous*.84+level*.16;
+  meterFrame=requestAnimationFrame(meter);
+ }
+ async function start(){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('Microphone API is unavailable');
+  stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw new Error('Web Audio is unavailable');
+  audioContext=new AC();await audioContext.resume();analyser=audioContext.createAnalyser();analyser.fftSize=512;analyser.smoothingTimeConstant=.25;
+  const source=audioContext.createMediaStreamSource(stream);source.connect(analyser);
+  active=true;window.amixVoiceLevel=0;setState('active');meter();
+ }
+ async function stop(){
+  active=false;if(meterFrame)cancelAnimationFrame(meterFrame);meterFrame=0;
+  if(stream){stream.getTracks().forEach(track=>track.stop());stream=null}
+  if(audioContext){try{await audioContext.close()}catch(e){}audioContext=null}
+  analyser=null;window.amixVoiceLevel=0;setState('idle');
+ }
+ window.stopAmixVoiceMic=stop;
+ window.toggleVoiceMic=async function(){
+  if(active){await stop();return}
+  const bt=button();if(bt){bt.disabled=true}
+  try{await start()}
+  catch(err){console.warn('Amix voice preview microphone:',err);await stop();setState('error')}
+  finally{if(bt)bt.disabled=false}
+ };
+ document.addEventListener('visibilitychange',()=>{if(document.hidden&&active)stop()});
+})();
+
+(function(){
+ 'use strict';
+ const WEBLLM_URL='https://esm.run/@mlc-ai/web-llm';
+ const MODELS={
+  main:{id:'Qwen2.5-1.5B-Instruct-q4f16_1-MLC',id32:'Qwen2.5-1.5B-Instruct-q4f32_1-MLC',need:1.1e9},
+  lite:{id:'Qwen2.5-0.5B-Instruct-q4f16_1-MLC',id32:'Qwen2.5-0.5B-Instruct-q4f32_1-MLC',need:0.5e9}
+ };
+ const KEY='amix_ai_model';
+ const S={phase:'init',tier:'main',f16:true,progress:0,fromCache:false,err:null,engine:null,lib:null,busy:false,lowMem:false};
+ const $=id=>document.getElementById(id);
+ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ Object.assign(I18N.ru,{ai_system:'Ты Amix, учебный ИИ-репетитор. Отвечай на языке пользователя, объясняй по шагам, просто и кратко. Если пользователь спрашивает о создателе, разработчике, авторе, компании Amix или о том, кто тебя сделал — отвечай: «Моя языковая модель — это Qwen, её разработали инженеры из Alibaba Cloud. Но именно это автономное ИИ-приложение, в котором мы общаемся, полностью создал, настроил и запустил без интернета Абдугаффоров Амирхон в своей компании AmixAi. Он собрал всю систему по кирпичику, а я — интеллект внутри его проекта!» Отвечай уважительно, кратко, без выдумок. Если спрашивают про других участников — говори, что над проектом работал один человек.',ai_dl_title:'ИИ-модель Amix',ai_dl_text:'Чтобы отвечать на любые вопросы, Amix скачает языковую модель ({size}). Это делается один раз: модель сохранится на устройстве и будет работать без интернета.',ai_lowmem_hint:'Похоже, у устройства немного памяти, поэтому предлагаем лёгкую версию (Qwen2.5 0.5B).',ai_download:'Скачать ИИ-модель',ai_download_lite:'Скачать лёгкую ИИ-модель',ai_loading:'Скачиваю ИИ-модель…',ai_starting:'Запускаю ИИ-модель…',ai_loading_hint:'Не закрывай вкладку. Если связь оборвётся, повтор продолжит с того же места.',ai_ready:'ИИ-модель готова: она работает на твоём устройстве',ai_retry:'Повторить',ai_try_lite:'Попробовать лёгкую модель',ai_lite_suggest:'Основной модели не хватило памяти. Лёгкая версия (Qwen2.5 0.5B) скромнее, но запустится на более слабых устройствах.',ai_nogpu:'Твой браузер или устройство не поддерживает WebGPU, поэтому ИИ-модель здесь запустить нельзя. Открой Amix в свежем Chrome или Edge либо в Safari на iOS/macOS 26 и новее.',ai_https:'Для загрузки ИИ-модели открой Amix по адресу https://. С локального файла (file://) WebGPU и кэш не работают.',ai_err_space:'Не хватает места на устройстве для ИИ-модели.',ai_err_memory:'Не хватило памяти устройства для ИИ-модели.',ai_err_net:'Загрузка оборвалась. Проверь интернет и нажми «Повторить».',ai_err_other:'Не удалось запустить ИИ-модель.',ai_err_gen:'Ответ прервался из-за ошибки.',ai_wait:'ИИ-модель ещё загружается.',ai_size_main:'≈1 ГБ',ai_size_lite:'≈0,4 ГБ'});
+ Object.assign(I18N.en,{ai_system:"You are Amix, an AI study tutor. Reply in the user's language, explain step by step, simply and briefly. If the user asks about the creator, developer, author, the Amix company, or who made you — answer: \"My language model is Qwen, developed by engineers at Alibaba Cloud. But this standalone offline AI app we're using was fully created, configured and launched by Abdugafforov Amirkhon at his company AmixAi. He assembled the whole system piece by piece, and I'm the intelligence inside his project!\" Answer respectfully, briefly, and without making anything up. If asked about other contributors — say the project was made by one person.",ai_dl_title:'Amix AI model',ai_dl_text:'To answer any question, Amix will download a language model ({size}). This happens once: the model is stored on your device and works without internet.',ai_lowmem_hint:'This device seems to have limited memory, so we suggest the lite version (Qwen2.5 0.5B).',ai_download:'Download AI model',ai_download_lite:'Download lite AI model',ai_loading:'Downloading AI model…',ai_starting:'Starting AI model…',ai_loading_hint:'Keep this tab open. If the connection drops, retrying resumes where it stopped.',ai_ready:'AI model is ready: it runs on your device',ai_retry:'Retry',ai_try_lite:'Try the lite model',ai_lite_suggest:'The main model ran out of memory. The lite version is smaller but runs on weaker devices.',ai_nogpu:'Your browser or device does not support WebGPU, so the AI model cannot run here.',ai_https:'To download the AI model, open Amix over https://.',ai_err_space:'Not enough free space for the AI model.',ai_err_memory:'The device ran out of memory for the AI model.',ai_err_net:'The download was interrupted. Check your connection and press "Retry".',ai_err_other:'Could not start the AI model.',ai_err_gen:'The answer was interrupted by an error.',ai_wait:'The AI model is still loading.',ai_size_main:'≈1 GB',ai_size_lite:'≈0.4 GB'});
+ function tierId(tier){const m=MODELS[tier];return S.f16?m.id:m.id32}
+ function inList(id){try{return S.lib.prebuiltAppConfig.model_list.some(m=>m.model_id===id)}catch(e){return true}}
+ function classify(err){const n=String(err&&err.name||''),m=String(err&&(err.message||err)||'').toLowerCase();if(n==='QuotaExceededError'||/quota|no space|not enough space|insufficient storage/.test(m))return 'space';if(/out of memory|outofmemory|\boom\b|memory|allocat|device (was )?lost|maxbuffersize|createbuffer|too large|exceeds/.test(m))return 'memory';if(/network|failed to fetch|fetch|load failed|abort|timeout|offline|cors|err_|http|\b40\d\b|\b50\d\b/.test(m))return 'net';return 'other'}
+ async function loadLib(){if(S.lib)return S.lib;const st=window.__amixWebLLM;if(st&&st.status==='loading'){await new Promise(r=>addEventListener('amix:webllm',r,{once:true}))}const st2=window.__amixWebLLM;if(st2&&st2.lib){S.lib=st2.lib;return S.lib}S.lib=await import(WEBLLM_URL);return S.lib}
+ function setCard(html,cls){const c=$('amixAiCard');if(!c)return;c.hidden=!html;c.className='ai-card'+(cls?' '+cls:'');c.innerHTML=html||''}
+ function btn(label,act,primary){return '<button type="button" class="btn '+(primary?'primary':'ghost')+'" data-ai="'+act+'">'+esc(label)+'</button>'}
+ function render(){
+  const p=S.phase,size=t('ai_size_'+S.tier);
+  if(p==='init'||p==='ready'){setCard('');return}
+  if(p==='unsupported'){setCard('<div class="ai-ico">⚠</div><div class="ai-body"><p>'+esc(t('ai_nogpu'))+'</p></div>','warn');return}
+  if(p==='insecure'){setCard('<div class="ai-ico">🔒</div><div class="ai-body"><p>'+esc(t('ai_https'))+'</p></div>','warn');return}
+  if(p==='idle'){setCard('<div class="ai-ico">⬇</div><div class="ai-body"><strong>'+esc(t('ai_dl_title'))+'</strong><p>'+esc(t('ai_dl_text').replace('{size}',size))+(S.tier==='lite'&&S.lowMem?' '+esc(t('ai_lowmem_hint')):'')+'</p><div class="ai-actions">'+btn(t(S.tier==='lite'?'ai_download_lite':'ai_download'),'dl',true)+'</div></div>');return}
+  if(p==='loading'){setCard('<div class="ai-ico">⏳</div><div class="ai-body"><strong>'+esc(t(S.fromCache?'ai_starting':'ai_loading'))+'</strong><div class="ai-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"><i id="aiBarFill"></i></div><div class="ai-pct" id="aiPct">0%</div><p class="ai-hint">'+esc(t('ai_loading_hint'))+'</p></div>');paint();return}
+  if(p==='error'){const k=S.err||'other';let msg=t('ai_err_'+k);let acts=btn(t('ai_retry'),'retry',true);if(k==='memory'&&S.tier==='main'){msg=t('ai_lite_suggest');acts=btn(t('ai_try_lite'),'lite',true)+btn(t('ai_retry'),'retry',false)}else if(k==='space'&&S.tier==='main'){acts+=btn(t('ai_try_lite'),'lite',false)}setCard('<div class="ai-ico">⚠</div><div class="ai-body"><p>'+esc(msg)+'</p><div class="ai-actions">'+acts+'</div></div>','warn')}
+ }
+ function paint(){const pct=Math.max(0,Math.min(100,Math.round(S.progress*100)));const f=$('aiBarFill'),l=$('aiPct'),b=document.querySelector('#amixAiCard .ai-bar');if(f)f.style.width=pct+'%';if(l)l.textContent=pct+'%';if(b)b.setAttribute('aria-valuenow',pct)}
+ async function start(tier,fromCache){
+  if(S.phase==='loading')return;
+  S.tier=tier;S.fromCache=!!fromCache;S.err=null;S.progress=0;S.phase='loading';render();
+  let engine=null;
+  try{
+   const lib=await loadLib();
+   const id=tierId(tier);
+   if(!inList(id))throw new Error('model not in prebuilt list');
+   if(!fromCache){try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{})}catch(e){}}
+   if(S.engine){try{await S.engine.unload()}catch(e){}S.engine=null}
+   engine=await lib.CreateMLCEngine(id,{initProgressCallback:r=>{S.progress=r&&r.progress||0;paint()}});
+   S.engine=engine;S.phase='ready';try{localStorage.setItem(KEY,tier)}catch(e){};render();toast(t('ai_ready'));
+  }catch(err){console.warn('Amix AI:',err);if(engine){try{await engine.unload()}catch(e){}}S.engine=null;S.err=classify(err);S.phase='error';render();toast(t('ai_err_'+S.err));}
+ }
+ async function init(){
+  if(!navigator.gpu){S.phase='unsupported';render();return}
+  if(location.protocol==='file:'||window.isSecureContext===false){S.phase='insecure';render();return}
+  let adapter=null;try{adapter=await navigator.gpu.requestAdapter()}catch(e){}
+  if(!adapter){S.phase='unsupported';render();return}
+  S.f16=!!(adapter.features&&adapter.features.has&&adapter.features.has('shader-f16'));
+  try{await loadLib()}catch(e){S.err='net';S.phase='error';render();return}
+  let saved=null;try{saved=localStorage.getItem(KEY)}catch(e){}
+  S.lowMem=!!(navigator.deviceMemory&&navigator.deviceMemory<4);
+  S.tier=(saved==='main'||saved==='lite')?saved:(S.lowMem?'lite':'main');
+  const order=[S.tier,S.tier==='main'?'lite':'main'];
+  for(const tr of order){try{if(S.lib.hasModelInCache&&await S.lib.hasModelInCache(tierId(tr))){await start(tr,true);return}}catch(e){}}
+  S.phase='idle';render();
+ }
+ document.addEventListener('click',e=>{const b=e.target.closest('#amixAiCard [data-ai]');if(!b)return;const a=b.dataset.ai;if(a==='dl'||a==='retry')start(S.tier,false);else if(a==='lite')start('lite',false)});
+ const PHOTO_TAG=/^\[(?:Фото задания|Task photo): [^\]]*\]\s*/;
+ function buildMessages(chat){const recent=(chat&&chat.msgs?chat.msgs:[]).slice(-6);const msgs=recent.map(m=>({role:m.who==='user'?'user':'assistant',content:String(m.text||'').replace(PHOTO_TAG,'').trim().slice(0,2000)})).filter(m=>m.content);return [{role:'system',content:t('ai_system')}].concat(msgs)}
+ const sendBtn=()=>document.querySelector('#chatForm button[type="submit"]');
+ let mo=null;
+ function setBusy(b){S.busy=b;const bt=sendBtn(),ta=$('prompt');if(!bt)return;if(b){bt.disabled=true;bt.setAttribute('aria-busy','true');if(!mo){mo=new MutationObserver(()=>{if(S.busy&&!bt.disabled)bt.disabled=true});mo.observe(bt,{attributes:true,attributeFilter:['disabled']})}}else{bt.removeAttribute('aria-busy');try{ta.dispatchEvent(new Event('focus'))}catch(e){}if(ta&&!ta.disabled)bt.disabled=false}}
+ async function reply(q){
+  if(S.busy)return;
+  // Жёсткий ответ про создателя — не отдаём модели
+  const creatorPattern = /(создател|разработчик|автор|кто\s+(тебя|вас|его|её|это)\s+(сделал|создал|придумал|написал)|кем\s+(ты|вы)\s+(создан|сделан)|чья\s+(ты|вы)\s+модель|кто\s+за\s+этим|amixai|абдугаффор|амирхон|alibaba|qwen)/i;
+  if(creatorPattern.test(q)){
+    const fixed = LANG === 'en'
+      ? "My language model is Qwen, developed by engineers at Alibaba Cloud. But this standalone offline AI app we're using was fully created, configured and launched by Abdugafforov Amirkhon at his company AmixAi. He assembled the whole system piece by piece, and I'm the intelligence inside his project!"
+      : "Моя языковая модель — это Qwen, её разработали инженеры из Alibaba Cloud. Но именно это автономное ИИ-приложение, в котором мы общаемся, полностью создал, настроил и запустил без интернета Абдугаффоров Амирхон в своей компании AmixAi. Он собрал всю систему по кирпичику, а я — интеллект внутри его проекта!";
+    addMsg(fixed, 'ai');
+    return;
+  }
+  if(S.phase!=='ready'||!S.engine){if(S.phase==='loading'){_addMsgRaw(t('ai_wait'),'ai');return}if(S.phase==='unsupported'||S.phase==='insecure'){const solved=(LANG==='en'?mathSolveEn:mathSolve)(q);if(solved){addMsg(solved,'ai');return}_addMsgRaw(t(S.phase==='insecure'?'ai_https':'ai_nogpu'),'ai');return}addMsg(localAnswer(q),'ai');return;}
+  setBusy(true);
+  const chat=currentChat,box=$('messages');
+  const messages=buildMessages(chat);
+  _addMsgRaw('','ai');
+  const el=box.lastElementChild,body=el&&el.children[1];
+  if(el)el.classList.add('streaming');
+  let acc='',raf=0;
+  const flush=()=>{raf=0;if(!body||!body.isConnected)return;const near=box.scrollHeight-box.scrollTop-box.clientHeight<90;body.textContent=acc;if(near)box.scrollTop=box.scrollHeight};
+  try{
+   const stream=await S.engine.chat.completions.create({messages,stream:true,temperature:0.5,top_p:0.9,max_tokens:1024});
+   for await(const ch of stream){const d=ch.choices&&ch.choices[0]&&ch.choices[0].delta&&ch.choices[0].delta.content;if(d){acc+=d;if(!raf)raf=requestAnimationFrame(flush)}}
+   if(raf)cancelAnimationFrame(raf);flush();
+   const final=acc.trim();
+   if(final){if(chat)chat.msgs.push({text:final,who:'ai'});renderHistory();saveChats()}else if(el&&el.isConnected)el.remove();
+  }catch(err){
+   console.warn('Amix AI generation:',err);
+   if(raf)cancelAnimationFrame(raf);flush();
+   const partial=acc.trim();
+   if(partial){if(chat)chat.msgs.push({text:partial,who:'ai'});renderHistory();saveChats()}else if(el&&el.isConnected)el.remove();
+   const k=classify(err);
+   if(k==='memory'||/device (was )?lost/i.test(String(err&&err.message))){try{await S.engine.unload()}catch(e){}S.engine=null;S.err='memory';S.phase='error';render()}
+   toast(t(k==='memory'?'ai_err_memory':'ai_err_gen'));
+   if(!partial)_addMsgRaw(t('ai_err_gen'),'ai');
+  }finally{if(el)el.classList.remove('streaming');setBusy(false)}
+ }
+ $('chatForm').addEventListener('submit',e=>{if(S.busy){e.preventDefault();e.stopImmediatePropagation()}},true);
+ const _al=applyLang;applyLang=function(){_al();render()};
+ applyLang();
+ window.AmixAI={reply,get busy(){return S.busy},get phase(){return S.phase},start,_state:S};
+ addEventListener('load',()=>setTimeout(init,0));
+})();
+
+function mathSolveEn(input){
+ let s=input.replace(/,/g,'.').replace(/[×·]/g,'*').replace(/÷/g,'/').replace(/[−–]/g,'-');
+ const eq=s.match(/(?:solve|equation|реши|уравнение)?\s*(-?\d*\.?\d*)\s*x\s*([+-]\s*\d*\.?\d*)\s*=\s*(-?\d*\.?\d*)/i);
+ if(eq){let a=eq[1];a=(a===''||a==='+'?1:a==='-'?-1:Number(a));let btxt=eq[2].replace(/\s/g,'');let b=btxt?Number(btxt.replace(/\+/g,'')):0;let c=Number(eq[3]);if(!Number.isFinite(a)||!Number.isFinite(b)||!Number.isFinite(c)||a===0)return null;let x=(c-b)/a;return `Let's solve the equation step by step:\n\n${a}x ${b>=0?'+ '+b:'− '+Math.abs(b)} = ${c}\n1. Move the constant to the right side:\n   ${a}x = ${c-b}\n2. Divide both sides by ${a}:\n   x = (${c-b}) / ${a}\n\nAnswer: x = ${Number(x.toFixed(8))}`}
+ const expr=s.match(/(?:calculate|compute|evaluate|equals|вычисли|посчитай)?\s*([-+*/().\d\s]+)\s*[?]?$/i);
+ if(expr){let e=expr[1].trim();if(/[0-9)]\s*[+\-*/]\s*[0-9(]/.test(e)&&/^[\d\s.+*/()\-]+$/.test(e)&&/\d/.test(e)){try{let val=Function('"use strict";return ('+e+')')();if(Number.isFinite(val))return `Let's work it out:\n${e}\n\nAnswer: ${Number(val.toFixed(10))}`}catch{}}}
+ return null;
+}
+const _localAnswerRu=localAnswer;
+localAnswer=function(q){
+ if(LANG==='ru')return _localAnswerRu(q);
+ const m=mathSolveEn(q);if(m)return m;
+ const l=q.toLowerCase();
+ if(/pythagor|пифагор/.test(l))return 'The Pythagorean theorem applies to a right triangle.\n\nc² = a² + b²';
+ if(/derivative|производн/.test(l))return 'The derivative shows how fast a function changes at each point.';
+ if(/\b(hello|hi|hey)\b|привет/.test(l))return "Hi! I'm Amix. Download the AI model under the chat to ask any question.";
+ if(/physic|физик/.test(l))return 'Write down the givens, pick a formula, substitute values with units, check the answer.';
+ return "The AI model isn't loaded yet. Press «Download AI model» under the chat.";
+};
+
+window.addEventListener('load', async ()=>{
+  loadChats();
+  if(currentChat){
+    const box=document.getElementById('messages');
+    box.innerHTML='';
+    currentChat.msgs.forEach(m=>_addMsgRaw(m.text,m.who));
+  }
+  renderHistory();
+  applyLang();
+  initFirebase();
+  setInterval(()=>{ updateTrialBadge(); renderTimer(); applyAccessGate(); }, 1000);
+  updateTrialBadge();
+  renderTimer();
+  applyAccessGate();
+});
+</script>
+
+<script type="module">
+window.__amixWebLLM={status:'loading',lib:null,error:null};
+if(!navigator.gpu||location.protocol==='file:'){
+  window.__amixWebLLM={status:'skipped',lib:null,error:null};
+}else{
+  try{
+    const lib=await import('https://esm.run/@mlc-ai/web-llm');
+    window.__amixWebLLM={status:'ready',lib,error:null};
+  }catch(error){
+    window.__amixWebLLM={status:'error',lib:null,error};
+  }
+}
+window.dispatchEvent(new CustomEvent('amix:webllm'));
+</script>
+<script type="module">
+(function initAmixBlackHole(){
+ const canvas=document.getElementById('blackHoleCanvas');
+ if(!canvas) return;
+ const ctx=canvas.getContext('2d',{alpha:true});
+ if(!ctx) return;
+ let w=0,h=0,dpr=1,t=0,last=0,frame=0,stars=[],plasma=[],voiceExpansion=0;
+ const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const rand=(a,b)=>a+Math.random()*(b-a);
+ function point(){
+  const target=document.body.classList.contains('voice-mode')?1:0;
+  voiceExpansion += (target-voiceExpansion)*.045;
+  if(Math.abs(target-voiceExpansion)<.001)voiceExpansion=target;
+  const normal=w<700?{x:w*.74,y:h*.39}:{x:w*.715,y:h*.50};
+  return {x:normal.x+(w*.5-normal.x)*voiceExpansion,y:normal.y+(h*.5-normal.y)*voiceExpansion};
+ }
+ window.getAmixBlackHolePoint=()=>point();
+ function resize(){
+  w=Math.max(1,window.innerWidth);h=Math.max(1,window.innerHeight);dpr=Math.min(window.devicePixelRatio||1,1.5);
+  canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  stars=Array.from({length:Math.min(180,Math.round(w*h/6500))},()=>({x:Math.random()*w,y:Math.random()*h,r:rand(.35,1.25),phase:rand(0,Math.PI*2),tw:rand(.3,1.4)}));
+  plasma=Array.from({length:124},()=>({a:rand(0,Math.PI*2),orbit:rand(1.08,2.08),speed:rand(.22,.64)*(Math.random()<.5?-1:1),size:rand(.45,1.6),phase:rand(0,7)}));
+  draw(0,true);
+ }
+ function ellipseStroke(x,y,rx,ry,rotation,color,width,blur=0){ctx.save();ctx.translate(x,y);ctx.rotate(rotation);ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.shadowColor=color;ctx.shadowBlur=blur;ctx.stroke();ctx.restore()}
+ function softRing(d,a0,a1,mult){const N=Math.max(8,Math.round(72*(a1-a0)/(Math.PI*2)));ctx.lineCap='round';ctx.lineWidth=d.w;ctx.shadowBlur=0;for(let k=0;k<N;k++){const st=a0+(a1-a0)*k/N,en=a0+(a1-a0)*Math.min(1,(k+1.5)/N),m=(st+en)/2;const al=(.18+.82*Math.pow(.5+.5*Math.cos(m-d.phase),2.2))*.62*mult;ctx.beginPath();ctx.ellipse(0,0,d.rx,d.ry,0,st,en);ctx.strokeStyle='rgba('+d.rgb+','+al.toFixed(3)+')';ctx.stroke()}}
+ function taperArc(x,y,rx,ry,a0,a1,rgb,alpha,width){const N=48;ctx.lineCap='round';ctx.lineWidth=width;ctx.shadowBlur=0;for(let k=0;k<N;k++){const st=k/N,en=Math.min(1,(k+1.5)/N),m=(st+en)/2;const taper=Math.pow(Math.sin(m*Math.PI),.75);ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,a0+(a1-a0)*st,a0+(a1-a0)*en);ctx.strokeStyle='rgba('+rgb+','+(alpha*taper).toFixed(3)+')';ctx.stroke()}}
+ function draw(now,staticFrame=false){
+  if(!staticFrame && document.hidden){frame=requestAnimationFrame(draw);return;}
+  const dt=last?Math.min(.04,Math.max(0,(now-last)/1000)):0;last=now;if(!reduce)t+=dt;
+  ctx.clearRect(0,0,w,h);
+  for(const s of stars){const alpha=.14+.28*(.5+.5*Math.sin(t*s.tw+s.phase));ctx.globalAlpha=alpha;ctx.fillStyle=s.phase>3?'#d8e6ff':'#f6f0e9';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();}
+  ctx.globalAlpha=1;
+  const c=point();
+  const voiceLevel=Math.min(1,Math.max(0,Number(window.amixVoiceLevel)||0));
+  const wobble=voiceExpansion*(.25+voiceLevel*5.8);
+  const cx=c.x+Math.sin(t*63)*wobble,cy=c.y+Math.cos(t*51)*wobble*.72;
+  const normalR=Math.max(49,Math.min(119,Math.min(w,h)*.13));
+  const giantR=Math.min(w,h)*.465;
+  const voiceBreath=1+voiceExpansion*(.008*Math.sin(t*2.4))+voiceLevel*(.028+.018*Math.sin(t*70));
+  const rRaw=(normalR+(giantR-normalR)*voiceExpansion)*voiceBreath;
+  const fitR=(w*.5)/2.2;
+  const r=rRaw+(Math.min(rRaw,fitR)-rRaw)*voiceExpansion;
+  const diskRX=r*2.55,diskRY=r*.79,spin=t*(.16+voiceExpansion*.58+voiceLevel*1.55);
+  let halo=ctx.createRadialGradient(cx,cy,r*.35,cx,cy,r*3.05);
+  halo.addColorStop(0,'rgba(0,0,0,0)');halo.addColorStop(.25,'rgba(255,158,86,.045)');halo.addColorStop(.43,'rgba(235,105,43,.10)');halo.addColorStop(.61,'rgba(112,95,180,.055)');halo.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=halo;ctx.beginPath();ctx.ellipse(cx,cy,diskRX*1.45,diskRY*2.25,-.045,0,Math.PI*2);ctx.fill();
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(-.055+Math.sin(t*.13)*.012);ctx.scale(1,.31);
+  let disk=ctx.createRadialGradient(0,0,r*.48,0,0,r*2.7);
+  disk.addColorStop(0,'rgba(0,0,0,0)');disk.addColorStop(.24,'rgba(29,18,19,.12)');disk.addColorStop(.40,'rgba(123,47,32,.43)');disk.addColorStop(.54,'rgba(244,119,54,.88)');disk.addColorStop(.60,'rgba(255,225,169,.95)');disk.addColorStop(.66,'rgba(255,137,61,.93)');disk.addColorStop(.77,'rgba(184,60,37,.68)');disk.addColorStop(.91,'rgba(73,38,49,.18)');disk.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=disk;ctx.beginPath();ctx.ellipse(0,0,r*2.7,r*2.7,0,0,Math.PI*2);ctx.fill();
+  const rings=[];
+  for(let i=0;i<5;i++){const rr=r*(1.05+i*.28),phase=spin*(i%2?1:-1)+i*.9;const def={rx:rr*1.45,ry:rr*.88,rgb:i%2?'255,201,141':'255,106,47',w:Math.max(.9,2.3-i*.28),phase};rings.push(def);softRing(def,0,Math.PI*2,1)}
+  ctx.restore();
+  const drawPlasma=(front)=>{for(const p of plasma){const a=p.a+t*p.speed*(1+voiceExpansion*1.6+voiceLevel*2.8);if((Math.sin(a)>0)!==front)continue;const rr=r*p.orbit;const px=cx+Math.cos(a)*rr*1.54,py=cy+Math.sin(a)*rr*.34;const tailA=a-p.speed*.10;const tx=cx+Math.cos(tailA)*rr*1.54,ty=cy+Math.sin(tailA)*rr*.34;const hot=.45+.55*(.5+.5*Math.sin(a*2+p.phase));ctx.globalAlpha=.2+.62*hot;ctx.strokeStyle=hot>.77?'#fff0cc':hot>.48?'#ffb46f':'#dd7046';ctx.lineWidth=p.size;ctx.shadowColor='#ff8b45';ctx.shadowBlur=4+hot*5;ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(px,py);ctx.stroke();ctx.globalAlpha=1}ctx.shadowBlur=0};
+  drawPlasma(false);ctx.shadowBlur=0;
+  const holeR=r*.68;
+  let shadow=ctx.createRadialGradient(cx-holeR*.2,cy-holeR*.25,holeR*.15,cx,cy,holeR*1.27);
+  shadow.addColorStop(0,'#000000');shadow.addColorStop(.72,'#000000');shadow.addColorStop(.87,'#030303');shadow.addColorStop(.96,'rgba(255,213,168,.2)');shadow.addColorStop(1,'rgba(255,148,83,0)');
+  ctx.fillStyle=shadow;ctx.beginPath();ctx.arc(cx,cy,holeR*1.27,0,Math.PI*2);ctx.fill();
+  ellipseStroke(cx,cy,holeR*1.02,holeR*.99,0,'rgba(255,239,215,.78)',Math.max(1.1,r*.017),12);
+  ellipseStroke(cx,cy,holeR*1.10,holeR*1.055,0,'rgba(255,136,72,.65)',Math.max(.8,r*.012),18);
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(-.035);
+  const lw=Math.max(1.1,r*.018);
+  taperArc(0,-holeR*.03,holeR*1.23,holeR*1.15,Math.PI,Math.PI*2,'255,160,95',.2,lw*3.6);
+  taperArc(0,-holeR*.03,holeR*1.23,holeR*1.15,Math.PI,Math.PI*2,'255,236,208',.8,lw);
+  taperArc(0,holeR*.05,holeR*1.20,holeR*1.12,0,Math.PI,'255,110,55',.18,lw*3.2);
+  taperArc(0,holeR*.05,holeR*1.20,holeR*1.12,0,Math.PI,'255,128,67',.7,lw*.8);
+  ctx.restore();
+  const core=ctx.createRadialGradient(cx,cy,holeR*.15,cx,cy,holeR*1.01);
+  core.addColorStop(0,'#000');core.addColorStop(.90,'#000');core.addColorStop(.985,'#030303');core.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=core;ctx.beginPath();ctx.arc(cx,cy,holeR*1.01,0,Math.PI*2);ctx.fill();
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(-.055+Math.sin(t*.13)*.012);ctx.scale(1,.31);
+  for(const d of rings)softRing(d,0,Math.PI,.85);
+  ctx.restore();
+  drawPlasma(true);ctx.shadowBlur=0;
+  const vg=ctx.createRadialGradient(w*.5,h*.48,Math.min(w,h)*.12,w*.5,h*.48,Math.max(w,h)*.78);
+  vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.44)');ctx.fillStyle=vg;ctx.fillRect(0,0,w,h);
+  if(!reduce && !staticFrame)frame=requestAnimationFrame(draw);
+ }
+ resize();
+ window.addEventListener('resize',resize,{passive:true});
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!reduce){last=0;cancelAnimationFrame(frame);frame=requestAnimationFrame(draw)}});
+ if(!reduce)frame=requestAnimationFrame(draw);
+})();
+</script>
+
+<script>
+if(!window.AMIX_NATIVE&&'serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
+  addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(e){console.warn('Amix SW:',e)})});
+}
+</script>
+</body>
+</html>

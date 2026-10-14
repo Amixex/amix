@@ -1,0 +1,30 @@
+{
+  "name": "amix",
+  "version": "1.0.0",
+  "description": "Amix — офлайн ИИ-репетитор",
+  "private": true,
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "cap:sync": "cap sync android",
+    "cap:open": "cap open android",
+    "cap:run": "cap run android",
+    "cap:build": "cap sync android && cap open android",
+    "android:add": "cap add android",
+    "android:apply": "node scripts/apply-android.mjs",
+    "android:setup": "cap add android && node scripts/apply-android.mjs && cap sync android",
+    "android:apk": "cd android && gradlew assembleDebug"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/app": "^6.0.2",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/device": "^6.0.2",
+    "@capacitor/filesystem": "^6.0.2",
+    "@capacitor/splash-screen": "^6.0.3",
+    "@capacitor/status-bar": "^6.0.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.0",
+    "typescript": "^5.4.5"
+  }
+}
